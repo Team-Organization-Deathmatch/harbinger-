@@ -1,0 +1,27 @@
+{
+  "name": "harbinger-",
+  "version": "1.0.0",
+  "description": "Upvote and comment on your favorite websites!",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastianhove/harbinger-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebastianhove/harbinger-/issues"
+  },
+  "homepage": "https://github.com/sebastianhove/harbinger-#readme"
+}
