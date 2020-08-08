@@ -1,6 +1,8 @@
 // testing upstream
 const { Router } = require('express');
 const path = require('path');
+require('./db/database');
+
 //const azure = require('server/azure.js');
 const route = Router();
 const { webSearchApiClient } = require('./azure.js');
