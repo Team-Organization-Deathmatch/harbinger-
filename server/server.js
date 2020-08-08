@@ -1,6 +1,7 @@
 // testing upstream
 const { Router } = require('express');
 const path = require('path');
+require('./db/database');
 
 const route = Router();
 
