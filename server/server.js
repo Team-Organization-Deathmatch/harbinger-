@@ -1,15 +1,21 @@
 // testing upstream
-const express = require('express');
+const { Router } = require('express');
 const path = require('path');
-const app = express();
-app.get('/', (req, res) => {
-  res.end();
+
+const route = Router();
+
+route.get('/', (req, res) => {
+  console.log('working GET')
+  res.status(200)
+  res.send('working GET');
 });
-app.post('/', (req, res) => {
-  res.end();
+route.post('/', (req, res) => {
+
+  res.status(201);
+  res.send('working POST');
 });
 module.exports = {
-  app,
+  route, 
 };
 
 // dummy change
