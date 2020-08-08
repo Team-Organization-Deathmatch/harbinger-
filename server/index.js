@@ -1,19 +1,15 @@
-require('dotenv').config();
 const express = require('express');
-const router = require('./server');
-const app = express();
+const { app } = require('./app')
+//const app = express();
+//const route = require('./server');
+const PORT = 8000;
+//const path = require('path');
 
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, (err,) => {
-    if (err) {
-        console.error(err);
-    }
-    console.log("listening on PORT ", PORT);
+app.listen(PORT, (req, res) => {
+  console.log(`listening on ${PORT}`);
 });
 
-app.use(router);
-
-module.exports = {
-    app,
-}
+// app.use('/', express.static(path.join(__dirname, './server')));
+// module.exports = {
+//   app
+// }
