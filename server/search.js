@@ -4,21 +4,11 @@ const path = require('path');
 require('./db/database');
 
 //const azure = require('server/azure.js');
-const route = Router();
+const searchRoute = Router();
 const { webSearchApiClient } = require('./azure.js');
 
-route.get('/', (req, res) => {
-  console.log('working GET');
-  res.status(200);
-  res.send('working GET');
-});
 
-route.post('/', (req, res) => {
-  res.status(201);
-  res.send('working POST');
-});
-
-route.post('/search', (req, res) => {
+searchRoute.post('/search', (req, res) => {
   res.status(201);
   // res.send('hello world');
 
@@ -45,20 +35,11 @@ route.post('/search', (req, res) => {
 
 // another post for searching the web
 
-route.get('/homepage', (req, res) => {
-  // this will pull most recent and upvoted
-  // stories from our database
-});
+
 // Question, will we incorporate the home page and search on one page and render one at a time?
 // or will it be it's complete own route?
 
-route.get('/profile', (req, res) => {
-  // take you to your user profile where you can edit
-  // basic information about yourself
-});
-
-// how will Google auth work?? That's for Monday
 
 module.exports = {
-  route,
+  searchRoute,
 };
