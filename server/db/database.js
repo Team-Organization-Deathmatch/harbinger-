@@ -30,6 +30,7 @@ const Users = db.define('Users', {
     type: Sequelize.STRING(250),
   },
 });
+Users.sync();
 
 const Message = db.define('Message', {
   id: {
@@ -145,11 +146,26 @@ const Keyword = db.define('Keyword', {
   },
 });
 
-const saveUsers = ({ username, bio, image }) => {
-  return Users.create({ username: username, bio: bio, image: image });
+
+const saveUsers = ({username, bio, image}) => {
+    return Users.findOne({ username: username }).then((count) => {
+        if (!count.length) {
+            return Users.create({username: username, bio: bio, image: image});
+        } else {
+            console.log("DUPE has been detected! Usernames should be unique!");
+        }   
+    })
 };
 
-module.exports = {
-  db,
-  saveUsers,
+const getUsers = () => {
+    return Users.findAll({});
 };
+
+
+
+
+module.exports = {
+    db,
+    saveUsers,
+    getUsers
+}

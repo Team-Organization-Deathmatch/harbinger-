@@ -1,5 +1,5 @@
 const { Router } = require('express');
-require('./db/database');
+require('../db/database');
 const reviewRoute = Router();
 
 reviewRoute.post('/retrieve', (req, res) => {
