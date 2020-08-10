@@ -31,7 +31,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/websites', searchRoute);
-app.use('/', homeRoute);
+app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
+
 app.use('/profile', profileRoute);
 app.use('/login', loginRoute);
 app.use('/review', reviewRoute);
