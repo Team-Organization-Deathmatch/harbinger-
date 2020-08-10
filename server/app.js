@@ -7,7 +7,7 @@ const { profileRoute } = require('./profile');
 const { loginRoute } = require('./login');
 const { reviewRoute } = require('./review');
 app.use('/api/websites', searchRoute);
-app.use('/home', homeRoute);
+app.use('/', homeRoute);
 app.use('/profile', profileRoute);
 app.use('/login', loginRoute);
 app.use('/review', reviewRoute);
