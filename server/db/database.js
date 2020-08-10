@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 
 //create a connection to localDB
 
-const db = new Sequelize('harbinger', 'root', '', {host: 'localhost', dialect: 'mysql'});
+const db = new Sequelize('harbinger', 'root', '', { host: 'localhost', dialect: 'mysql'});
 
 db.authenticate().then(() => {
     console.log("database connected!!!!");
@@ -10,9 +10,11 @@ db.authenticate().then(() => {
 .catch(err => console.error(err));
 
 
-const user = db.define('user', {
+const Users = db.define('Users', {
     id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
     primaryKey: true,
     },
     username: {
@@ -26,11 +28,14 @@ const user = db.define('user', {
     } ,
 });
 
-const message = db.define('message', {
+
+const Message = db.define('Message', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-    },
+        },
     id_sender: {
         type: Sequelize.INTEGER,
         foreignKey: true,
@@ -47,11 +52,13 @@ const message = db.define('message', {
     }
 });
 
-const followed = db.define('followed', {
+const Followed = db.define('Followed', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-    },
+        },
     id_follower: {
         type: Sequelize.INTEGER,
         foreignKey: true,
@@ -62,11 +69,13 @@ const followed = db.define('followed', {
     }
 });
 
-const revLike = db.define('devLike', {
+const RevLike = db.define('RevLike', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-    },
+        },
     id_follower: {
         type: Sequelize.INTEGER,
         foreignKey: true,
@@ -77,11 +86,13 @@ const revLike = db.define('devLike', {
     }
 });
 
-const review = db.define('review', {
+const Review = db.define('Review', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-    },
+        },
     likes: {
         type: Sequelize.INTEGER,
     },
@@ -108,9 +119,11 @@ const review = db.define('review', {
     },
 });
 
-const webUrl = db.define('webUrl', {
+const WebUrl = db.define('WebUrl', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         },
     url: {
@@ -118,9 +131,11 @@ const webUrl = db.define('webUrl', {
         },
 });
 
-const keyword = db.define('keyword', {
+const Keyword = db.define('Keyword', {
     id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         },
     keyword: {
@@ -129,7 +144,14 @@ const keyword = db.define('keyword', {
 });
 
 
+const saveUsers = ({username, bio, image}) => {
+    return Users.create({username: username, bio: bio, image: image});
+}
+
+
+
 
 module.exports = {
     db,
+    saveUsers,
 }
