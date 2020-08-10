@@ -39,8 +39,9 @@ app.use('/review', reviewRoute);
 
 //video @ 12:37 is logged in function
 const isLoggedIn = (req, res, next) => {
+  //console.log(req.user);
   if (req.user) {
-    next;
+    next();
   } else {
     res.sendStatus(401);
   }
@@ -52,8 +53,8 @@ app.get('/failed', (req, res) => {
 });
 
 // if successful login, send users to this page
-app.get('/good', (req, res) => {
-  res.send(`Welcome Mr ${req.user.displayName}`);
+app.get('/good', isLoggedIn, (req, res) => {
+  res.send(`Welcome Mr ${req.user.id}`);
 });
 
 app.get(
@@ -78,5 +79,5 @@ app.get('/logout', (req, res) => {
 });
 
 module.exports = {
-  app,
+  app, isLoggedIn,
 };

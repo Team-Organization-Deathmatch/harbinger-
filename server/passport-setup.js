@@ -8,7 +8,8 @@ require('dotenv').config();
 // per video @ 7:07
 passport.serializeUser(function (user, done) {
   // done(null, user.id);
-  done(null, user);
+  console.log('serialize', user.id)
+  done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
@@ -16,6 +17,8 @@ passport.deserializeUser(function (id, done) {
   //   User.findById(id, function (err, user) {
   //     done(err, user);
   //   });
+
+  //FIND THE USER IN THE DB BASED ON THE ID IN THE COOKIE
 
   // originally done(null, user)
   // adding id fixed the login though, need to change back
@@ -41,6 +44,8 @@ passport.use(
         saveUsers(email, 'bio goes here', image).then(data => {
           //console.log(data);
         })
+
+        //need to pass the user id along
       return done(null, profile);
     }
   )
