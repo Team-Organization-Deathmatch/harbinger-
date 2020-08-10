@@ -1,11 +1,11 @@
 const express = require('express')
 const path = require('path')
 const app = express();
-const { searchRoute } = require('./search');
-const { homeRoute } = require('./home');
-const { profileRoute } = require('./profile');
-const { loginRoute } = require('./login');
-const { reviewRoute } = require('./review');
+const { searchRoute } = require('./routes/search');
+const { homeRoute } = require('./routes/home');
+const { profileRoute } = require('./routes/profile');
+const { loginRoute } = require('./routes/login');
+const { reviewRoute } = require('./routes/review');
 app.use('/api/websites', searchRoute);
 app.use('/', homeRoute);
 app.use('/profile', profileRoute);

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-require('./db/database');
+require('../db/database');
 const profileRoute = Router();
 
 profileRoute.get('/', (req, res) => {

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const path = require('path');
-require('./db/database');
+require('../db/database');
 const loginRoute = Router();
 
 loginRoute.get('/', (req, res) => {

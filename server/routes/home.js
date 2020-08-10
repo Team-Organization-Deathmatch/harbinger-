@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const path = require('path');
-require('./db/database');
-
+require('../db/database');
 const homeRoute = Router();
 
 homeRoute.get('/', (req, res) => {
@@ -10,7 +9,7 @@ homeRoute.get('/', (req, res) => {
   // stories from our database
   console.log('working GET');
   res.status(200);
-  res.send('working GET');
+  res.sendFile(path.resolve("client/dist/index.html"));
 });
 
 //
