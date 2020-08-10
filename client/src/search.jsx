@@ -5,5 +5,3 @@ import {
     Route,
     Link
   } from "react-router-dom";
-
-//index.jsx houses the app for webpack bundle.
