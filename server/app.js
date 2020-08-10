@@ -6,6 +6,7 @@ const { homeRoute } = require('./routes/home');
 const { profileRoute } = require('./routes/profile');
 const { loginRoute } = require('./routes/login');
 const { reviewRoute } = require('./routes/review');
+app.use(express.json());
 app.use('/api/websites', searchRoute);
 app.use('/', homeRoute);
 app.use('/profile', profileRoute);
