@@ -8,7 +8,7 @@ const cookieSession = require('cookie-session');
 require('./passport-setup');
 
 const passport = require('passport');
-
+app.use(express.static(path.join(__dirname, '../client/dist')));
 const { searchRoute } = require('./routes/search');
 const { homeRoute } = require('./routes/home');
 const { profileRoute } = require('./routes/profile');
@@ -32,9 +32,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/websites', searchRoute);
-app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/profile', profileRoute);
-app.use('/login', express.static(path.resolve(__dirname, '../client/dist')));
+app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/review', reviewRoute);
 // app.use()
 
@@ -61,7 +60,7 @@ app.get('/good', isLoggedIn, (req, res) => {
 app.get(
   '/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }),
-);
+  );
 
 app.get(
   '/google/callback',
@@ -70,7 +69,7 @@ app.get(
     // Successful authentication, redirect home.
     res.redirect('/good');
   },
-);
+  );
 
 app.get('/logout', (req, res) => {
   req.session = null;
@@ -78,7 +77,6 @@ app.get('/logout', (req, res) => {
   // redirect them to login page?
   res.redirect('/google');
 });
-
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
