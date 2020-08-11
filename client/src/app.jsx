@@ -9,30 +9,30 @@ import {
     Switch,
     Route,
     Link
-  } from "react-router-dom";
+} from "react-router-dom";
 
 
 function App() {
-     return(
+    return (
         <Router>
-      <div>
-          <Switch>
-          <Route exact path="/">
-        <HomePage />
-          </Route>
-          <Route exact path="/search" >
-        <Search />
-          </Route>
-          <Route path="/login">
-        <Login />
-          </Route>
-        <Profile />
-        <Reviews />
-          </Switch>
-      </div>
+            <div>
+                <Switch>
+                    <Route exact path="/">
+                        <HomePage />
+                    </Route>
+                    <Route exact path="/search" >
+                        <Search />
+                    </Route>
+                    <Route path="/login3456">
+                        <Login />
+                    </Route>
+                    <Profile />
+                    <Reviews />
+                </Switch>
+            </div>
         </Router>
     )
-  }
+}
 
 export default App;
 
