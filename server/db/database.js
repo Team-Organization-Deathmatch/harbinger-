@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-//create a connection to localDB
+// create a connection to localDB
 
 const db = new Sequelize('harbinger', 'root', '', {
   host: 'localhost',
@@ -122,18 +122,16 @@ const Review = db.define('Review', {
   },
 });
 
-const saveReview = (id_user, text, id_web, id_keyword, date) => {
-  return Review.create({
-    id: id,
-    likes: 0,
-    dislikes: 0,
-    id_user: userID,
-    text: text,
-    id_web: id_web,
-    id_keyword: id_keyword,
-    date: date,
-  });
-};
+const saveReview = (id_user, text, id_web, id_keyword, date) => Review.create({
+  id,
+  likes: 0,
+  dislikes: 0,
+  id_user: userID,
+  text,
+  id_web,
+  id_keyword,
+  date,
+});
 
 const WebUrls = db.define('WebUrls', {
   id: {
@@ -161,46 +159,35 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
-const saveOrFindKeyWord = (keyword) => {
-  return Keyword.findOne({ where: { keyword: keyword } })
-    .then((data) => {
-      if (data === null) {
-        console.log('keyword created!!!');
-        return Keyword.create({ keyword: keyword });
-      } else {
-        console.log(data, 'keyword already exists!');
-      }
-    })
-    .catch((err) => console.log(err));
-};
-
-const saveOrFindWebUrl = (url) => {
-  return WebUrls.findOne({ where: { url: url } })
-    .then((data) => {
-      if (data === null) {
-        console.log('webURL created!');
-        return WebUrls.create({ url: url });
-      } else {
-        console.log(data, 'webUrl already exists!');
-      }
-    })
-    .catch((err) => console.log(err));
-};
-
-const saveUsers = (username, bio, image) => {
-  return Users.findOne({ where: { username: username } }).then((data) => {
+const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
+  .then((data) => {
     if (data === null) {
-      return Users.create({ username: username, bio: bio, image: image });
-    } else {
-      console.log(data);
-      console.log('entry already exists');
+      console.log('keyword created!!!');
+      return Keyword.create({ keyword });
     }
-  });
-};
+    console.log(data, 'keyword already exists!');
+  })
+  .catch((err) => console.log(err));
 
-const getUsers = () => {
-  return Users.findAll({});
-};
+const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
+  .then((data) => {
+    if (data === null) {
+      console.log('webURL created!');
+      return WebUrls.create({ url });
+    }
+    console.log(data, 'webUrl already exists!');
+  })
+  .catch((err) => console.log(err));
+
+const saveUsers = (username, bio, image) => Users.findOne({ where: { username } }).then((data) => {
+  if (data === null) {
+    return Users.create({ username, bio, image });
+  }
+  console.log(data);
+  console.log('entry already exists');
+});
+
+const getUsers = () => Users.findAll({});
 
 module.exports = {
   db,
