@@ -12,7 +12,6 @@ function Search() {
   const onSubmit = data => console.log(data);
   return (
     <div>
-      {/* <h1>Search Component</h1> */}
       <form onSubmit={ handleSubmit(onSubmit) }>
           <label>Search:</label>
           <input ref={ register } name="website" />
