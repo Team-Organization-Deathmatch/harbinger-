@@ -147,13 +147,13 @@ const Keyword = db.define('Keyword', {
 });
 
 
-const saveUsers = ({username, bio, image}) => {
-    return Users.findOne({ username: username }).then((count) => {
-        if (!count.length) {
-            return Users.create({username: username, bio: bio, image: image});
-        } else {
-            console.log("DUPE has been detected! Usernames should be unique!");
-        }   
+const saveUsers = (username, bio, image) => {
+    return Users.findOne({ where: { 'username': username } }).then(data => {
+      if(data === null){
+        return Users.create({username: username, bio: bio, image: image});
+      } else {
+        console.log('entry already exists');
+      }
     })
 };
 

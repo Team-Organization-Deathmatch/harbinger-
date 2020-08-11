@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -24,7 +25,7 @@ app.use(
   cookieSession({
     name: 'login-session',
     keys: ['key1', 'key2'],
-  })
+  }),
 );
 // per video tutorial @5:23
 app.use(passport.initialize());
@@ -36,12 +37,13 @@ app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/profile', profileRoute);
 app.use('/login', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/review', reviewRoute);
-//app.use()
+// app.use()
 
-//video @ 12:37 is logged in function
+// video @ 12:37 is logged in function
 const isLoggedIn = (req, res, next) => {
+  // console.log(req.user);
   if (req.user) {
-    next;
+    next();
   } else {
     res.sendStatus(401);
   }
@@ -53,22 +55,22 @@ app.get('/failed', (req, res) => {
 });
 
 // if successful login, send users to this page
-app.get('/good', (req, res) => {
-  res.send(`Welcome Mr ${req.user.displayName}`);
+app.get('/good', isLoggedIn, (req, res) => {
+  res.send(`Welcome Mr ${req.user.id}`);
 });
 
 app.get(
   '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+  passport.authenticate('google', { scope: ['profile', 'email'] }),
 );
 
 app.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/failed' }),
-  function (req, res) {
+  (req, res) => {
     // Successful authentication, redirect home.
     res.redirect('/good');
-  }
+  },
 );
 
 app.get('/logout', (req, res) => {
@@ -79,5 +81,5 @@ app.get('/logout', (req, res) => {
 });
 
 module.exports = {
-  app,
+  app, isLoggedIn,
 };

@@ -1,10 +1,9 @@
 require('dotenv').config();
-const CognitiveServicesCredentials = require('ms-rest-azure')
-  .CognitiveServicesCredentials;
+const { CognitiveServicesCredentials } = require('ms-rest-azure');
 const WebSearchAPIClient = require('azure-cognitiveservices-websearch');
 
-let credentials = new CognitiveServicesCredentials(process.env.KEY);
-let webSearchApiClient = new WebSearchAPIClient(credentials);
+const credentials = new CognitiveServicesCredentials(process.env.KEY);
+const webSearchApiClient = new WebSearchAPIClient(credentials);
 
 // webSearchApiClient.web
 //   .search('seahawks')
