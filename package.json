@@ -27,6 +27,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "dotenv": "^8.2.0",
+    "eslint": "^7.6.0",
     "ms-rest-azure": "^3.0.0",
     "nodemon": "^2.0.4",
     "webpack": "^4.44.1",
