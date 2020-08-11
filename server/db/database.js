@@ -124,17 +124,7 @@ const Review = db.define('Review', {
     type: Sequelize.DATE,
   },
 });
-
-const saveReview = (id_user, text, id_web, id_keyword, date) => Review.create({
-  id,
-  likes: 0,
-  dislikes: 0,
-  id_user: userID,
-  text,
-  id_web,
-  id_keyword,
-  date,
-});
+Review.sync();
 
 const WebUrls = db.define('WebUrls', {
   id: {
@@ -168,7 +158,7 @@ const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
       console.log('keyword created!!!');
       return Keyword.create({ keyword });
     }
-    console.log(data, 'keyword already exists!');
+    return data;
   })
   .catch((err) => console.log(err));
 
@@ -178,7 +168,7 @@ const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
       console.log('webURL created!');
       return WebUrls.create({ url });
     }
-    console.log(data, 'webUrl already exists!');
+    return data;
   })
   .catch((err) => console.log(err));
 
@@ -192,15 +182,36 @@ const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { ser
   console.log('entry already exists');
 });
 
-const getUsers = () => Users.findAll({});
-
 const getUser = (id) => Users.findOne({ where: { serial: id } });
+const saveReview = (username, text, weburl, keyword) => {
+  let idUser;
+  let idWeb;
+  let idKeyword;
 
+  saveOrFindKeyWord(weburl).then((data) => {
+    idWeb = data.dataValues.id;
+    saveOrFindWebUrl(keyword).then((data) => {
+      idKeyword = data.dataValues.id;
+      Users.findOne({ where: { username } }).then((data) => {
+        idUser = data.dataValues.id;
+        return Review.create({
+          likes: 0,
+          dislike: 0,
+          id_user: idUser,
+          text,
+          id_web: idWeb,
+          id_keyword: idKeyword,
+          date: new Date(),
+        });
+      });
+    });
+  });
+};
 module.exports = {
   db,
   getUser,
   saveUsers,
-  getUsers,
   saveOrFindKeyWord,
   saveOrFindWebUrl,
+  saveReview,
 };
