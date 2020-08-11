@@ -23,6 +23,9 @@ const Users = db.define('Users', {
   username: {
     type: Sequelize.STRING(50),
   },
+  serial: {
+    type: Sequelize.STRING(100),
+  },
   bio: {
     type: Sequelize.STRING(1000),
   },
@@ -179,9 +182,11 @@ const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   })
   .catch((err) => console.log(err));
 
-const saveUsers = (username, bio, image) => Users.findOne({ where: { username } }).then((data) => {
+const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
   if (data === null) {
-    return Users.create({ username, bio, image });
+    return Users.create({
+      username, serial, bio, image,
+    });
   }
   console.log(data);
   console.log('entry already exists');
@@ -189,8 +194,11 @@ const saveUsers = (username, bio, image) => Users.findOne({ where: { username } 
 
 const getUsers = () => Users.findAll({});
 
+const getUser = (id) => Users.findOne({ where: { serial: id } });
+
 module.exports = {
   db,
+  getUser,
   saveUsers,
   getUsers,
   saveOrFindKeyWord,
