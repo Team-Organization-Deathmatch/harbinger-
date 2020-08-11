@@ -2,23 +2,27 @@
 const { Router } = require('express');
 const path = require('path');
 require('../db/database');
+const { saveOrFindKeyWord } = require('../db/database');
 
 // const azure = require('server/azure.js');
 const searchRoute = Router();
 const { webSearchApiClient } = require('../azure.js');
 
 searchRoute.post('/search', (req, res) => {
+  // psuedocoded out for postman use
   if (req.user) {
+    //saveOrFindKeyWord(req.body.clientSearch);
+    console.log(req.body, 'REQ.BODYYYYYYYY');
     webSearchApiClient.web
-      .search('seahawks')
+      .search(req.body.clientSearch)
       .then((result) => {
         const properties = ['webPages'];
         for (let i = 0; i < properties.length; i++) {
           if (result[properties[i]]) {
             res.send(result);
-            console.log(result[properties[i]].value);
+            //console.log(result[properties[i]].value);
           } else {
-            console.log(`No ${properties[i]} data`);
+            //console.log(`No ${properties[i]} data`);
           }
         }
       })
