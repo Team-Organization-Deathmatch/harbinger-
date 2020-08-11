@@ -32,8 +32,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/websites', searchRoute);
-app.use('*', express.static(path.resolve(__dirname, '../client/dist')));
-
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/profile', profileRoute);
 app.use('/login', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/review', reviewRoute);
@@ -80,6 +79,9 @@ app.get('/logout', (req, res) => {
   res.redirect('/google');
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 module.exports = {
   app, isLoggedIn,
 };
