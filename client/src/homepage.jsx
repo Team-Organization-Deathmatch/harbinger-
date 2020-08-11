@@ -1,18 +1,32 @@
-import React from 'react';
-import Search from './search.jsx';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   BrowserRouter as Router,
   Switch,
-  Route, 
+  Route,
   Link,
 } from 'react-router-dom';
+import Search from './search.jsx';
+
 function HomePage() {
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    axios.get('/good')
+      .then(({ data }) => {
+        setUser(data.username);
+      });
+  });
+
   return (
     <div>
-      <h1 style={{ backgroundColor: '#800000', color: "white" }}>HomePage Component</h1>
-         <Search />
-      <h3 style={{ display: "inline-block", marginRight:"800px"}}>Top Best websites</h3>
-      <h3 style={{ display: "inline-block", textAlign: "right" }}>Top Worst websites</h3>
+      <div style={{ backgroundColor: '#800000' }}>
+        <h2 style={{ display: 'inline-block', color: 'white', marginRight: '800px' }}>HomePage Component</h2>
+        <Link to="/profile"><h2 style={{ display: 'inline-block', color: 'white', textAlign: 'right' }}>{user}</h2></Link>
+      </div>
+      <Search />
+      <h3 style={{ display: 'inline-block', marginRight: '800px' }}>Top Best websites</h3>
+      <h3 style={{ display: 'inline-block', textAlign: 'right' }}>Top Worst websites</h3>
     </div>
   );
 }
