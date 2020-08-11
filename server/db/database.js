@@ -121,19 +121,7 @@ const Review = db.define('Review', {
     type: Sequelize.DATE,
   },
 });
-
-const saveReview = (id_user, text, id_web, id_keyword, date) => {
-  return Review.create({
-    id: id,
-    likes: 0,
-    dislikes: 0,
-    id_user: userID,
-    text: text,
-    id_web: id_web,
-    id_keyword: id_keyword,
-    date: date,
-  });
-};
+Review.sync();
 
 const WebUrls = db.define('WebUrls', {
   id: {
@@ -168,7 +156,7 @@ const saveOrFindKeyWord = (keyword) => {
         console.log('keyword created!!!');
         return Keyword.create({ keyword: keyword });
       } else {
-        console.log(data, 'keyword already exists!');
+        return data;
       }
     })
     .catch((err) => console.log(err));
@@ -176,12 +164,12 @@ const saveOrFindKeyWord = (keyword) => {
 
 const saveOrFindWebUrl = (url) => {
   return WebUrls.findOne({ where: { url: url } })
-    .then((data) => {
+  .then((data) => {
       if (data === null) {
         console.log('webURL created!');
         return WebUrls.create({ url: url });
       } else {
-        console.log(data, 'webUrl already exists!');
+        return data;
       }
     })
     .catch((err) => console.log(err));
@@ -198,14 +186,35 @@ const saveUsers = (username, bio, image) => {
   });
 };
 
-const getUsers = () => {
-  return Users.findAll({});
-};
+const saveReview = (username, text, weburl, keyword) => {
+  let idUser
+  let idWeb;
+  let idKeyword;
 
+  saveOrFindKeyWord(weburl).then((data) => {
+    idWeb = data.dataValues.id;
+    saveOrFindWebUrl(keyword).then((data) => {
+      idKeyword = data.dataValues.id;
+      Users.findOne({ where: { username: username} }).then((data) => {
+        idUser = data.dataValues.id;
+        return Review.create({
+          likes: 0,
+          dislike: 0,
+          id_user: idUser,
+          text: text,
+          id_web: idWeb,
+          id_keyword: idKeyword,
+          date: new Date()
+        });
+      });
+    });
+  });
+
+};
 module.exports = {
   db,
   saveUsers,
-  getUsers,
   saveOrFindKeyWord,
   saveOrFindWebUrl,
+  saveReview,
 };

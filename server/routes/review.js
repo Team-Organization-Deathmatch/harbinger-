@@ -1,6 +1,6 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveOrFindWebUrl } = require('../db/database');
+const { saveReview } = require('../db/database');
 
 const reviewRoute = Router();
 
@@ -18,7 +18,8 @@ reviewRoute.post('/retrieve', (req, res) => {
 reviewRoute.post('/submit', (req, res) => {
   // this is the route that will allow a user to submit a review
   // if (req.user) {
-  saveOrFindWebUrl(req.body.webUrl);
+  const { username, text, weburl, keyword } = req.body;
+  saveReview(username, text, weburl, keyword);
   res.status(201);
   res.send('review POST');
   // need to do a db query that takes the req.body
