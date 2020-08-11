@@ -122,7 +122,20 @@ const Review = db.define('Review', {
   },
 });
 
-const WebUrl = db.define('WebUrl', {
+const saveReview = (id_user, text, id_web, id_keyword, date) => {
+  return Review.create({
+    id: id,
+    likes: 0,
+    dislikes: 0,
+    id_user: userID,
+    text: text,
+    id_web: id_web,
+    id_keyword: id_keyword,
+    date: date,
+  });
+};
+
+const WebUrls = db.define('WebUrls', {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -133,6 +146,7 @@ const WebUrl = db.define('WebUrl', {
     type: Sequelize.STRING(500),
   },
 });
+WebUrls.sync();
 
 const Keyword = db.define('Keyword', {
   id: {
@@ -145,27 +159,53 @@ const Keyword = db.define('Keyword', {
     type: Sequelize.STRING(100),
   },
 });
+Keyword.sync();
 
-
-const saveUsers = (username, bio, image) => {
-    return Users.findOne({ where: { 'username': username } }).then(data => {
-      if(data === null){
-        return Users.create({username: username, bio: bio, image: image});
+const saveOrFindKeyWord = (keyword) => {
+  return Keyword.findOne({ where: { keyword: keyword } })
+    .then((data) => {
+      if (data === null) {
+        console.log('keyword created!!!');
+        return Keyword.create({ keyword: keyword });
       } else {
-        console.log('entry already exists');
+        console.log(data, 'keyword already exists!');
       }
     })
+    .catch((err) => console.log(err));
+};
+
+const saveOrFindWebUrl = (url) => {
+  return WebUrls.findOne({ where: { url: url } })
+    .then((data) => {
+      if (data === null) {
+        console.log('webURL created!');
+        return WebUrls.create({ url: url });
+      } else {
+        console.log(data, 'webUrl already exists!');
+      }
+    })
+    .catch((err) => console.log(err));
+};
+
+const saveUsers = (username, bio, image) => {
+  return Users.findOne({ where: { username: username } }).then((data) => {
+    if (data === null) {
+      return Users.create({ username: username, bio: bio, image: image });
+    } else {
+      console.log(data);
+      console.log('entry already exists');
+    }
+  });
 };
 
 const getUsers = () => {
-    return Users.findAll({});
+  return Users.findAll({});
 };
 
-
-
-
 module.exports = {
-    db,
-    saveUsers,
-    getUsers
-}
+  db,
+  saveUsers,
+  getUsers,
+  saveOrFindKeyWord,
+  saveOrFindWebUrl,
+};
