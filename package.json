@@ -11,13 +11,21 @@
     "express": "^4.17.1",
     "lodash": "^4.17.19",
     "mysql2": "^2.1.0",
-    "react": "^16.13.1",
-    "react-router-dom": "^5.2.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "sequelize": "^6.3.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "eslint-config-airbnb": "^18.2.0",
@@ -34,8 +42,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./server/index.js",
-    "build:dev": "webpack --mode development",
-    "build:client": "webpack-dev-server"
+    "build:client": "webpack --config webpack.config.js --mode production",
+    "build:client-dev": "webpack --config webpack.config.js --mode development --watch"
   },
   "repository": {
     "type": "git",
