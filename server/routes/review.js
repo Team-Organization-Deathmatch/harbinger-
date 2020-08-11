@@ -4,15 +4,26 @@ const reviewRoute = Router();
 
 reviewRoute.post('/retrieve', (req, res) => {
   //this is the route that will retrieve a specific review based on user input
+  if(req.user){
+    res.status(201);
+    res.send('review POST');
 
-  res.status(201);
-  res.send('criteria submitted')
+  } else {
+    res.status(401);
+    res.send('unauthorized');
+  }
 })
 
 reviewRoute.post('/submit', (req, res) => {
   // this is the route that will allow a user to submit a review
-  res.status(201);
-  res.send('review submitted');
+  if(req.user){
+    res.status(201);
+    res.send('review POST');
+
+  } else {
+    res.status(401);
+    res.send('unauthorized');
+  }
 })
 
 module.exports = {

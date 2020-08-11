@@ -7,9 +7,16 @@ homeRoute.get('/', (req, res) => {
   //this is where we'll populate the home page with data
   //this will pull most recent and upvoted
   // stories from our database
-  console.log('working GET');
-  res.status(200);
-  res.sendFile(path.resolve("client/dist/index.html"));
+  if(req.user){
+    res.status(200);
+    res.sendFile(path.resolve("client/dist/index.html"));
+    res.send('home GET');
+
+  } else {
+    res.status(401);
+    res.send('unauthorized');
+  }
+  
 });
 
 homeRoute.get('/api/users', (req, res) => {
