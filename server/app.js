@@ -8,12 +8,12 @@ const cookieSession = require('cookie-session');
 require('./passport-setup');
 
 const passport = require('passport');
-
 const { searchRoute } = require('./routes/search');
 const { homeRoute } = require('./routes/home');
 const { profileRoute } = require('./routes/profile');
 const { loginRoute } = require('./routes/login');
 const { reviewRoute } = require('./routes/review');
+const { getUser } = require('./db/database');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,15 +32,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/websites', searchRoute);
-app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/profile', profileRoute);
-app.use('/login', express.static(path.resolve(__dirname, '../client/dist')));
+// app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/review', reviewRoute);
+let loggedin = false;
 // app.use()
-
 // video @ 12:37 is logged in function
 const isLoggedIn = (req, res, next) => {
-  // console.log(req.user);
+  // console.log(req, "this is the user");
   if (req.user) {
     next();
   } else {
@@ -48,6 +47,13 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
+app.get('/', (req, res) => {
+  if (loggedin === false) {
+    res.redirect('/google');
+  } else {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  }
+});
 // login failed attempt, change this to login again if it fails?
 app.get('/failed', (req, res) => {
   res.send('You failed to login!');
@@ -55,9 +61,15 @@ app.get('/failed', (req, res) => {
 
 // if successful login, send users to this page
 app.get('/good', isLoggedIn, (req, res) => {
-  res.send(`Welcome Mr ${req.user.id}`);
+  // console.log(req.user, " IA MA JIS F");
+  getUser(req.user)
+    .then((account) => {
+      console.log(account, ' testing account');
+      res.send(account);
+    })
+    .catch((err) => { console.error(err); res.status(500).end(); });
 });
-
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.get(
   '/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }),
@@ -68,7 +80,8 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/failed' }),
   (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect('/good');
+    loggedin = true;
+    res.redirect('/');
   },
 );
 
@@ -76,9 +89,9 @@ app.get('/logout', (req, res) => {
   req.session = null;
   req.logout();
   // redirect them to login page?
+  loggedin = false;
   res.redirect('/google');
 });
-
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });

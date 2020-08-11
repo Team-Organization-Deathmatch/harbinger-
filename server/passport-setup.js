@@ -36,11 +36,14 @@ passport.use(
       // THIS FUNCTION NEEDS TO BE MODDED TO FIND OR CREATE A USER IN OUR DB
       //   User.findOrCreate({ googleId: profile.id }, function (err, user) {
       //     return done(err, user);
+      console.log(profile, "this is the profile");
       const email = profile.emails[0].value;
       const image = profile.photos[0].value;
+      const { id } = profile;
+      const { familyName, givenName } = profile.name;
       // console.log(email, image);
       // username bio image
-      saveUsers(email, 'bio goes here', image).then((data) => {
+      saveUsers(`${familyName} ${givenName}`, id, 'bio goes here', image).then((data) => {
         // console.log(data);
       });
 

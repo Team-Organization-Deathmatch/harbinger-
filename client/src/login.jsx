@@ -9,6 +9,7 @@ import {
   function Login() {
     return(
      <div>
+       <h1>test</h1>
        <h1>Login Component</h1>
      </div>
    )

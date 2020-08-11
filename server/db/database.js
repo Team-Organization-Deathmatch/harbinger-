@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-//create a connection to localDB
+// create a connection to localDB
 
 const db = new Sequelize('harbinger', 'root', '', {
   host: 'localhost',
@@ -22,6 +22,9 @@ const Users = db.define('Users', {
   },
   username: {
     type: Sequelize.STRING(50),
+  },
+  serial: {
+    type: Sequelize.STRING(100),
   },
   bio: {
     type: Sequelize.STRING(1000),
@@ -149,45 +152,39 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
-const saveOrFindKeyWord = (keyword) => {
-  return Keyword.findOne({ where: { keyword: keyword } })
-    .then((data) => {
-      if (data === null) {
-        console.log('keyword created!!!');
-        return Keyword.create({ keyword: keyword });
-      } else {
-        return data;
-      }
-    })
-    .catch((err) => console.log(err));
-};
-
-const saveOrFindWebUrl = (url) => {
-  return WebUrls.findOne({ where: { url: url } })
+const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
   .then((data) => {
-      if (data === null) {
-        console.log('webURL created!');
-        return WebUrls.create({ url: url });
-      } else {
-        return data;
-      }
-    })
-    .catch((err) => console.log(err));
-};
-
-const saveUsers = (username, bio, image) => {
-  return Users.findOne({ where: { username: username } }).then((data) => {
     if (data === null) {
-      return Users.create({ username: username, bio: bio, image: image });
-    } else {
-      console.log(data);
-      console.log('entry already exists');
+      console.log('keyword created!!!');
+      return Keyword.create({ keyword });
     }
-  });
-};
+    return data;
+  })
+  .catch((err) => console.log(err));
 
+const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
+  .then((data) => {
+    if (data === null) {
+      console.log('webURL created!');
+      return WebUrls.create({ url });
+    }
+    return data;
+  })
+  .catch((err) => console.log(err));
+
+const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
+  if (data === null) {
+    return Users.create({
+      username, serial, bio, image,
+    });
+  }
+  console.log(data);
+  console.log('entry already exists');
+});
+
+const getUser = (id) => Users.findOne({ where: { serial: id } });
 const saveReview = (username, text, weburl, keyword) => {
-  let idUser
+  let idUser;
   let idWeb;
   let idKeyword;
 
@@ -195,24 +192,24 @@ const saveReview = (username, text, weburl, keyword) => {
     idWeb = data.dataValues.id;
     saveOrFindWebUrl(keyword).then((data) => {
       idKeyword = data.dataValues.id;
-      Users.findOne({ where: { username: username} }).then((data) => {
+      Users.findOne({ where: { username } }).then((data) => {
         idUser = data.dataValues.id;
         return Review.create({
           likes: 0,
           dislike: 0,
           id_user: idUser,
-          text: text,
+          text,
           id_web: idWeb,
           id_keyword: idKeyword,
-          date: new Date()
+          date: new Date(),
         });
       });
     });
   });
-
 };
 module.exports = {
   db,
+  getUser,
   saveUsers,
   saveOrFindKeyWord,
   saveOrFindWebUrl,
