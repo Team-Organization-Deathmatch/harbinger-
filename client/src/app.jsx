@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import HomePage from './homepage.jsx';
+import Login from './login.jsx';
+import Profile from './profile.jsx';
+import Reviews from './reviews.jsx';
+import Search from './search.jsx';
 import {
     BrowserRouter as Router,
     Switch,
@@ -7,19 +12,27 @@ import {
   } from "react-router-dom";
 
 
-class App extends React.Component {
-
-
-  render() {
-
-    console.log('hi ben');   
+function App() {
      return(
+        <Router>
       <div>
-        <h1>Hello World!</h1>
+          <Switch>
+          <Route exact path="/">
+        <HomePage />
+          </Route>
+          <Route exact path="/search" >
+        <Search />
+          </Route>
+          <Route path="/login">
+        <Login />
+          </Route>
+        <Profile />
+        <Reviews />
+          </Switch>
       </div>
+        </Router>
     )
   }
-} 
 
 export default App;
 
