@@ -35,7 +35,7 @@ app.use('/api/websites', searchRoute);
 app.use('*', express.static(path.resolve(__dirname, '../client/dist')));
 
 app.use('/profile', profileRoute);
-app.use('/login', loginRoute);
+app.use('/login', express.static(path.resolve(__dirname, '../client/dist')));
 app.use('/review', reviewRoute);
 // app.use()
 
