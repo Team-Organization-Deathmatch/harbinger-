@@ -218,21 +218,22 @@ const saveReview = (username, text, weburl, keyword) => {
   let idUser;
   let idWeb;
   let idKeyword;
-
-  saveOrFindKeyWord(weburl).then((data) => {
-    idWeb = data.dataValues.id;
-    saveOrFindWebUrl(keyword).then((data) => {
-      idKeyword = data.dataValues.id;
-      Users.findOne({ where: { username } }).then((data) => {
-        idUser = data.dataValues.id;
-        return Review.create({
-          likes: 0,
-          dislike: 0,
-          id_user: idUser,
-          text,
-          id_web: idWeb,
-          id_keyword: idKeyword,
-          date: new Date(),
+  return new Promise((resolve, reject) => {
+    saveOrFindKeyWord(weburl).then((data) => {
+      idWeb = data.dataValues.id;
+      saveOrFindWebUrl(keyword).then((data) => {
+        idKeyword = data.dataValues.id;
+        Users.findOne({ where: { username } }).then((data) => {
+          idUser = data.dataValues.id;
+          return Review.create({
+            likes: 0,
+            dislike: 0,
+            id_user: idUser,
+            text,
+            id_web: idWeb,
+            id_keyword: idKeyword,
+            date: new Date(),
+          }).then((data) => resolve(data))
         });
       });
     });
