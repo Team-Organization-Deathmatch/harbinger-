@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, TableHints } = require('sequelize');
 
 // create a connection to localDB
 
@@ -152,37 +152,68 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
-const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
-  .then((data) => {
+// const findArticleByKeyWord = (keyword) =>
+//   Keyword.findOne({ where: { keyword } })
+//   .then((data) => {
+//     if (data === null) {
+//       console.log('keyword not found');
+//       return;
+//     } else {
+//       console.log('hello')
+//     };
+const findArticleByKeyWord = (keyword) =>
+  Keyword.findOne({ where: { keyword } }).then((data) => {
     if (data === null) {
-      console.log('keyword created!!!');
-      return Keyword.create({ keyword });
+      console.log('no keyword found');
+      return;
+    } else {
+      Review.findAll({
+        where: {
+          keyword: data.id,
+        },
+      }).then((data) => console.log(data));
+      // need to change this to return data?
     }
-    return data;
-  })
-  .catch((err) => console.log(err));
+  });
 
-const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
-  .then((data) => {
+const saveOrFindKeyWord = (keyword) =>
+  Keyword.findOne({ where: { keyword } })
+    .then((data) => {
+      if (data === null) {
+        console.log('keyword created!!!');
+        return Keyword.create({ keyword });
+      }
+      return data;
+    })
+    .catch((err) => console.log(err));
+
+const saveOrFindWebUrl = (url) =>
+  WebUrls.findOne({ where: { url } })
+    .then((data) => {
+      if (data === null) {
+        console.log('webURL created!');
+        return WebUrls.create({ url });
+      }
+      return data;
+    })
+    .catch((err) => console.log(err));
+
+const saveUsers = (username, serial, bio, image) =>
+  Users.findOne({ where: { serial } }).then((data) => {
     if (data === null) {
-      console.log('webURL created!');
-      return WebUrls.create({ url });
+      return Users.create({
+        username,
+        serial,
+        bio,
+        image,
+      });
     }
-    return data;
-  })
-  .catch((err) => console.log(err));
-
-const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
-  if (data === null) {
-    return Users.create({
-      username, serial, bio, image,
-    });
-  }
-  console.log(data);
-  console.log('entry already exists');
-});
+    console.log(data);
+    console.log('entry already exists');
+  });
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
+
 const saveReview = (username, text, weburl, keyword) => {
   let idUser;
   let idWeb;
@@ -208,15 +239,20 @@ const saveReview = (username, text, weburl, keyword) => {
   });
 };
 
+//saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
 
-const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial: serial } })
-  .then((user) => user.update({ bio: bio })
+const findUserAndUpdateBio = (serial, bio) =>
+  Users.findOne({ where: { serial: serial } }).then((user) =>
+    user
+      .update({ bio: bio })
+      .then((data) => data)
+      .catch((err) => console.log(err))
+  );
+const findUserAndUpdateImage = (serial, image) =>
+  Users.findOne({ where: { serial: serial } })
+    .then((user) => user.update({ image: image }))
     .then((data) => data)
-    .catch((err) => console.log(err)));
-const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial: serial } })
-  .then((user) => user.update({ image: image}))
-  .then((data) => data)
-  .catch((err) => console.log(err));
+    .catch((err) => console.log(err));
 
 module.exports = {
   db,
