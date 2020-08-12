@@ -256,4 +256,13 @@ const testData = [
     },
   },
 ];
-console.log(testData[0].webPages.value);
+//console.log(testData[0].webPages.value);
+
+let testArray = testData[0].webPages.value;
+// mapping function for site
+let newArray = testArray.map((site) => {
+  return site.url;
+});
+//console.log(newArray);
+
+export { testArray };
