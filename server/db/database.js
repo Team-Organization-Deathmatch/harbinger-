@@ -2,7 +2,7 @@ const { Sequelize, TableHints } = require('sequelize');
 
 // create a connection to localDB
 
-const db = new Sequelize('harbinger', 'root', '', {
+const db = new Sequelize('harbinger', 'root', 'fossil15', {
   host: 'localhost',
   dialect: 'mysql',
 });
@@ -167,14 +167,23 @@ const findArticleByKeyWord = (keyword) =>
       console.log('no keyword found');
       return;
     } else {
+      console.log(data);
+      console.log(data.id, 'FOUND THE KEYWORD');
       Review.findAll({
         where: {
-          keyword: data.id,
+          id_keyword: data.id,
         },
-      }).then((data) => console.log(data));
+      }).then(
+        (data) =>
+          console.log(data, 'SUCCESSFULLY FOUND ARTICLE VIA KEYWORD SEARCH')
+        // BOTH ARTICLES PULLING UP FROM KEYWORD
+      );
+      //.catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
       // need to change this to return data?
     }
   });
+
+findArticleByKeyWord('apple.com');
 
 const saveOrFindKeyWord = (keyword) =>
   Keyword.findOne({ where: { keyword } })
@@ -233,7 +242,7 @@ const saveReview = (username, text, weburl, keyword) => {
             id_web: idWeb,
             id_keyword: idKeyword,
             date: new Date(),
-          }).then((data) => resolve(data))
+          }).then((data) => resolve(data));
         });
       });
     });
