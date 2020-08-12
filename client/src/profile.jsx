@@ -10,15 +10,13 @@ import {
 
 
 function Profile() {
-  
   const [users, setUsers] = useState([]);
-  
   const { register, handleSubmit } = useForm();
   const onSubmit = (userBio) => {
     axios.post('/profile', { bio: userBio })
-    .then(({ data }) => {
-      console.log(data);
-    })
+      .then(({ data }) => {
+        console.log(data);
+      });
   };
 
   useEffect(() => {
@@ -36,7 +34,7 @@ function Profile() {
       <div>{users.bio}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Bio</label>
-        <textarea ref={ register } name="message" />
+        <textarea ref={register} name="message" />
         <button>Submit Bio</button>
       </form>
     </div>
