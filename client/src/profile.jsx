@@ -12,12 +12,20 @@ import {
 function Profile() {
   const [user, setUser] = useState([]);
   const { register, handleSubmit } = useForm();
+
   const onSubmit = (userBio) => {
-    axios.post('/profile', { bio: userBio })
+    axios.post('/profile/bio', { bio: userBio })
       .then(({ data }) => {
-        setUsers(data);
+        setUser(data);
       });
   };
+  const imageSubmit = (imageUrl) => {
+    axios.post('/profile/image', { image: imageUrl })
+      .then(({ data }) => {
+        console.log(data);
+        setUser(data);
+      });
+  }
 
   useEffect(() => {
     axios.get('/good')
@@ -34,17 +42,32 @@ function Profile() {
           {user.username}
           : Profile
         </h1>
-
-
       </div>
       <img src={user.image} />
-      <h2>Bio for {user.username}</h2>
-      <div>{user.bio}</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Edit Bio</label>
-        <textarea ref={register} name="message" />
-        <button>Submit Bio</button>
+      <h3>Edit Image</h3>
+      <form onSubmit={handleSubmit(imageSubmit)}>
+        <textarea ref={register} name="imageUrl" />
+        <button>Submit Image</button>
       </form>
+      <div>
+        <div>
+          <h2>Bio for {user.username}</h2>
+          <div>{user.bio}</div>
+
+        </div>
+
+      </div>
+      <div>
+        <div>
+          <h3>Edit Bio</h3>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <textarea ref={register} name="message" />
+            <button>Submit Bio</button>
+          </form>
+
+        </div>
+
+      </div>
     </div>
   );
 }
