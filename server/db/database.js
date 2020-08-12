@@ -183,25 +183,27 @@ const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { ser
 });
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
+
 const saveReview = (username, text, weburl, keyword) => {
   let idUser;
   let idWeb;
   let idKeyword;
-
-  saveOrFindKeyWord(weburl).then((data) => {
-    idWeb = data.dataValues.id;
-    saveOrFindWebUrl(keyword).then((data) => {
-      idKeyword = data.dataValues.id;
-      Users.findOne({ where: { username } }).then((data) => {
-        idUser = data.dataValues.id;
-        return Review.create({
-          likes: 0,
-          dislike: 0,
-          id_user: idUser,
-          text,
-          id_web: idWeb,
-          id_keyword: idKeyword,
-          date: new Date(),
+  return new Promise((resolve, reject) => {
+    saveOrFindKeyWord(weburl).then((data) => {
+      idWeb = data.dataValues.id;
+      saveOrFindWebUrl(keyword).then((data) => {
+        idKeyword = data.dataValues.id;
+        Users.findOne({ where: { username } }).then((data) => {
+          idUser = data.dataValues.id;
+          return Review.create({
+            likes: 0,
+            dislike: 0,
+            id_user: idUser,
+            text,
+            id_web: idWeb,
+            id_keyword: idKeyword,
+            date: new Date(),
+          }).then((data) => resolve(data))
         });
       });
     });
@@ -214,7 +216,7 @@ const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial: s
     .then((data) => data)
     .catch((err) => console.log(err)));
 const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial: serial } })
-  .then((user) => user.update({ image: image}))
+  .then((user) => user.update({ image: image }))
   .then((data) => data)
   .catch((err) => console.log(err));
 
