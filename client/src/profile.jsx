@@ -10,28 +10,28 @@ import {
 
 
 function Profile() {
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState([]);
   const { register, handleSubmit } = useForm();
   const onSubmit = (userBio) => {
     axios.post('/profile', { bio: userBio })
       .then(({ data }) => {
-        console.log(data);
+        setUsers(data);
       });
   };
 
   useEffect(() => {
     axios.get('/good')
       .then(({ data }) => {
-        console.log(data);
-        setUsers(data);
+        //console.log(data);
+        setUser(data);
       });
   }, []);
 
   return (
     <div>
-      <h1>{users.username}</h1>
-      <img src={users.image} />
-      <div>{users.bio}</div>
+      <h1>{user.username}</h1>
+      <img src={user.image} />
+      <div>{user.bio}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Bio</label>
         <textarea ref={register} name="message" />
