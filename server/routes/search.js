@@ -10,32 +10,32 @@ const { webSearchApiClient } = require('../azure.js');
 
 searchRoute.post('/search', (req, res) => {
   // psuedocoded out for postman use
-  if (req.user) {
-    //saveOrFindKeyWord(req.body.clientSearch);
-    console.log(req.body, 'REQ.BODYYYYYYYY');
-    webSearchApiClient.web
-      .search(req.body.clientSearch)
-      .then((result) => {
-        const properties = ['webPages'];
-        for (let i = 0; i < properties.length; i++) {
-          if (result[properties[i]]) {
-            res.send(result);
-            //console.log(result[properties[i]].value);
-          } else {
-            //console.log(`No ${properties[i]} data`);
-          }
+  // if (req.user) {
+  //saveOrFindKeyWord(req.body.clientSearch);
+  console.log(req.body, 'REQ.BODYYYYYYYY');
+  webSearchApiClient.web
+    .search(req.body.clientSearch)
+    .then((result) => {
+      const properties = ['webPages'];
+      for (let i = 0; i < properties.length; i++) {
+        if (result[properties[i]]) {
+          res.send(result);
+          //console.log(result[properties[i]].value);
+        } else {
+          //console.log(`No ${properties[i]} data`);
         }
-      })
-      .catch((err) => {
-        throw err;
-      });
+      }
+    })
+    .catch((err) => {
+      throw err;
+    });
 
-    res.status(201);
-    res.send('search GET');
-  } else {
-    res.status(401);
-    res.send('unauthorized');
-  }
+  // res.status(201);
+  // res.send('search GET');
+  // } else {
+  //   res.status(401);
+  //   res.send('unauthorized');
+  // }
 
   // call azure search function??
   // send data back from function call

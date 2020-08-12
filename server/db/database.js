@@ -239,6 +239,8 @@ const saveReview = (username, text, weburl, keyword) => {
   });
 };
 
+//saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
+
 module.exports = {
   db,
   getUser,
