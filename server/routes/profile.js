@@ -1,6 +1,6 @@
 const { Router } = require('express');
 require('../db/database');
-const { findUserAndUpdateBio } = require('../db/database');
+const { findUserAndUpdateBio, getUser } = require('../db/database');
 
 
 const profileRoute = Router();
@@ -24,12 +24,15 @@ profileRoute.post('/', (req, res) => {
   if (req.user) {
 
     findUserAndUpdateBio(req.user, req.body.bio.message)
-      .then((data) => {
-        console.log(data)
-        res.status(201);
-        res.send('profile POST');
+      .then(() => {
+        getUser(req.user).then((user) => {
+          console.log(user);
+          res.status(201);
+          res.send(user);
 
-      });
+        });
+
+    });
   } else {
     res.status(401);
     res.send('unauthorized');
