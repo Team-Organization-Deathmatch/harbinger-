@@ -29,11 +29,19 @@ function Profile() {
 
   return (
     <div>
-      <h1>{user.username}</h1>
+      <div style={{ backgroundColor: '#800000' }}>
+        <h1 style={{ display: 'inline-block', color: 'white' }}>
+          {user.username}
+          : Profile
+        </h1>
+
+
+      </div>
       <img src={user.image} />
+      <h2>Bio for {user.username}</h2>
       <div>{user.bio}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Bio</label>
+        <label>Edit Bio</label>
         <textarea ref={register} name="message" />
         <button>Submit Bio</button>
       </form>
