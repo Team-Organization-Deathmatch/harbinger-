@@ -15,7 +15,5 @@ steps:
 
 - script: |
     npm install
-    nodemon ./server/index.js
     webpack --config webpack.config.js --mode production
-    webpack --config webpack.config.js --mode development --watch
   displayName: 'Run a multi-line script'
