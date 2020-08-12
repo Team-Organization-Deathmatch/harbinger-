@@ -42,7 +42,6 @@ function Search() {
         <label>Search:</label>
         <input ref={register} name='clientSearch' />
         <button>Search websites</button>
-        call mapping function here to render search results
         <div className='webSitesList'>
           {webSites.map((site) => {
             return (
