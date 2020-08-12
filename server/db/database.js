@@ -2,7 +2,7 @@ const { Sequelize, TableHints } = require('sequelize');
 
 // create a connection to localDB
 
-const db = new Sequelize('harbinger', 'root', 'fossil15', {
+const db = new Sequelize('harbinger', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
 });
