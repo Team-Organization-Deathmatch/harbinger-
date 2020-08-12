@@ -207,6 +207,17 @@ const saveReview = (username, text, weburl, keyword) => {
     });
   });
 };
+
+
+const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial: serial } })
+  .then((user) => user.update({ bio: bio })
+    .then((data) => data)
+    .catch((err) => console.log(err)));
+const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial: serial } })
+  .then((user) => user.update({ image: image}))
+  .then((data) => data)
+  .catch((err) => console.log(err));
+
 module.exports = {
   db,
   getUser,
@@ -214,4 +225,6 @@ module.exports = {
   saveOrFindKeyWord,
   saveOrFindWebUrl,
   saveReview,
+  findUserAndUpdateBio,
+  findUserAndUpdateImage,
 };

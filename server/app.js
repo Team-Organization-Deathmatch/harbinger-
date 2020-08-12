@@ -64,7 +64,7 @@ app.get('/good', isLoggedIn, (req, res) => {
   // console.log(req.user, " IA MA JIS F");
   getUser(req.user)
     .then((account) => {
-      console.log(account, ' testing account');
+      //console.log(account, ' testing account');
       res.send(account);
     })
     .catch((err) => { console.error(err); res.status(500).end(); });
