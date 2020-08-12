@@ -1,6 +1,6 @@
 const { Router } = require('express');
 require('../db/database');
-const { findUserAndUpdateBio, getUser } = require('../db/database');
+const { findUserAndUpdateBio, getUser, findUserAndUpdateImage } = require('../db/database');
 
 
 const profileRoute = Router();
@@ -17,28 +17,46 @@ profileRoute.get('/', (req, res) => {
   }
 });
 
-profileRoute.post('/', (req, res) => {
+profileRoute.post('/bio', (req, res) => {
   // this could be POST or Patch or PUT
   // it should allow the user to either create update their profile information
   // can all this functionality be included in the same route??
   if (req.user) {
-
     findUserAndUpdateBio(req.user, req.body.bio.message)
-      .then(() => {
+      .then((data) => {
+        
         getUser(req.user).then((user) => {
           console.log(user);
           res.status(201);
           res.send(user);
-
         });
-
-    });
+      });
   } else {
     res.status(401);
     res.send('unauthorized');
   }
 });
 
+profileRoute.post('/image', (req, res) => {
+  // this could be POST or Patch or PUT
+  // it should allow the user to either create update their profile information
+  // can all this functionality be included in the same route??
+  if (req.user) {
+    // console.log(req.body);
+    findUserAndUpdateImage(req.user, req.body.image.imageUrl)
+      .then((data) => {
+        
+        getUser(req.user).then((user) => {
+          console.log(user, 'USER in POST');
+          res.status(201);
+          res.send(user);
+        });
+      });
+  } else {
+    res.status(401);
+    res.send('unauthorized');
+  }
+});
 module.exports = {
   profileRoute,
 };
