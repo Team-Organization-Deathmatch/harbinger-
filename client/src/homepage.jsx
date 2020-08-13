@@ -15,18 +15,18 @@ function HomePage() {
   const [topReviews, setTop] = useState([]);
 
   useEffect(() => {
-    axios.get('/review/retrieve/id=top').then((data) => {
-      console.log('got top reviews')
-      setTop(data);
+    axios.get('/review/retrieve/id=top').then((reviews) => {
+      console.log(reviews.data);
+      setTop(reviews.data);
     })
 
-  }, [])
+  }, []);
 
   const [bottomReviews, setBottom] = useState([]);
 
   useEffect(() => {
     axios.get('/review/retrieve/id=bottom').then((data) => {
-      console.log('got bottom reviews')
+      console.log(data);
       setBottom(data);
     })
 
@@ -62,6 +62,14 @@ function HomePage() {
       <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
         Top Best websites
       </h3>
+      {/* {topReviews.map((site) => (
+              <div>
+                <br></br>
+                <a href={site.url}>{site.url}</a>
+                <br></br>
+                <div>{site.snippet}</div>
+              </div>
+            ))} */}
       <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
         Top Worst websites
       </h3>
