@@ -257,7 +257,26 @@ const findUserAndUpdateImage = (serial, image) =>
     .catch((err) => console.log(err));
 
 const findTopReviews = () => {
-  return Review.findAll({ limit: 10 });
+  const sendArr = [];
+  let userIds;
+  let urls;
+  let keywords;
+  return Review.findAll({ limit: 10 })
+    .then((data) => {
+      sendArr.push(data)
+      userIds = data.map((review) => review.dataValues.id_user);
+      let userTasks = []
+      userIds.forEach((id) => {
+        let task = (id) => {
+          Users.findOne({ where: { id: id } }).then((user) => user.username)
+        }
+        userTasks.push(task);
+      })
+      console.log(userTasks, 'user tasks');
+      // urls = data.map((review) => review.user_id)
+      // users = data.map((review) => review.user_id)
+
+    })
 }
 
 module.exports = {
