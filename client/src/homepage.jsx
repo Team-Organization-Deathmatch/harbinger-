@@ -5,10 +5,19 @@ import Search from './search.jsx';
 
 function HomePage() {
   const [user, setUser] = useState([]);
+  const [link, setLink] = useState('');
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
       setUser(data.username);
+    });
+  });
+  useEffect(() => {
+    axios.get('/good').then(({ data }) => {
+      let username = data.username.split(' ');
+      let username1 = username[1];
+      console.log(username1);
+      setLink(username1);
     });
   });
 
@@ -24,7 +33,7 @@ function HomePage() {
         >
           HomePage Component
         </h2>
-        <Link to='/profile'>
+        <Link to={`/${link}`}>
           <h2
             style={{
               display: 'inline-block',
