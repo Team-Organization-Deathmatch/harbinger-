@@ -4,6 +4,12 @@ const { saveReview, getUser } = require('../db/database');
 
 const reviewRoute = Router();
 
+reviewRoute.get('/retrieve/:id', (req, res) => {
+  console.log(req.params.id);
+  res.status(200)
+  res.send('Top Reviews');
+})
+
 reviewRoute.post('/retrieve', (req, res) => {
   // this is the route that will retrieve a specific review based on user input
   if (req.user) {
