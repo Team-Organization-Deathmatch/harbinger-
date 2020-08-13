@@ -16,8 +16,13 @@ function HomePage() {
 
   useEffect(() => {
     axios.get('/review/retrieve/id=top').then((reviews) => {
-      console.log(reviews.data);
-      setTop(reviews.data);
+      console.log(reviews.data, 'Top');
+      const topArray = []
+      reviews.data[1].forEach((review, index) => {
+        review.username = reviews.data[0][index]
+        topArray.push(review)
+      })
+      setTop(topArray);
     })
 
   }, []);
@@ -60,18 +65,23 @@ function HomePage() {
       </div>
       <Search />
       <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
-        Top Best websites
+        Top Best Reviews
       </h3>
       {topReviews.map((review) => (
               <div>
-                <br></br>
-                <a>{review.id_user}</a>
-                <br></br>
+                <div>
+                  <h4>Username</h4>
+                  <div>{review.username}</div>
+                </div>
+                <div>
+                  <h4>Review</h4>
                 <div>{review.text}</div>
+                </div>
+                <br></br>
               </div>
             ))}
       <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
-        Top Worst websites
+        Top Worst Reviews
       </h3>
     </div>
   );
