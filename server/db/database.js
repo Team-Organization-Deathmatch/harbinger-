@@ -259,22 +259,30 @@ const findUserAndUpdateImage = (serial, image) =>
 const findTopReviews = () => {
   const sendArr = [];
   let userIds;
-  let urls;
+  let usernames = [];
+  let webUrls;
   let keywords;
   return Review.findAll({ limit: 10 })
     .then((data) => {
-      sendArr.push(data)
+      sendArr.push(data);
       userIds = data.map((review) => review.dataValues.id_user);
-      let userTasks = []
-      userIds.forEach((id) => {
-        let task = (id) => {
-          Users.findOne({ where: { id: id } }).then((user) => user.username)
+      return Users.findAll({
+        where: {
+          id: userIds
         }
-        userTasks.push(task);
-      })
-      console.log(userTasks, 'user tasks');
-      // urls = data.map((review) => review.user_id)
-      // users = data.map((review) => review.user_id)
+      }).then((data) => {
+        // console.log(data[0].dataValues.username, 'THIS IS THE DATA');
+        userIds.forEach((userId) => {
+          data.forEach((userObj) => {
+            if(userObj.dataValues.id === userId){
+              usernames.push(userObj.dataValues.username)
+            }
+          })
+        })
+        console.log(sendArr);
+        return [usernames, ...sendArr];
+        //return sendArr;
+      });
 
     })
 }
