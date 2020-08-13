@@ -10,7 +10,29 @@ function HomePage() {
     axios.get('/good').then(({ data }) => {
       setUser(data.username);
     });
-  });
+  }, []);
+
+  const [topReviews, setTop] = useState([]);
+
+  useEffect(() => {
+    axios.get('/review/retrieve/id=top').then((data) => {
+      console.log('got top reviews')
+      setTop(data);
+    })
+
+  }, [])
+
+  const [bottomReviews, setBottom] = useState([]);
+
+  useEffect(() => {
+    axios.get('/review/retrieve/id=bottom').then((data) => {
+      console.log('got bottom reviews')
+      setBottom(data);
+    })
+
+  }, [])
+
+  //wanted to use this inside of useEffect
 
   return (
     <div>
@@ -24,7 +46,7 @@ function HomePage() {
         >
           HomePage Component
         </h2>
-        <Link to='/profile'>
+        <Link to='/profile2'>
           <h2
             style={{
               display: 'inline-block',
