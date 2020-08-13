@@ -1,4 +1,5 @@
 const { Sequelize, TableHints } = require('sequelize');
+//const { default: Reviews } = require('../../client/src/reviews');
 
 // create a connection to localDB
 
@@ -255,6 +256,10 @@ const findUserAndUpdateImage = (serial, image) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
+const findTopReviews = () => {
+  return Review.findAll({ limit: 10 });
+}
+
 module.exports = {
   db,
   getUser,
@@ -264,4 +269,5 @@ module.exports = {
   saveReview,
   findUserAndUpdateBio,
   findUserAndUpdateImage,
+  findTopReviews,
 };
