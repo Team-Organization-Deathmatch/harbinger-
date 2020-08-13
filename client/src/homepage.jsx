@@ -62,14 +62,14 @@ function HomePage() {
       <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
         Top Best websites
       </h3>
-      {/* {topReviews.map((site) => (
+      {topReviews.map((review) => (
               <div>
                 <br></br>
-                <a href={site.url}>{site.url}</a>
+                <a>{review.id_user}</a>
                 <br></br>
-                <div>{site.snippet}</div>
+                <div>{review.text}</div>
               </div>
-            ))} */}
+            ))}
       <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
         Top Worst websites
       </h3>
