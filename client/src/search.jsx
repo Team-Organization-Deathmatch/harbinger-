@@ -16,24 +16,29 @@ function Search() {
       },
       data: data,
     };
-    console.log(testArray, 'hello');
-    webSitesUpdate(testArray);
+    //console.log(testArray, 'hello');
+    //webSitesUpdate(testArray);
     // **** COMMENTED THE BELOW OUT TO NOT USE ALL OUR BING CALLS
     // BELOW STILL WORKS
     // BE SURE TO CHANGE WEBSITES UPDATE TO PROPER OBJECT KEYS
-    // webSitesUpdate(testArray);
-    // axios(config)
-    //   .then(function (response) {
-    //     console.log(JSON.stringify(response.data));
-    //     webSitesUpdate(RESPONSE.SOMETHING.SOMETHING);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    //webSitesUpdate(testArray);
+    return axios(config)
+      .then(function (response) {
+        //console.log(JSON.stringify(response));
+        console.log(JSON.stringify(response.data[1]));
+        //console.log(JSON.stringify(response.data.webPages.value));
+        webSitesUpdate(response.data[0].webPages.value);
+        reviewedSitesUpdate(response.data[1]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const [webSites, webSitesUpdate] = useState(['Search Results Appear Here']);
-
+  const [reviewedSites, reviewedSitesUpdate] = useState([
+    'Review sites appear here',
+  ]);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => searchBing(data);
   return (
@@ -42,6 +47,19 @@ function Search() {
         <label>Search:</label>
         <input ref={register} name='clientSearch' />
         <button>Search websites</button>
+        <div className='reviewedSites list'>
+          {reviewedSites.map((review) => {
+            return (
+              <div>
+                <br></br>
+                <div>Likes: {review.likes}</div>
+                <div> Dislikes: {review.dislike}</div>
+                <br></br>
+                <div>{review.text}</div>
+              </div>
+            );
+          })}
+        </div>
         <div className='webSitesList'>
           {webSites.map((site) => {
             return (

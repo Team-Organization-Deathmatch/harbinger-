@@ -2,7 +2,7 @@ const { Sequelize, TableHints } = require('sequelize');
 
 // create a connection to localDB
 
-const db = new Sequelize('harbinger', 'root', 'fossil15', {
+const db = new Sequelize('harbinger', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
 });
@@ -161,29 +161,31 @@ Keyword.sync();
 //     } else {
 //       console.log('hello')
 //     };
-const findArticleByKeyWord = (keyword) =>
-  Keyword.findOne({ where: { keyword } }).then((data) => {
+
+//let test;
+const findArticleByKeyWord = (keyword) => {
+  return Keyword.findOne({ where: { keyword } }).then((data) => {
     if (data === null) {
       console.log('no keyword found');
       return;
     } else {
-      console.log(data);
-      console.log(data.id, 'FOUND THE KEYWORD');
-      Review.findAll({
+      return Review.findAll({
         where: {
           id_keyword: data.id,
         },
-      }).then(
-        (data) =>
-          console.log(data, 'SUCCESSFULLY FOUND ARTICLE VIA KEYWORD SEARCH')
-        // BOTH ARTICLES PULLING UP FROM KEYWORD
-      );
-      //.catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
-      // need to change this to return data?
+      })
+        .then((data) => {
+          console.log(typeof data);
+          console.log(data);
+          return data;
+        })
+        .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
     }
   });
+};
 
-findArticleByKeyWord('apple.com');
+// let articles = findArticleByKeyWord('apple.com');
+// console.log(articles, 'ARTICLESSSSSSS');
 
 const saveOrFindKeyWord = (keyword) =>
   Keyword.findOne({ where: { keyword } })
@@ -273,4 +275,5 @@ module.exports = {
   saveReview,
   findUserAndUpdateBio,
   findUserAndUpdateImage,
+  findArticleByKeyWord,
 };
