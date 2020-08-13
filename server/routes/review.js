@@ -1,13 +1,22 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveReview, getUser } = require('../db/database');
+const { saveReview, getUser, findTopReviews } = require('../db/database');
 
 const reviewRoute = Router();
 
 reviewRoute.get('/retrieve/:id', (req, res) => {
-  console.log(req.params.id);
-  res.status(200)
-  res.send('Top Reviews');
+  if (req.params.id === 'id=top') {
+    findTopReviews().then((data) => {
+      // console.log(Array.isArray(data));
+      res.status(200);
+      res.send(data);
+
+    })
+  } else if (req.params.id === 'id=bottom') {
+    console.log('id bottom');
+    res.status(200);
+    res.send('Bottom Reviews');
+  }
 })
 
 reviewRoute.post('/retrieve', (req, res) => {
