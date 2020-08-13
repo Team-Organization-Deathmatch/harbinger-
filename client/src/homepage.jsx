@@ -10,7 +10,34 @@ function HomePage() {
     axios.get('/good').then(({ data }) => {
       setUser(data.username);
     });
-  });
+  }, []);
+
+  const [topReviews, setTop] = useState([]);
+
+  useEffect(() => {
+    axios.get('/review/retrieve/id=top').then((reviews) => {
+      console.log(reviews.data, 'Top');
+      const topArray = []
+      reviews.data[1].forEach((review, index) => {
+        review.username = reviews.data[0][index]
+        topArray.push(review)
+      })
+      setTop(topArray);
+    })
+
+  }, []);
+
+  const [bottomReviews, setBottom] = useState([]);
+
+  useEffect(() => {
+    axios.get('/review/retrieve/id=bottom').then((data) => {
+      console.log(data);
+      setBottom(data);
+    })
+
+  }, [])
+
+  //wanted to use this inside of useEffect
 
   return (
     <div>
@@ -24,7 +51,7 @@ function HomePage() {
         >
           HomePage Component
         </h2>
-        <Link to='/profile'>
+        <Link to='/profile2'>
           <h2
             style={{
               display: 'inline-block',
@@ -38,10 +65,23 @@ function HomePage() {
       </div>
       <Search />
       <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
-        Top Best websites
+        Top Best Reviews
       </h3>
+      {topReviews.map((review) => (
+              <div>
+                <div>
+                  <h4>Username</h4>
+                  <div>{review.username}</div>
+                </div>
+                <div>
+                  <h4>Review</h4>
+                <div>{review.text}</div>
+                </div>
+                <br></br>
+              </div>
+            ))}
       <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
-        Top Worst websites
+        Top Worst Reviews
       </h3>
     </div>
   );
