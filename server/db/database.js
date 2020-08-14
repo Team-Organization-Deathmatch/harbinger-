@@ -1,4 +1,5 @@
 const { Sequelize, TableHints } = require('sequelize');
+//const { default: Reviews } = require('../../client/src/reviews');
 
 // create a connection to localDB
 
@@ -280,6 +281,35 @@ const findUserAndUpdateImage = (serial, image) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
+const findTopReviews = () => {
+  const sendArr = [];
+  let userIds;
+  let usernames = [];
+  let webUrls;
+  let keywords;
+  return Review.findAll({ limit: 10 }).then((data) => {
+    sendArr.push(data);
+    userIds = data.map((review) => review.dataValues.id_user);
+    return Users.findAll({
+      where: {
+        id: userIds,
+      },
+    }).then((data) => {
+      // console.log(data[0].dataValues.username, 'THIS IS THE DATA');
+      userIds.forEach((userId) => {
+        data.forEach((userObj) => {
+          if (userObj.dataValues.id === userId) {
+            usernames.push(userObj.dataValues.username);
+          }
+        });
+      });
+      console.log(sendArr);
+      return [usernames, ...sendArr];
+      //return sendArr;
+    });
+  });
+};
+
 module.exports = {
   db,
   getUser,
@@ -290,4 +320,5 @@ module.exports = {
   findUserAndUpdateBio,
   findUserAndUpdateImage,
   findArticleByKeyWord,
+  findTopReviews,
 };
