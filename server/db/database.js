@@ -1,10 +1,15 @@
 const { Sequelize, TableHints } = require('sequelize');
 // const { default: Reviews } = require('../../client/src/reviews');
-
+require('dotenv').config();
 // create a connection to localDB
 
-const db = new Sequelize('harbinger', 'root', '', {
-  host: 'localhost',
+const db_name = process.env.DB || 'harbinger';
+const db_user = process.env.DB_User || 'root';
+const db_pass = process.env.DB_Pass || '';
+const db_host = process.env.HOST || 'localhost';
+
+const db = new Sequelize(db_name, db_user, db_pass, {
+  host: db_host,
   dialect: 'mysql',
 });
 
@@ -199,7 +204,10 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
 // let articles = findArticleByKeyWord('apple.com');
 // console.log(articles, 'ARTICLESSSSSSS');
 
+<<<<<<< HEAD
+=======
 // either find or save a keyword
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
   .then((data) => {
     if (data === null) {
@@ -210,7 +218,10 @@ const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
   })
   .catch((err) => console.log(err));
 
+<<<<<<< HEAD
+=======
 // either save or find web url
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   .then((data) => {
     if (data === null) {
@@ -221,8 +232,11 @@ const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   })
   .catch((err) => console.log(err));
 
+<<<<<<< HEAD
+=======
   // when you login in via google, this function is called and will create an 
   // entry for you in the DB if it doesn't already exist
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
   if (data === null) {
     return Users.create({
@@ -265,6 +279,17 @@ const saveReview = (username, text, weburl, keyword) => {
 };
 
 // saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
+<<<<<<< HEAD
+
+const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
+  .update({ bio })
+  .then((data) => data)
+  .catch((err) => console.log(err)));
+const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial } })
+  .then((user) => user.update({ image }))
+  .then((data) => data)
+  .catch((err) => console.log(err));
+=======
 
 // functions to update the user's progfile info
 const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
@@ -278,6 +303,7 @@ const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { seria
   .catch((err) => console.log(err));
 
 const findAndUpdateUsername = () => {};
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 
 const findTopReviews = () => {
   const sendArr = [];
