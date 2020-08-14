@@ -36,9 +36,10 @@ function Search() {
   };
 
   const [webSites, webSitesUpdate] = useState(['Search Results Appear Here']);
-  const [reviewedSites, reviewedSitesUpdate] = useState([
-    'Review sites appear here',
-  ]);
+  const [reviewedSites, reviewedSitesUpdate] = useState([]);
+  // const [userInfo, userInfoUpdate] = useState([
+  //   { User: { username: 'hello' } },
+  // ]);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => searchBing(data);
   return (
@@ -52,6 +53,7 @@ function Search() {
             return (
               <div>
                 <br></br>
+                <div>Written By: {review.User.username}</div>
                 <div>Likes: {review.likes}</div>
                 <div> Dislikes: {review.dislike}</div>
                 <br></br>
