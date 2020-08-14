@@ -345,6 +345,18 @@ const updateLikeInReview = (reviewId) => new Promise((resolve, reject) => {
     });
 });
 
+const updateDislikeInReview = (reviewId) => new Promise((resolve, reject) => {
+  Review.findOne({ where: { id: reviewId } })
+    .then((review) => {
+      const { dislike } = review;
+      review.update({ dislike: dislike + 1 }).then(() => {
+        resolve();
+      });
+    }).catch(() => {
+      reject();
+    });
+});
+
 module.exports = {
   db,
   getUser,
@@ -357,4 +369,5 @@ module.exports = {
   findArticleByKeyWord,
   findTopReviews,
   updateLikeInReview,
+  updateDislikeInReview,
 };

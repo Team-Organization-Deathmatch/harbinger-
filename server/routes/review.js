@@ -1,6 +1,8 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveReview, getUser, findTopReviews, updateLikeInReview } = require('../db/database');
+const {
+  saveReview, getUser, findTopReviews, updateLikeInReview, updateDislikeInReview,
+} = require('../db/database');
 
 const reviewRoute = Router();
 
@@ -12,18 +14,17 @@ reviewRoute.get('/retrieve/:id', (req, res) => {
       // find out the corresponding urls
       // find out the corresponding users
       // send all of this data
-      //console.log(data);
-      //res.write(JSON.stringify(['more data']));
+      // console.log(data);
+      // res.write(JSON.stringify(['more data']));
       res.status(200);
       res.send(data);
-
-    })
+    });
   } else if (req.params.id === 'id=bottom') {
     console.log('id bottom');
     res.status(200);
     res.send('Bottom Reviews');
   }
-})
+});
 
 reviewRoute.post('/retrieve', (req, res) => {
   // this is the route that will retrieve a specific review based on user input
@@ -40,9 +41,9 @@ reviewRoute.post('/submit', (req, res) =>
   // if (req.user) {
   getUser(req.user)
     .then((data) => {
-      console.log(typeof data.dataValues.username)
+      console.log(typeof data.dataValues.username);
       const { text, weburl, keyword } = req.body;
-      console.log(text, weburl, keyword)
+      console.log(text, weburl, keyword);
       return saveReview(data.dataValues.username, text.message, weburl, keyword)
         .then(() => {
           res.status(201);
@@ -59,17 +60,19 @@ reviewRoute.put('/update/:type', (req, res) => {
   if (req.params.type === 'type=like') {
     updateLikeInReview(req.body.reviewId)
       .then(() => {
-        console.log('review updated!')
+        console.log('review updated!');
         res.status(204);
         res.end();
-      })
+      });
   } else {
-    console.log('dislike');
-    res.status(204);
-    res.end();
+    updateDislikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!');
+        res.status(204);
+        res.end();
+      });
   }
-})
-
+});
 
 module.exports = {
   reviewRoute,
