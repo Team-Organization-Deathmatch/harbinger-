@@ -9,8 +9,8 @@ function Reviews(props) {
     console.log(data);
     Axios.post('/review/submit', {
       text: data,
-      weburl: 'apple.com',
-      keyword: 'apple',
+      weburl: siteURL,
+      keyword: document.getElementById('keyword').value,
     }).then(() => {
       console.log('review posted!');
     });
@@ -18,17 +18,26 @@ function Reviews(props) {
   //const [passedSite, passedSiteUpdate] = useState('hello');
 
   let siteURL = window.location.href.split('site=');
-  siteURL = test[1];
+  siteURL = siteURL[1];
+  //let keywordTextBox = document.getElementById('keyword').value;
   return (
     <div>
-      <h1>{siteURL}</h1>
+      <h1>Leave a Review For {siteURL}</h1>
       <h1>Reviews Component</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <label>|Username|</label>
           <input ref={ register } name="username" /> */}
 
         <label>|Message|</label>
+        <br></br>
         <textarea ref={register} name='message' />
+        <br></br>
+        <div>
+          Keywords help other users find other reviews associated with what
+          they're searching!
+        </div>
+        <input id='keyword' type='text' placeholder='leave a keyword'></input>
+        <br></br>
         <button>Submit Review</button>
       </form>
     </div>

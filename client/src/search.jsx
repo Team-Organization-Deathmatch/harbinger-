@@ -30,6 +30,8 @@ function Search() {
         webSitesUpdate(response.data[0].webPages.value);
         if (response.data[1] !== null) {
           reviewedSitesUpdate(response.data[1]);
+        } else {
+          reviewedSitesUpdate(["We didn't find any matches"]);
         }
       })
       .catch(function (error) {
@@ -49,6 +51,14 @@ function Search() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Search:</label>
         <input ref={register} name='clientSearch' />
+        {/* <Link
+          to={{
+            pathname: `/search`,
+          }}
+        >
+        
+          <button>Search websites</button>
+        </Link> */}
         <button>Search websites</button>
         <div className='reviewedSites list'>
           {reviewedSites.map((review) => {
