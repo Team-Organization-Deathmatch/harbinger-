@@ -8,7 +8,7 @@ function HomePage() {
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
-      setUser(data.username);
+      setUser(data);
     });
   }, []);
 
@@ -51,6 +51,14 @@ function HomePage() {
         >
           HomePage Component
         </h2>
+        <img
+          src={user.image}
+          width="4%"
+          height="4%"
+          style={{
+            display: 'inline-block', marginRight: '2px', borderRadius: '50%', verticalAlign: 'middle',
+          }}
+        />
         <Link to='/profile2'>
           <h2
             style={{
@@ -59,7 +67,7 @@ function HomePage() {
               textAlign: 'right',
             }}
           >
-            {user}
+            {user.username}
           </h2>
         </Link>
       </div>
