@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { useRef } from 'react';
 import Search from './search.jsx';
 
 function HomePage() {
@@ -38,7 +39,15 @@ function HomePage() {
 
   }, [])
 
-  //wanted to use this inside of useEffect
+  const updateLike = (reviewId, type) => {
+    console.log(reviewId, type);
+
+    axios.put(`/review/update/type=${type}`, {
+      reviewId: reviewId,
+    }).then(() => {
+      console.log('posted');
+    })
+  }
 
   return (
     <div>
@@ -69,17 +78,6 @@ function HomePage() {
         Top Best Reviews
       </h3>
       {topReviews.map((review) => (
-        // <div>
-        //   <div>
-        //     <h4>Username</h4>
-        //     <div>{review.username}</div>
-        //   </div>
-        //   <div>
-        //     <h4>Review</h4>
-        //   <div>{review.text}</div>
-        //   </div>
-        //   <br></br>
-        // </div>
         <div key={review.id}>
           <br></br>
           <div>Written By: {review.username}</div>
@@ -89,12 +87,14 @@ function HomePage() {
           <br></br>
           <div>Review Title</div>
           <div>{review.text}</div>
+          <button onClick={() => { updateLike(review.id, 'like') }}>like</button>
+          <button onClick={() => { updateLike(review.id, 'dislike') }}>dislike</button>
           <button>See Review</button>
         </div>
       ))}
-      <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
+      {/* <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
         Top Worst Reviews
-      </h3>
+      </h3> */}
     </div>
   );
 }
