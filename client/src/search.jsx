@@ -28,7 +28,9 @@ function Search() {
         console.log(JSON.stringify(response.data[1]));
         //console.log(JSON.stringify(response.data.webPages.value));
         webSitesUpdate(response.data[0].webPages.value);
-        reviewedSitesUpdate(response.data[1]);
+        if (response.data[1] !== null) {
+          reviewedSitesUpdate(response.data[1]);
+        }
       })
       .catch(function (error) {
         console.log(error);
