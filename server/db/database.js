@@ -226,8 +226,8 @@ const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   })
   .catch((err) => console.log(err));
 
-  // when you login in via google, this function is called and will create an 
-  // entry for you in the DB if it doesn't already exist
+// when you login in via google, this function is called and will create an
+// entry for you in the DB if it doesn't already exist
 const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
   if (data === null) {
     return Users.create({
@@ -282,14 +282,14 @@ const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { seria
   .then((data) => data)
   .catch((err) => console.log(err));
 
-const findAndUpdateUsername = () => {};
+const findAndUpdateUsername = () => { };
 
 const findTopReviews = () => {
   const sendArr = [];
   let userIds;
   const usernames = [];
   let webIds;
-  let webUrls = [];
+  const webUrls = [];
   let keywords;
   // have sorting featue 1.find, sort by like, limit 5/10
   return Review.findAll({ limit: 10 }).then((data) => {
@@ -326,12 +326,24 @@ const findTopReviews = () => {
         return [usernames, ...sendArr, webUrls];
         // return sendArr;
       });
-      //console.log(sendArr);
-      //return [usernames, ...sendArr];
+      // console.log(sendArr);
+      // return [usernames, ...sendArr];
       // return sendArr;
     });
   });
 };
+
+const updateLikeInReview = (reviewId) => new Promise((resolve, reject) => {
+  Review.findOne({ where: { id: reviewId } })
+    .then((review) => {
+      const { likes } = review;
+      review.update({ likes: likes + 1 }).then(() => {
+        resolve();
+      });
+    }).catch(() => {
+      reject();
+    });
+});
 
 module.exports = {
   db,
@@ -344,4 +356,5 @@ module.exports = {
   findUserAndUpdateImage,
   findArticleByKeyWord,
   findTopReviews,
+  updateLikeInReview,
 };
