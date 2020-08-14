@@ -10,6 +10,7 @@ function Reviews(props) {
     Axios.post('/review/submit', {
       text: data,
       weburl: siteURL,
+      title: document.getElementById('title').value,
       keyword: document.getElementById('keyword').value,
     }).then(() => {
       console.log('review posted!');
@@ -24,6 +25,8 @@ function Reviews(props) {
     <div>
       <h1>Leave a Review For {siteURL}</h1>
       <h1>Reviews Component</h1>
+      <input id='title' type='text' placeholder='leave a title'></input>
+      <br></br>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <label>|Username|</label>
           <input ref={ register } name="username" /> */}

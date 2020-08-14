@@ -46,6 +46,7 @@ function Search() {
   // ]);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => searchBing(data);
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +66,7 @@ function Search() {
             return (
               <div key={review.id}>
                 <br></br>
-                <div>Written By: {review.User.username}</div>
+                {/* <div>Written By: {review.User.username}</div> */}
                 <div>Likes: {review.likes}</div>
                 <div> Dislikes: {review.dislike}</div>
                 <br></br>

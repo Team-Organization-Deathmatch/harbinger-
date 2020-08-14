@@ -105,6 +105,9 @@ const Review = db.define('Review', {
     autoIncrement: true,
     primaryKey: true,
   },
+  title: {
+    type: Sequelize.STRING(100),
+  },
   likes: {
     type: Sequelize.INTEGER,
   },
@@ -238,7 +241,7 @@ const saveUsers = (username, serial, bio, image) =>
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
 
-const saveReview = (username, text, weburl, keyword) => {
+const saveReview = (username, title, text, weburl, keyword) => {
   let idUser;
   let idWeb;
   let idKeyword;
@@ -253,6 +256,7 @@ const saveReview = (username, text, weburl, keyword) => {
             likes: 0,
             dislike: 0,
             id_user: idUser,
+            title: title,
             text,
             id_web: idWeb,
             id_keyword: idKeyword,
