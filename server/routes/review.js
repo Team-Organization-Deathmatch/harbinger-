@@ -1,6 +1,8 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveReview, getUser, findTopReviews } = require('../db/database');
+const {
+  saveReview, getUser, findTopReviews, updateLikeInReview, updateDislikeInReview,
+} = require('../db/database');
 
 const reviewRoute = Router();
 
@@ -12,8 +14,8 @@ reviewRoute.get('/retrieve/:id', (req, res) => {
       // find out the corresponding urls
       // find out the corresponding users
       // send all of this data
-      console.log(data);
-      //res.write(JSON.stringify(['more data']));
+      // console.log(data);
+      // res.write(JSON.stringify(['more data']));
       res.status(200);
       res.send(data);
     });
@@ -59,6 +61,23 @@ reviewRoute.post('/submit', (req, res) =>
 //   res.status(401);
 //   res.send('unauthorized');
 // }
+reviewRoute.put('/update/:type', (req, res) => {
+  if (req.params.type === 'type=like') {
+    updateLikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!');
+        res.status(204);
+        res.end();
+      });
+  } else {
+    updateDislikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!');
+        res.status(204);
+        res.end();
+      });
+  }
+});
 
 module.exports = {
   reviewRoute,
