@@ -30,6 +30,8 @@ function Search() {
         webSitesUpdate(response.data[0].webPages.value);
         if (response.data[1] !== null) {
           reviewedSitesUpdate(response.data[1]);
+        } else {
+          reviewedSitesUpdate(["We didn't find any matches"]);
         }
       })
       .catch(function (error) {
@@ -44,18 +46,27 @@ function Search() {
   // ]);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => searchBing(data);
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Search:</label>
         <input ref={register} name='clientSearch' />
+        {/* <Link
+          to={{
+            pathname: `/search`,
+          }}
+        >
+        
+          <button>Search websites</button>
+        </Link> */}
         <button>Search websites</button>
         <div className='reviewedSites list'>
           {reviewedSites.map((review) => {
             return (
               <div key={review.id}>
                 <br></br>
-                <div>Written By: {review.User.username}</div>
+                {/* <div>Written By: {review.User.username}</div> */}
                 <div>Likes: {review.likes}</div>
                 <div> Dislikes: {review.dislike}</div>
                 <br></br>
@@ -73,7 +84,13 @@ function Search() {
                 <a href={site.url}>{site.url}</a>
                 <br></br>
                 <div>{site.snippet}</div>
-                <button>Review Website!</button>
+                <Link
+                  to={{
+                    pathname: `/review/site=${site.url}`,
+                  }}
+                >
+                  <button>Review Website!</button>
+                </Link>
               </div>
             );
           })}

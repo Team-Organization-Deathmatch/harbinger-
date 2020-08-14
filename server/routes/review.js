@@ -39,17 +39,22 @@ reviewRoute.post('/retrieve', (req, res) => {
 
 reviewRoute.post('/submit', (req, res) =>
   // if (req.user) {
-  getUser(req.user)
-    .then((data) => {
-      console.log(typeof data.dataValues.username);
-      const { text, weburl, keyword } = req.body;
-      console.log(text, weburl, keyword);
-      return saveReview(data.dataValues.username, text.message, weburl, keyword)
-        .then(() => {
-          res.status(201);
-          res.send('review POST');
-        });
-    }));
+  getUser(req.user).then((data) => {
+    console.log(typeof data.dataValues.username);
+    const { text, title, weburl, keyword } = req.body;
+    console.log(text, weburl, keyword);
+    return saveReview(
+      data.dataValues.username,
+      title,
+      text.message,
+      weburl,
+      keyword
+    ).then(() => {
+      res.status(201);
+      res.send('review POST');
+    });
+  })
+);
 // })
 
 // } else {
