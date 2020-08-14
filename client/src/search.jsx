@@ -60,6 +60,7 @@ function Search() {
                 <div> Dislikes: {review.dislike}</div>
                 <br></br>
                 <div>{review.text}</div>
+                <button>See Review</button>
               </div>
             );
           })}
@@ -72,6 +73,7 @@ function Search() {
                 <a href={site.url}>{site.url}</a>
                 <br></br>
                 <div>{site.snippet}</div>
+                <button>Review Website!</button>
               </div>
             );
           })}
