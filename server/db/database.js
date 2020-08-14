@@ -152,6 +152,9 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
+//TESTING TO SEE IF I CAN FIX DB LINKS
+Review.belongsTo(Users, { foreignKey: 'id_user' });
+
 // const findArticleByKeyWord = (keyword) =>
 //   Keyword.findOne({ where: { keyword } })
 //   .then((data) => {
@@ -170,9 +173,20 @@ const findArticleByKeyWord = (keyword) => {
       return;
     } else {
       return Review.findAll({
-        where: {
-          id_keyword: data.id,
-        },
+        include: [
+          {
+            model: Users,
+            required: true,
+          },
+        ],
+        // where: {
+        //   id_keyword: data.id,
+        // },
+        // include: [
+        //   {
+        //     model: Users,
+        //   },
+        // ],
       })
         .then((data) => {
           console.log(typeof data);
