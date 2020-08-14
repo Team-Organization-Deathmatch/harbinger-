@@ -17,11 +17,11 @@ function Reviews(props) {
   };
   //const [passedSite, passedSiteUpdate] = useState('hello');
 
-  let test = window.location.href.split('site=');
-  test = test[1];
+  let siteURL = window.location.href.split('site=');
+  siteURL = test[1];
   return (
     <div>
-      <h1>{test}</h1>
+      <h1>{siteURL}</h1>
       <h1>Reviews Component</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <label>|Username|</label>
