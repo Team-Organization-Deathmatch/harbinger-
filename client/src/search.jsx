@@ -51,7 +51,7 @@ function Search() {
         <div className='reviewedSites list'>
           {reviewedSites.map((review) => {
             return (
-              <div>
+              <div key={review.id}>
                 <br></br>
                 <div>Written By: {review.User.username}</div>
                 <div>Likes: {review.likes}</div>
@@ -65,7 +65,7 @@ function Search() {
         <div className='webSitesList'>
           {webSites.map((site) => {
             return (
-              <div>
+              <div key={site.id}>
                 <br></br>
                 <a href={site.url}>{site.url}</a>
                 <br></br>
