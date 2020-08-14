@@ -1,8 +1,29 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveReview, getUser } = require('../db/database');
+const { saveReview, getUser, findTopReviews } = require('../db/database');
 
 const reviewRoute = Router();
+
+reviewRoute.get('/retrieve/:id', (req, res) => {
+  if (req.params.id === 'id=top') {
+    findTopReviews().then((data) => {
+      // console.log(Array.isArray(data));
+      // find the top reviews
+      // find out the corresponding urls
+      // find out the corresponding users
+      // send all of this data
+      console.log(data);
+      //res.write(JSON.stringify(['more data']));
+      res.status(200);
+      res.send(data);
+
+    })
+  } else if (req.params.id === 'id=bottom') {
+    console.log('id bottom');
+    res.status(200);
+    res.send('Bottom Reviews');
+  }
+})
 
 reviewRoute.post('/retrieve', (req, res) => {
   // this is the route that will retrieve a specific review based on user input
