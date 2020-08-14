@@ -204,6 +204,10 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
 // let articles = findArticleByKeyWord('apple.com');
 // console.log(articles, 'ARTICLESSSSSSS');
 
+<<<<<<< HEAD
+=======
+// either find or save a keyword
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
   .then((data) => {
     if (data === null) {
@@ -214,6 +218,10 @@ const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
   })
   .catch((err) => console.log(err));
 
+<<<<<<< HEAD
+=======
+// either save or find web url
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   .then((data) => {
     if (data === null) {
@@ -224,6 +232,11 @@ const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
   })
   .catch((err) => console.log(err));
 
+<<<<<<< HEAD
+=======
+  // when you login in via google, this function is called and will create an 
+  // entry for you in the DB if it doesn't already exist
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
   if (data === null) {
     return Users.create({
@@ -244,9 +257,9 @@ const saveReview = (username, text, weburl, keyword) => {
   let idWeb;
   let idKeyword;
   return new Promise((resolve, reject) => {
-    saveOrFindKeyWord(weburl).then((data) => {
+    saveOrFindKeyWord(keyword).then((data) => {
       idWeb = data.dataValues.id;
-      saveOrFindWebUrl(keyword).then((data) => {
+      saveOrFindWebUrl(weburl).then((data) => {
         idKeyword = data.dataValues.id;
         Users.findOne({ where: { username } }).then((data) => {
           idUser = data.dataValues.id;
@@ -266,6 +279,7 @@ const saveReview = (username, text, weburl, keyword) => {
 };
 
 // saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
+<<<<<<< HEAD
 
 const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
   .update({ bio })
@@ -275,6 +289,21 @@ const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { seria
   .then((user) => user.update({ image }))
   .then((data) => data)
   .catch((err) => console.log(err));
+=======
+
+// functions to update the user's progfile info
+const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
+  .update({ bio })
+  .then((data) => data)
+  .catch((err) => console.log(err)));
+
+const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial } })
+  .then((user) => user.update({ image }))
+  .then((data) => data)
+  .catch((err) => console.log(err));
+
+const findAndUpdateUsername = () => {};
+>>>>>>> f5a5bcf9f1ce4c4905f28c51d2eb968c029636ce
 
 const findTopReviews = () => {
   const sendArr = [];
@@ -282,6 +311,7 @@ const findTopReviews = () => {
   const usernames = [];
   let webUrls;
   let keywords;
+  // have sorting featue 1.find, sort by like, limit 5/10
   return Review.findAll({ limit: 10 }).then((data) => {
     sendArr.push(data);
     userIds = data.map((review) => review.dataValues.id_user);
