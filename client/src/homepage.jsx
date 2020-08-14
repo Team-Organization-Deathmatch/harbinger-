@@ -19,8 +19,9 @@ function HomePage() {
       console.log(reviews.data, 'Top');
       const topArray = []
       reviews.data[1].forEach((review, index) => {
-        review.username = reviews.data[0][index]
-        topArray.push(review)
+        review.username = reviews.data[0][index];
+        review.webUrl = reviews.data[2][index]
+        topArray.push(review);
       })
       setTop(topArray);
     })
@@ -68,18 +69,29 @@ function HomePage() {
         Top Best Reviews
       </h3>
       {topReviews.map((review) => (
-              <div>
-                <div>
-                  <h4>Username</h4>
-                  <div>{review.username}</div>
-                </div>
-                <div>
-                  <h4>Review</h4>
-                <div>{review.text}</div>
-                </div>
-                <br></br>
-              </div>
-            ))}
+        // <div>
+        //   <div>
+        //     <h4>Username</h4>
+        //     <div>{review.username}</div>
+        //   </div>
+        //   <div>
+        //     <h4>Review</h4>
+        //   <div>{review.text}</div>
+        //   </div>
+        //   <br></br>
+        // </div>
+        <div key={review.id}>
+          <br></br>
+          <div>Written By: {review.username}</div>
+          <div>Url: {review.webUrl}</div>
+          <div>Likes: {review.likes}</div>
+          <div> Dislikes: {review.dislike}</div>
+          <br></br>
+          <div>Review Title</div>
+          <div>{review.text}</div>
+          <button>See Review</button>
+        </div>
+      ))}
       <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
         Top Worst Reviews
       </h3>
