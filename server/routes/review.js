@@ -12,7 +12,7 @@ reviewRoute.get('/retrieve/:id', (req, res) => {
       // find out the corresponding urls
       // find out the corresponding users
       // send all of this data
-      console.log(data);
+      //console.log(data);
       //res.write(JSON.stringify(['more data']));
       res.status(200);
       res.send(data);

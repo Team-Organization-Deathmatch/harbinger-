@@ -14,8 +14,8 @@ function Reviews() {
     console.log(data);
     Axios.post('/review/submit', {
       text: data,
-      weburl: 'apple.com',
-      keyword: 'apple',
+      weburl: 'snapple.com',
+      keyword: 'snapple',
     }).then(() => {
       console.log('review posted!');
     })
