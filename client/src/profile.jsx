@@ -1,36 +1,40 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
-} from "react-router-dom";
+  Link,
+} from 'react-router-dom';
 
+import UserReviews from './UserReviews.jsx';
 
 function Profile() {
   const [user, setUser] = useState([]);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
-  const onSubmit = (userBio) => {
+  const onSubmit = (userBio, e) => {
     axios.post('/profile/bio', { bio: userBio })
       .then(({ data }) => {
         setUser(data);
+        e.target.reset();
       });
   };
-  const imageSubmit = (imageUrl) => {
+  const imageSubmit = (imageUrl, e) => {
     axios.post('/profile/image', { image: imageUrl })
       .then(({ data }) => {
         console.log(data);
         setUser(data);
+        e.target.reset();
       });
-  }
+  };
 
   useEffect(() => {
     axios.get('/good')
       .then(({ data }) => {
-        //console.log(data);
+        // console.log(data);
         setUser(data);
       });
   }, []);
@@ -46,12 +50,15 @@ function Profile() {
       <img src={user.image} />
       <h3>Edit Image</h3>
       <form onSubmit={handleSubmit(imageSubmit)}>
-        <textarea ref={register} name="imageUrl" />
-        <button>Submit Image</button>
+        <input ref={register} name="imageUrl" />
+        <button onClick={() => reset()}>Submit Image</button>
       </form>
       <div>
         <div>
-          <h2>Bio for {user.username}</h2>
+          <h2>
+            Bio for: 
+            {user.username}
+          </h2>
           <div>{user.bio}</div>
 
         </div>
@@ -61,12 +68,13 @@ function Profile() {
         <div>
           <h3>Edit Bio</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <textarea ref={register} name="message" />
-            <button>Submit Bio</button>
+            <input ref={register} name="message" />
+            <button onClick={() => reset()}>Submit Bio</button>
           </form>
-
+          <div>
+            <UserReviews />
+          </div>
         </div>
-
       </div>
     </div>
   );
