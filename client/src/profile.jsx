@@ -38,12 +38,13 @@ function Profile() {
   return (
     <div>
       <div style={{ backgroundColor: '#800000' }}>
-        <h1 style={{ display: 'inline-block', color: 'white' }}>
+        <h1 style={{ display: 'inline-block', color: 'white', marginRight: '600px' }}>
           {user.username}
           : Profile
         </h1>
+        <Link to="/"><h1 style={{ display: 'inline-block', color: 'white', textAlign: 'right' }}>Back to Homepage</h1></Link>
       </div>
-      <img src={user.image} />
+      <img src={user.image} width="20%" height="20%" />
       <h3>Edit Image</h3>
       <form onSubmit={handleSubmit(imageSubmit)}>
         <textarea ref={register} name="imageUrl" />
