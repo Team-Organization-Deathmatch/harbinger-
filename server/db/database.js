@@ -293,6 +293,7 @@ const findTopReviews = () => {
   let keywords;
   // have sorting featue 1.find, sort by like, limit 5/10
   return Review.findAll({ limit: 10 }).then((data) => {
+    sortedData = data.sort((a, b) => b.likes - a.likes);
     sendArr.push(data);
     userIds = data.map((review) => review.dataValues.id_user);
     webIds = data.map((review) => review.dataValues.id_web);
