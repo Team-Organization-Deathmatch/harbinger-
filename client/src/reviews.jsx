@@ -17,7 +17,7 @@ function Reviews(props) {
   };
   //const [passedSite, passedSiteUpdate] = useState('hello');
 
-  let test = window.location.href.split('=');
+  let test = window.location.href.split('site=');
   test = test[1];
   return (
     <div>
