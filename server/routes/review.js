@@ -1,6 +1,6 @@
 const { Router } = require('express');
 require('../db/database');
-const { saveReview, getUser, findTopReviews } = require('../db/database');
+const { saveReview, getUser, findTopReviews, updateLikeInReview } = require('../db/database');
 
 const reviewRoute = Router();
 
@@ -55,6 +55,20 @@ reviewRoute.post('/submit', (req, res) =>
 //   res.status(401);
 //   res.send('unauthorized');
 // }
+reviewRoute.put('/update/:type', (req, res) => {
+  if (req.params.type === 'type=like') {
+    updateLikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!')
+        res.status(204);
+        res.end();
+      })
+  } else {
+    console.log('dislike');
+    res.status(204);
+    res.end();
+  }
+})
 
 
 module.exports = {
