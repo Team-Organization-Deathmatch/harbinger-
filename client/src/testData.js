@@ -265,4 +265,52 @@ let newArray = testArray.map((site) => {
 });
 //console.log(newArray);
 
-export { testArray };
+let newTestData = [
+  {
+    id: 1,
+    likes: 0,
+    dislike: 0,
+    id_user: 1,
+    text: 'THIS IS JUST A TEST REVIEW',
+    id_web: 1,
+    id_keyword: 1,
+    date: '2020-08-12T23:13:11.000Z',
+    createdAt: '2020-08-12T23:13:11.000Z',
+    updatedAt: '2020-08-12T23:13:11.000Z',
+    User: {
+      id: 1,
+      username: 'Hove Sebastian',
+      serial: '100104724231999533185',
+      bio: 'bio goes here',
+      image:
+        'https://lh3.googleusercontent.com/a-/AOh14GhaLpWiU0YD9VzkSOymEgrKHQB3c7jDEXzqhHq_XA',
+      createdAt: '2020-08-12T23:12:20.000Z',
+      updatedAt: '2020-08-12T23:12:20.000Z',
+    },
+  },
+  {
+    id: 2,
+    likes: 0,
+    dislike: 0,
+    id_user: 1,
+    text: 'THIS IS A SECOND TEST REVIEW TO SEE IF APPLE.COM IS FOUND ',
+    id_web: 1,
+    id_keyword: 1,
+    date: '2020-08-12T23:25:50.000Z',
+    createdAt: '2020-08-12T23:25:50.000Z',
+    updatedAt: '2020-08-12T23:25:50.000Z',
+    User: {
+      id: 1,
+      username: 'Hove Sebastian',
+      serial: '100104724231999533185',
+      bio: 'bio goes here',
+      image:
+        'https://lh3.googleusercontent.com/a-/AOh14GhaLpWiU0YD9VzkSOymEgrKHQB3c7jDEXzqhHq_XA',
+      createdAt: '2020-08-12T23:12:20.000Z',
+      updatedAt: '2020-08-12T23:12:20.000Z',
+    },
+  },
+];
+
+// export { testArray };
+console.log(newTestData[0]['User']);
