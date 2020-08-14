@@ -1,5 +1,5 @@
 const { Sequelize, TableHints } = require('sequelize');
-//const { default: Reviews } = require('../../client/src/reviews');
+// const { default: Reviews } = require('../../client/src/reviews');
 
 // create a connection to localDB
 
@@ -153,7 +153,7 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
-//TESTING TO SEE IF I CAN FIX DB LINKS
+// TESTING TO SEE IF I CAN FIX DB LINKS
 Review.belongsTo(Users, { foreignKey: 'id_user' });
 
 // const findArticleByKeyWord = (keyword) =>
@@ -166,77 +166,75 @@ Review.belongsTo(Users, { foreignKey: 'id_user' });
 //       console.log('hello')
 //     };
 
-//let test;
-const findArticleByKeyWord = (keyword) => {
-  return Keyword.findOne({ where: { keyword } }).then((data) => {
-    if (data === null) {
-      console.log('no keyword found');
-      return;
-    } else {
-      return Review.findAll({
-        include: [
-          {
-            model: Users,
-            required: true,
-          },
-        ],
-        // where: {
-        //   id_keyword: data.id,
-        // },
-        // include: [
-        //   {
-        //     model: Users,
-        //   },
-        // ],
+// let test;
+const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }).then((data) => {
+  if (data === null) {
+    console.log('no keyword found');
+  } else {
+    return Review.findAll({
+      include: [
+        {
+          model: Users,
+          required: true,
+        },
+      ],
+      // where: {
+      //   id_keyword: data.id,
+      // },
+      // include: [
+      //   {
+      //     model: Users,
+      //   },
+      // ],
+    })
+      .then((data) => {
+        console.log(typeof data);
+        console.log(data);
+        return data;
       })
-        .then((data) => {
-          console.log(typeof data);
-          console.log(data);
-          return data;
-        })
-        .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
-    }
-  });
-};
+      .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
+  }
+});
 
 // let articles = findArticleByKeyWord('apple.com');
 // console.log(articles, 'ARTICLESSSSSSS');
 
-const saveOrFindKeyWord = (keyword) =>
-  Keyword.findOne({ where: { keyword } })
-    .then((data) => {
-      if (data === null) {
-        console.log('keyword created!!!');
-        return Keyword.create({ keyword });
-      }
-      return data;
-    })
-    .catch((err) => console.log(err));
-
-const saveOrFindWebUrl = (url) =>
-  WebUrls.findOne({ where: { url } })
-    .then((data) => {
-      if (data === null) {
-        console.log('webURL created!');
-        return WebUrls.create({ url });
-      }
-      return data;
-    })
-    .catch((err) => console.log(err));
-
-const saveUsers = (username, serial, bio, image) =>
-  Users.findOne({ where: { serial } }).then((data) => {
+// either find or save a keyword
+const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
+  .then((data) => {
     if (data === null) {
-      return Users.create({
-        username,
-        serial,
-        bio,
-        image,
-      });
+      console.log('keyword created!!!');
+      return Keyword.create({ keyword });
     }
-    console.log(data);
-    console.log('entry already exists');
-  });
+    return data;
+  })
+  .catch((err) => console.log(err));
+
+// either save or find web url
+const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
+  .then((data) => {
+    if (data === null) {
+      console.log('webURL created!');
+      return WebUrls.create({ url });
+    }
+    return data;
+  })
+  .catch((err) => console.log(err));
+
+  // when you login in via google, this function is called and will create an 
+  // entry for you in the DB if it doesn't already exist
+const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
+  if (data === null) {
+    return Users.create({
+      username,
+      serial,
+      bio,
+      image,
+    });
+  }
+  console.log(data);
+  console.log('entry already exists');
+});
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
 
@@ -245,9 +243,9 @@ const saveReview = (username, text, weburl, keyword) => {
   let idWeb;
   let idKeyword;
   return new Promise((resolve, reject) => {
-    saveOrFindKeyWord(weburl).then((data) => {
+    saveOrFindKeyWord(keyword).then((data) => {
       idWeb = data.dataValues.id;
-      saveOrFindWebUrl(keyword).then((data) => {
+      saveOrFindWebUrl(weburl).then((data) => {
         idKeyword = data.dataValues.id;
         Users.findOne({ where: { username } }).then((data) => {
           idUser = data.dataValues.id;
@@ -266,27 +264,28 @@ const saveReview = (username, text, weburl, keyword) => {
   });
 };
 
-//saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
+// saveReview('Sebastian', 'this is just a TEST', 'www.boop.com', 'boop');
 
-const findUserAndUpdateBio = (serial, bio) =>
-  Users.findOne({ where: { serial: serial } }).then((user) =>
-    user
-      .update({ bio: bio })
-      .then((data) => data)
-      .catch((err) => console.log(err))
-  );
-const findUserAndUpdateImage = (serial, image) =>
-  Users.findOne({ where: { serial: serial } })
-    .then((user) => user.update({ image: image }))
-    .then((data) => data)
-    .catch((err) => console.log(err));
+// functions to update the user's progfile info
+const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
+  .update({ bio })
+  .then((data) => data)
+  .catch((err) => console.log(err)));
+
+const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial } })
+  .then((user) => user.update({ image }))
+  .then((data) => data)
+  .catch((err) => console.log(err));
+
+const findAndUpdateUsername = () => {};
 
 const findTopReviews = () => {
   const sendArr = [];
   let userIds;
-  let usernames = [];
+  const usernames = [];
   let webUrls;
   let keywords;
+  // have sorting featue 1.find, sort by like, limit 5/10
   return Review.findAll({ limit: 10 }).then((data) => {
     sendArr.push(data);
     userIds = data.map((review) => review.dataValues.id_user);
@@ -305,7 +304,7 @@ const findTopReviews = () => {
       });
       console.log(sendArr);
       return [usernames, ...sendArr];
-      //return sendArr;
+      // return sendArr;
     });
   });
 };
