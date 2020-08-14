@@ -288,12 +288,14 @@ const findTopReviews = () => {
   const sendArr = [];
   let userIds;
   const usernames = [];
-  let webUrls;
+  let webIds;
+  let webUrls = [];
   let keywords;
   // have sorting featue 1.find, sort by like, limit 5/10
   return Review.findAll({ limit: 10 }).then((data) => {
     sendArr.push(data);
     userIds = data.map((review) => review.dataValues.id_user);
+    webIds = data.map((review) => review.dataValues.id_web);
     return Users.findAll({
       where: {
         id: userIds,
@@ -307,8 +309,25 @@ const findTopReviews = () => {
           }
         });
       });
-      console.log(sendArr);
-      return [usernames, ...sendArr];
+      return WebUrls.findAll({
+        where: {
+          id: webIds,
+        },
+      }).then((data) => {
+        // console.log(data[0].dataValues.username, 'THIS IS THE DATA');
+        webIds.forEach((webId) => {
+          data.forEach((webObj) => {
+            if (webObj.dataValues.id === webId) {
+              webUrls.push(webObj.dataValues.url);
+            }
+          });
+        });
+        console.log(webUrls);
+        return [usernames, ...sendArr, webUrls];
+        // return sendArr;
+      });
+      //console.log(sendArr);
+      //return [usernames, ...sendArr];
       // return sendArr;
     });
   });
