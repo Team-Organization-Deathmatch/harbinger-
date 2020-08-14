@@ -153,6 +153,9 @@ const Keyword = db.define('Keyword', {
 });
 Keyword.sync();
 
+//TESTING TO SEE IF I CAN FIX DB LINKS
+Review.belongsTo(Users, { foreignKey: 'id_user' });
+
 // const findArticleByKeyWord = (keyword) =>
 //   Keyword.findOne({ where: { keyword } })
 //   .then((data) => {
@@ -162,20 +165,42 @@ Keyword.sync();
 //     } else {
 //       console.log('hello')
 //     };
-const findArticleByKeyWord = (keyword) =>
-  Keyword.findOne({ where: { keyword } }).then((data) => {
+
+//let test;
+const findArticleByKeyWord = (keyword) => {
+  return Keyword.findOne({ where: { keyword } }).then((data) => {
     if (data === null) {
       console.log('no keyword found');
       return;
     } else {
-      Review.findAll({
-        where: {
-          keyword: data.id,
-        },
-      }).then((data) => console.log(data));
-      // need to change this to return data?
+      return Review.findAll({
+        include: [
+          {
+            model: Users,
+            required: true,
+          },
+        ],
+        // where: {
+        //   id_keyword: data.id,
+        // },
+        // include: [
+        //   {
+        //     model: Users,
+        //   },
+        // ],
+      })
+        .then((data) => {
+          console.log(typeof data);
+          console.log(data);
+          return data;
+        })
+        .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
     }
   });
+};
+
+// let articles = findArticleByKeyWord('apple.com');
+// console.log(articles, 'ARTICLESSSSSSS');
 
 const saveOrFindKeyWord = (keyword) =>
   Keyword.findOne({ where: { keyword } })
@@ -234,7 +259,7 @@ const saveReview = (username, text, weburl, keyword) => {
             id_web: idWeb,
             id_keyword: idKeyword,
             date: new Date(),
-          }).then((data) => resolve(data))
+          }).then((data) => resolve(data));
         });
       });
     });
@@ -262,30 +287,28 @@ const findTopReviews = () => {
   let usernames = [];
   let webUrls;
   let keywords;
-  return Review.findAll({ limit: 10 })
-    .then((data) => {
-      sendArr.push(data);
-      userIds = data.map((review) => review.dataValues.id_user);
-      return Users.findAll({
-        where: {
-          id: userIds
-        }
-      }).then((data) => {
-        // console.log(data[0].dataValues.username, 'THIS IS THE DATA');
-        userIds.forEach((userId) => {
-          data.forEach((userObj) => {
-            if(userObj.dataValues.id === userId){
-              usernames.push(userObj.dataValues.username)
-            }
-          })
-        })
-        console.log(sendArr);
-        return [usernames, ...sendArr];
-        //return sendArr;
+  return Review.findAll({ limit: 10 }).then((data) => {
+    sendArr.push(data);
+    userIds = data.map((review) => review.dataValues.id_user);
+    return Users.findAll({
+      where: {
+        id: userIds,
+      },
+    }).then((data) => {
+      // console.log(data[0].dataValues.username, 'THIS IS THE DATA');
+      userIds.forEach((userId) => {
+        data.forEach((userObj) => {
+          if (userObj.dataValues.id === userId) {
+            usernames.push(userObj.dataValues.username);
+          }
+        });
       });
-
-    })
-}
+      console.log(sendArr);
+      return [usernames, ...sendArr];
+      //return sendArr;
+    });
+  });
+};
 
 module.exports = {
   db,
@@ -296,5 +319,6 @@ module.exports = {
   saveReview,
   findUserAndUpdateBio,
   findUserAndUpdateImage,
+  findArticleByKeyWord,
   findTopReviews,
 };
