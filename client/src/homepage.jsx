@@ -85,7 +85,7 @@ function HomePage() {
           <div>Likes: {review.likes}</div>
           <div> Dislikes: {review.dislike}</div>
           <br></br>
-          <div>Review Title</div>
+          <div>{review.title}</div>
           <div>{review.text}</div>
           <button onClick={() => { updateLike(review.id, 'like') }}>like</button>
           <button onClick={() => { updateLike(review.id, 'dislike') }}>dislike</button>
