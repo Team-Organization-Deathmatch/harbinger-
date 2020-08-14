@@ -3,8 +3,13 @@ const { Sequelize, TableHints } = require('sequelize');
 require('dotenv').config();
 // create a connection to localDB
 
-const db = new Sequelize(process.env.DB, process.env.DB_User, process.env.DB_Pass, {
-  host: process.env.HOST,
+const db_name = process.env.DB || 'harbinger';
+const db_user = process.env.DB_User || 'root';
+const db_pass = process.env.DB_Pass || '';
+const db_host = process.env.HOST || 'localhost';
+
+const db = new Sequelize(db_name, db_user, db_pass, {
+  host: db_host,
   dialect: 'mysql',
 });
 
