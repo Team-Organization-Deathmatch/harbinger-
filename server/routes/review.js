@@ -1,18 +1,32 @@
 const { Router } = require('express');
 require('../db/database');
 const {
-  saveReview,
-  getUser,
-  findTopReviews,
-  updateLikeInReview,
-  updateDislikeInReview,
+  saveReview, getUser, findTopReviews, updateLikeInReview, updateDislikeInReview, saveOrFindWebUrl,
 } = require('../db/database');
 
 const reviewRoute = Router();
+let changer = '';
+reviewRoute.get('/url', (req, res) => {
+  saveOrFindWebUrl(changer).then((data) => {
+    console.log(data.dataValues.id, 'this is data ofcourse');
+    findTopReviews({ where: { id_web: data.dataValues.id } })
+      .then((ddata) => {
+        console.log('I AM DEHDDJDSK', ddata);
+        res.send(ddata);
+      })
+      .catch((err) => console.error(err));
+  }).catch((err) => console.error(err));
+});
+
+reviewRoute.post('/url', (req, res) => {
+  changer = req.body.weburl;
+  console.log(changer, "here I am in time");
+  res.end();
+});
 
 reviewRoute.get('/retrieve/:id', (req, res) => {
   if (req.params.id === 'id=top') {
-    findTopReviews().then((data) => {
+    findTopReviews({ limit: 10 }).then((data) => {
       // console.log(Array.isArray(data));
       // find the top reviews
       // find out the corresponding urls
@@ -44,21 +58,22 @@ reviewRoute.post('/retrieve', (req, res) => {
 reviewRoute.post('/submit', (req, res) =>
   // if (req.user) {
   getUser(req.user).then((data) => {
-    // console.log(typeof data.dataValues.username);
-    const { text, title, weburl, keyword } = req.body;
-    // console.log(text, weburl, keyword);
+    console.log(typeof data.dataValues.username);
+    const {
+      text, title, weburl, keyword,
+    } = req.body;
+    console.log(text, weburl, keyword);
     return saveReview(
       data.dataValues.username,
       title,
       text.message,
       weburl,
-      keyword
+      keyword,
     ).then(() => {
       res.status(201);
       res.send('review POST');
     });
-  })
-);
+  }));
 // })
 
 // } else {
@@ -67,17 +82,19 @@ reviewRoute.post('/submit', (req, res) =>
 // }
 reviewRoute.put('/update/:type', (req, res) => {
   if (req.params.type === 'type=like') {
-    updateLikeInReview(req.body.reviewId).then(() => {
-      console.log('review updated!');
-      res.status(204);
-      res.end();
-    });
+    updateLikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!');
+        res.status(204);
+        res.end();
+      });
   } else {
-    updateDislikeInReview(req.body.reviewId).then(() => {
-      console.log('review updated!');
-      res.status(204);
-      res.end();
-    });
+    updateDislikeInReview(req.body.reviewId)
+      .then(() => {
+        console.log('review updated!');
+        res.status(204);
+        res.end();
+      });
   }
 });
 
