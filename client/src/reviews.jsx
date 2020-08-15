@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Axios from 'axios';
 
-function Reviews(props) {
+function Reviews() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     Axios.post('/review/submit', {
       text: data,
       weburl: siteURL,

@@ -89,22 +89,26 @@ function Search() {
 
           <button>Search websites</button>
         </Link> */}
-        {/* <Switch> */}
-          {/* <Route exact path="/"> */}
-              <button>Search websites</button>
-          {/* </Route> */}
-          {/* <Route exact path="/searchresults"> */}
-              {/* <button>Search websites</button> */}
-          {/* </Route> */}
-        {/* </Switch> */}
-        <div className="reviewedSites list">
-          {reviewedSites.map((review) => (
-            <div key={review.id}>
-              <br />
-              {/* <div>Written By: {review.User.username}</div> */}
-              <div>
-                Likes:
-                {review.likes}
+        <button>Search websites</button>
+        <div className='reviewedSites list'>
+          {reviewedSites.map((review) => {
+            return (
+              <div key={review.id}>
+                <br></br>
+                <div>Written By: {review.User.username}</div>
+                <Link
+                  to={{
+                    pathname: `/userProfile/name=${review.User.username}`,
+                  }}
+                >
+                  <button>{review.User.name}'s Profile</button>
+                </Link>
+                <img src={review.User.image} width='5%' height='5%' />
+                <div>Likes: {review.likes}</div>
+                <div> Dislikes: {review.dislike}</div>
+                <br></br>
+                <div>{review.text}</div>
+                <button>See Review</button>
               </div>
               <div>
                 {' '}
