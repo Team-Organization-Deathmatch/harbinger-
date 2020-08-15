@@ -10,7 +10,7 @@ userProfile.get('/:user', (req, res) => {
   // their name
   // here we will grab info from the DB for a single user profile and render it to the page
   if (req.user) {
-    console.log(req.body);
+    console.log(username);
     res.status(201);
     getUserReviews(username).then((data) => res.send(data));
 
