@@ -5,9 +5,10 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import { testArray } from './testData';
+
 let boom;
-let redir = '';
-let count = 0;
+const redir = '';
+const count = 0;
 function Search() {
   const searchBing = (query) => {
     const data = JSON.stringify(query);
@@ -27,21 +28,22 @@ function Search() {
     // BE SURE TO CHANGE WEBSITES UPDATE TO PROPER OBJECT KEYS
     // webSitesUpdate(testArray);
     return axios(config)
-      .then((response) => {
-        // console.log(JSON.stringify(response));
-        console.log(JSON.stringify(response.data[1]));
-        // console.log(JSON.stringify(response.data.webPages.value));
-        webSitesUpdate(response.data[0].webPages.value);
-        if (response.data[1] !== null) {
-          reviewedSitesUpdate(response.data[1]);
-        } else {
-          reviewedSitesUpdate(["We didn't find any matches"]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    .then(function (response) {
+      //console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response.data[1]), "THIS IS DATA");
+      console.log(JSON.stringify(response.data));
+      //console.log(JSON.stringifyresponse.data.webPages.value));
+      webSitesUpdate(response.data[0].webPages.value);
+      if (response.data[1] !== null) {
+        reviewedSitesUpdate(response.data[1]);
+      } else {
+        reviewedSitesUpdate([]);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
   const [webSites, webSitesUpdate] = useState([]);
   const [reviewedSites, reviewedSitesUpdate] = useState([]);
@@ -54,7 +56,6 @@ function Search() {
     // boom = data.clientSearch;
     // redir = <Redirect to="/searchresults" />;
   };
-
 
   // const tester = (data) => {
   //   if(data){
@@ -75,7 +76,6 @@ function Search() {
     // });
   }, []);
 
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,29 +86,31 @@ function Search() {
             pathname: `/search`,
           }}
         >
-
           <button>Search websites</button>
         </Link> */}
         <button>Search websites</button>
-        <div className='reviewedSites list'>
-          {reviewedSites.map((review) => {
-            return (
-              <div key={review.id}>
-                <br></br>
-                <div>Written By: {review.User.username}</div>
-                <Link
-                  to={{
-                    pathname: `/userProfile/name=${review.User.username}`,
-                  }}
-                >
-                  <button>{review.User.name}'s Profile</button>
-                </Link>
-                <img src={review.User.image} width='5%' height='5%' />
-                <div>Likes: {review.likes}</div>
-                <div> Dislikes: {review.dislike}</div>
-                <br></br>
-                <div>{review.text}</div>
-                <button>See Review</button>
+        <div className="reviewedSites list">
+          {reviewedSites.map((review) => (
+            <div key={review.id}>
+              <br />
+              <div>
+                Written By:
+                {review.User.username || 'Jim'}
+              </div>
+              <Link
+                to={{
+                  pathname: `/userProfile/name=${review.User.username}`,
+                }}
+              >
+                <button>
+                  {review.User.username || 'Jim'}
+                  's Profile
+                </button>
+              </Link>
+              <img src={review.User.image} width="5%" height="5%" />
+              <div>
+                Likes:
+                {review.likes}
               </div>
               <div>
                 {' '}
@@ -121,8 +123,6 @@ function Search() {
             </div>
           ))}
         </div>
-        {/* {tester(boom)}
-        {redir} */}
         <div className="webSitesList">
           {webSites.map((site) => (
             <div key={site.id}>
