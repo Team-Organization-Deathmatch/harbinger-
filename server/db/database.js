@@ -241,7 +241,27 @@ const saveUsers = (username, serial, bio, image) =>
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
 
-const getUserReviews = (name) => Users.findOne({ where: { username: name } });
+// for loading profiles
+// this finds the user name first
+// then we can find all reviews by them once we have that data
+const getUserReviews = (name) =>
+  Users.findOne({ where: { username: name } }).then((data) => {
+    return Review.findAll({
+      where: {
+        id_user: data.id,
+      },
+      include: [
+        {
+          model: Users,
+          required: true,
+        },
+      ],
+    })
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
+  });
 
 const saveReview = (username, title, text, weburl, keyword) => {
   let idUser;
