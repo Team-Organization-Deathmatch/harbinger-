@@ -74,7 +74,7 @@ function HomePage() {
             verticalAlign: 'middle',
           }}
         />
-        <Link to="/profile2">
+        <Link to='/me'>
           <h2
             style={{
               display: 'inline-block',

@@ -96,6 +96,8 @@ app.get('/logout', (req, res) => {
   loggedin = false;
   res.redirect('/google');
 });
+
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
