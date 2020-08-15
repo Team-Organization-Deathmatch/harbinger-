@@ -35,13 +35,13 @@ function HomePage() {
 
   useEffect(() => {
     axios.get('/review/retrieve/id=bottom').then((data) => {
-      console.log(data);
+      //console.log(data);
       setBottom(data);
     });
   }, []);
 
   const updateLike = (reviewId, type) => {
-    console.log(reviewId, type);
+    //console.log(reviewId, type);
 
     axios.put(`/review/update/type=${type}`, {
       reviewId,
@@ -65,10 +65,13 @@ function HomePage() {
         </h2>
         <img
           src={user.image}
-          width="4%"
-          height="4%"
+          width='4%'
+          height='4%'
           style={{
-            display: 'inline-block', marginRight: '2px', borderRadius: '50%', verticalAlign: 'middle',
+            display: 'inline-block',
+            marginRight: '2px',
+            borderRadius: '50%',
+            verticalAlign: 'middle',
           }}
         />
         <Link to="/profile2">

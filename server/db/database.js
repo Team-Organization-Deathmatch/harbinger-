@@ -192,8 +192,8 @@ const findArticleByKeyWord = (keyword) =>
         ],
       })
         .then((data) => {
-          console.log(typeof data);
-          console.log(data);
+          //console.log(typeof data);
+          //console.log(data);
           return data;
         })
         .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
@@ -235,11 +235,13 @@ const saveUsers = (username, serial, bio, image) =>
         image,
       });
     }
-    console.log(data);
+    //console.log(data);
     console.log('entry already exists');
   });
 
 const getUser = (id) => Users.findOne({ where: { serial: id } });
+
+const getUserReviews = (name) => Users.findOne({ where: { username: name } });
 
 const saveReview = (username, title, text, weburl, keyword) => {
   let idUser;
@@ -333,29 +335,33 @@ const findTopReviews = () => {
   });
 };
 
-const updateLikeInReview = (reviewId) => new Promise((resolve, reject) => {
-  Review.findOne({ where: { id: reviewId } })
-    .then((review) => {
-      const { likes } = review;
-      review.update({ likes: likes + 1 }).then(() => {
-        resolve();
+const updateLikeInReview = (reviewId) =>
+  new Promise((resolve, reject) => {
+    Review.findOne({ where: { id: reviewId } })
+      .then((review) => {
+        const { likes } = review;
+        review.update({ likes: likes + 1 }).then(() => {
+          resolve();
+        });
+      })
+      .catch(() => {
+        reject();
       });
-    }).catch(() => {
-      reject();
-    });
-});
+  });
 
-const updateDislikeInReview = (reviewId) => new Promise((resolve, reject) => {
-  Review.findOne({ where: { id: reviewId } })
-    .then((review) => {
-      const { dislike } = review;
-      review.update({ dislike: dislike + 1 }).then(() => {
-        resolve();
+const updateDislikeInReview = (reviewId) =>
+  new Promise((resolve, reject) => {
+    Review.findOne({ where: { id: reviewId } })
+      .then((review) => {
+        const { dislike } = review;
+        review.update({ dislike: dislike + 1 }).then(() => {
+          resolve();
+        });
+      })
+      .catch(() => {
+        reject();
       });
-    }).catch(() => {
-      reject();
-    });
-});
+  });
 
 module.exports = {
   db,
@@ -370,4 +376,5 @@ module.exports = {
   findTopReviews,
   updateLikeInReview,
   updateDislikeInReview,
+  getUserReviews,
 };
