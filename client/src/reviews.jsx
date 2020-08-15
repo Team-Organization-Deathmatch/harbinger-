@@ -62,10 +62,6 @@ const updateLike = (reviewId, type) => {
             {review.username}
             </div>
             <div>
-              Url:
-            {review.webUrl}
-            </div>
-            <div>
               Likes:
             {review.likes}
             </div>
