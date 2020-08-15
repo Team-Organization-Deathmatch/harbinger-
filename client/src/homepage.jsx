@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { useRef } from 'react';
+import {
+  BrowserRouter as Router, Switch, Route, Link,
+} from 'react-router-dom';
+
 import Search from './search.jsx';
+
 
 function HomePage() {
   const [user, setUser] = useState([]);
@@ -17,7 +20,7 @@ function HomePage() {
 
   useEffect(() => {
     axios.get('/review/retrieve/id=top').then((reviews) => {
-      //console.log(reviews.data, 'Top');
+      console.log(reviews.data, 'Top');
       const topArray = [];
       reviews.data[1].forEach((review, index) => {
         review.username = reviews.data[0][index];
@@ -40,14 +43,13 @@ function HomePage() {
   const updateLike = (reviewId, type) => {
     //console.log(reviewId, type);
 
-    axios
-      .put(`/review/update/type=${type}`, {
-        reviewId: reviewId,
-      })
-      .then(() => {
-        console.log('posted');
-      });
+    axios.put(`/review/update/type=${type}`, {
+      reviewId,
+    }).then(() => {
+      console.log('posted');
+    });
   };
+
 
   return (
     <div>
@@ -72,7 +74,7 @@ function HomePage() {
             verticalAlign: 'middle',
           }}
         />
-        <Link to='/profile2'>
+        <Link to="/profile2">
           <h2
             style={{
               display: 'inline-block',
@@ -88,33 +90,59 @@ function HomePage() {
       <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
         Top Best Reviews
       </h3>
-      {topReviews.map((review) => (
-        <div key={review.id}>
-          <br></br>
-          <div>Written By: {review.username}</div>
-          <div>Url: {review.webUrl}</div>
-          <div>Likes: {review.likes}</div>
-          <div> Dislikes: {review.dislike}</div>
-          <br></br>
-          <div>{review.title}</div>
-          <div>{review.text}</div>
-          <button
-            onClick={() => {
-              updateLike(review.id, 'like');
-            }}
-          >
-            like
+      {topReviews.map((review) => {
+        let count = 0;
+        return (
+          <div key={review.id}>
+            <br />
+            <div>
+              Written By:
+            {review.username}
+            </div>
+            <div>
+              Url:
+            {review.webUrl}
+            </div>
+            <div>
+              Likes:
+            {review.likes}
+            </div>
+            <div>
+              {' '}
+            Dislikes:
+            {review.dislike}
+            </div>
+            <br />
+            <div>{review.title}</div>
+            <div>{review.text}</div>
+            <button
+              type="submit"
+              onClick={() => {
+                if (count === 0) {
+                  updateLike(review.id, 'like');
+                  count = +1;
+                };
+
+              }}
+            >
+              like
           </button>
-          <button
-            onClick={() => {
-              updateLike(review.id, 'dislike');
-            }}
-          >
-            dislike
+            <button
+              type="submit"
+              onClick={() => {
+                if (count === 0) {
+                  updateLike(review.id, 'dislike');
+                  count = +1;
+                };
+
+              }}
+            >
+              dislike
           </button>
-          <button>See Review</button>
-        </div>
-      ))}
+            
+          </div>
+        )
+      })}
       {/* <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
         Top Worst Reviews
       </h3> */}
