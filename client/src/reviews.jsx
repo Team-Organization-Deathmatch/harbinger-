@@ -43,8 +43,7 @@ const updateLike = (reviewId, type) => {
       keyword: document.getElementById('keyword').value,
     }).then(() => {
       console.log('review posted!');
-      window.location = "/";
-      window.location.reload();
+      window.location = '/me'
     });
   };
   //const [passedSite, passedSiteUpdate] = useState('hello');

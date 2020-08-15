@@ -26,6 +26,15 @@ function Profile() {
     });
   }, []);
 
+  const userLogout = () => {
+    axios.get('/logout').then(() => {
+      console.log('logged out');
+      window.location = '/';
+    });
+  };
+
+  
+
   return (
     <div>
       <div style={{ backgroundColor: '#800000' }}>
@@ -49,6 +58,10 @@ function Profile() {
             Back to Homepage
           </h1>
         </Link>
+        <form onSubmit={handleSubmit(userLogout)}>
+        <button>Logout</button>
+
+        </form>
       </div>
       <img src={user.image} width='20%' height='20%' />
       <h3>Edit Image</h3>
