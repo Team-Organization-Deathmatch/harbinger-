@@ -14,6 +14,7 @@ function Reviews() {
       keyword: document.getElementById('keyword').value,
     }).then(() => {
       console.log('review posted!');
+      window.location = '/me'
     });
   };
   //const [passedSite, passedSiteUpdate] = useState('hello');
