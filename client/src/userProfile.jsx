@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { json } from 'body-parser';
-import { response } from 'express';
+//import { response } from 'express';
 
 function UserProfile() {
   let username = window.location.href.split('name=');
@@ -38,16 +38,16 @@ function UserProfile() {
   return (
     <div>
       <h1> {usernameReverse}'s Profile </h1>
-      <div>THIS IS A TEST</div>
-      <h1>HELLLOOOOOOO</h1>
-      <img src={response.data.User.image} width='5%' height='5%' />
+
+      {/* <img src={userReviews[0].User.image} width='5%' height='5%' /> */}
       <div className='userReviewed sites'>
         {userReviews.map((review) => (
           <div key={review.id}>
             <br></br>
-            <div>{review.title}</div>
-            <br></br>
+            <h2>{review.title}</h2>
             <div>{review.text}</div>
+            <div>Likes: {review.likes}</div>
+            <div>Dislikes: {review.dislike}</div>
           </div>
         ))}
       </div>
