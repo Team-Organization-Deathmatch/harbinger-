@@ -3,20 +3,16 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { json } from 'body-parser';
+import { response } from 'express';
 
 function UserProfile() {
   let username = window.location.href.split('name=');
   username = username[1].split('%20').join(' ');
   //console.log(username);
+  let usernameReverse = username.split(' ').reverse().join(' ');
 
   const [userReviews, setUser] = useState([]);
-
   useEffect(() => {
-    // console.log('HELLOOOOO');
-    // axios.get(`/user/user=${username}`).then((data) => {
-    //   console.log(data, 'THIS IS A TEST');
-    console.log('HELLOOOOOOO');
-    // });
     let data = JSON.stringify({
       name: { username },
     });
@@ -28,15 +24,33 @@ function UserProfile() {
       data: data,
     };
 
-    axios(config).then(function (response) {
+    axios(config).then((response) => {
       console.log(JSON.stringify(response.data));
+      setUser(response.data);
     });
-  });
+  }, []);
 
-  console.log('HELLO');
+  // TRYING TO RENDER THE review.User.image to the top
+  // it will render in the map function
+  // but it won't render once on it's own once i set the user with
+  // the response data
+
   return (
     <div>
-      <div> {username} </div>
+      <h1> {usernameReverse}'s Profile </h1>
+      <div>THIS IS A TEST</div>
+      <h1>HELLLOOOOOOO</h1>
+      <img src={response.data.User.image} width='5%' height='5%' />
+      <div className='userReviewed sites'>
+        {userReviews.map((review) => (
+          <div key={review.id}>
+            <br></br>
+            <div>{review.title}</div>
+            <br></br>
+            <div>{review.text}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
