@@ -69,7 +69,7 @@ function HomePage() {
             display: 'inline-block', marginRight: '2px', borderRadius: '50%', verticalAlign: 'middle',
           }}
         />
-        <Link to='/profile2'>
+        <Link to='/me'>
           <h2
             style={{
               display: 'inline-block',
@@ -97,7 +97,7 @@ function HomePage() {
           <div>{review.text}</div>
           <button onClick={() => { updateLike(review.id, 'like') }}>like</button>
           <button onClick={() => { updateLike(review.id, 'dislike') }}>dislike</button>
-          <button>See Review</button>
+          <Link to="/review"><button>See Review</button></Link>
         </div>
       ))}
       {/* <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
