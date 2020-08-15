@@ -17,37 +17,37 @@ function HomePage() {
 
   useEffect(() => {
     axios.get('/review/retrieve/id=top').then((reviews) => {
-      console.log(reviews.data, 'Top');
-      const topArray = []
+      //console.log(reviews.data, 'Top');
+      const topArray = [];
       reviews.data[1].forEach((review, index) => {
         review.username = reviews.data[0][index];
-        review.webUrl = reviews.data[2][index]
+        review.webUrl = reviews.data[2][index];
         topArray.push(review);
-      })
+      });
       setTop(topArray);
-    })
-
+    });
   }, []);
 
   const [bottomReviews, setBottom] = useState([]);
 
   useEffect(() => {
     axios.get('/review/retrieve/id=bottom').then((data) => {
-      console.log(data);
+      //console.log(data);
       setBottom(data);
-    })
-
-  }, [])
+    });
+  }, []);
 
   const updateLike = (reviewId, type) => {
-    console.log(reviewId, type);
+    //console.log(reviewId, type);
 
-    axios.put(`/review/update/type=${type}`, {
-      reviewId: reviewId,
-    }).then(() => {
-      console.log('posted');
-    })
-  }
+    axios
+      .put(`/review/update/type=${type}`, {
+        reviewId: reviewId,
+      })
+      .then(() => {
+        console.log('posted');
+      });
+  };
 
   return (
     <div>
@@ -63,10 +63,13 @@ function HomePage() {
         </h2>
         <img
           src={user.image}
-          width="4%"
-          height="4%"
+          width='4%'
+          height='4%'
           style={{
-            display: 'inline-block', marginRight: '2px', borderRadius: '50%', verticalAlign: 'middle',
+            display: 'inline-block',
+            marginRight: '2px',
+            borderRadius: '50%',
+            verticalAlign: 'middle',
           }}
         />
         <Link to='/profile2'>
@@ -95,8 +98,20 @@ function HomePage() {
           <br></br>
           <div>{review.title}</div>
           <div>{review.text}</div>
-          <button onClick={() => { updateLike(review.id, 'like') }}>like</button>
-          <button onClick={() => { updateLike(review.id, 'dislike') }}>dislike</button>
+          <button
+            onClick={() => {
+              updateLike(review.id, 'like');
+            }}
+          >
+            like
+          </button>
+          <button
+            onClick={() => {
+              updateLike(review.id, 'dislike');
+            }}
+          >
+            dislike
+          </button>
           <button>See Review</button>
         </div>
       ))}
