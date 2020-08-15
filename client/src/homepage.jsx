@@ -136,7 +136,7 @@ function HomePage() {
             >
               dislike
           </button>
-            <button>See Review</button>
+            
           </div>
         )
       })}
