@@ -5,10 +5,42 @@ import {
 } from 'react-router-dom';
 
 import Search from './search.jsx';
+import { styled, Backdrop } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import Box from '@material-ui/core/Box';
 
 
 function HomePage() {
   const [user, setUser] = useState([]);
+// | Material UI style methods go here:
+//  \ be welcome to expand on the palethra of styles and add them to methods.
+//    \ use method as a tag to render the custom style.
+  const MyButton = styled(Button)({
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 20,
+    padding: '0 20px',
+  });
+
+  const Background = styled(Toolbar)({
+    background: 'linear-gradient(45deg, #FE6242 30%, #FF2445 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'red',
+  });
+
+  const ReviewBG = styled(Box)({
+    borderRadius: 3,
+    height: 200,
+    boxShadow: '0 3px 5px 2px #b81a06',
+    backgroundColor: '#FAEBD7',
+    color: 'black',
+  });
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
@@ -50,18 +82,20 @@ function HomePage() {
     });
   };
 
-
   return (
     <div>
-      <div style={{ backgroundColor: '#800000' }}>
+      <div>
+        <Background>
+          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' } }></img>
         <h2
           style={{
             display: 'inline-block',
             color: 'white',
-            marginRight: '800px',
+            position: 'absolute',
+            marginLeft: '60px'
           }}
         >
-          HomePage Component
+          Harbinger
         </h2>
         <img
           src={user.image}
@@ -69,7 +103,7 @@ function HomePage() {
           height='4%'
           style={{
             display: 'inline-block',
-            marginRight: '2px',
+            marginLeft: '800px',
             borderRadius: '50%',
             verticalAlign: 'middle',
           }}
@@ -85,15 +119,16 @@ function HomePage() {
             {user.username}
           </h2>
         </Link>
+        </Background>
       </div>
       <Search />
-      <h3 style={{ display: 'inline-block', marginRight: '800px' }}>
+      <h3 style={{ display: 'inline-block', verticalAlign: '-20px' }}>
         Top Best Reviews
       </h3>
       {topReviews.map((review) => {
         let count = 0;
         return (
-          <div key={review.id}>
+          <ReviewBG key={review.id}>
             <br />
             <div>
               Written By:
@@ -115,7 +150,7 @@ function HomePage() {
             <br />
             <div>{review.title}</div>
             <div>{review.text}</div>
-            <button
+            <MyButton
               type="submit"
               onClick={() => {
                 if (count === 0) {
@@ -126,8 +161,8 @@ function HomePage() {
               }}
             >
               like
-          </button>
-            <button
+          </MyButton>
+            <MyButton
               type="submit"
               onClick={() => {
                 if (count === 0) {
@@ -138,9 +173,9 @@ function HomePage() {
               }}
             >
               dislike
-          </button>
+          </MyButton>
             
-          </div>
+          </ReviewBG>
         )
       })}
       {/* <h3 style={{ display: 'inline-block', textAlign: 'right' }}>
