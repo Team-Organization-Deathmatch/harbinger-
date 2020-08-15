@@ -249,9 +249,9 @@ const saveReview = (username, title, text, weburl, keyword) => {
   let idKeyword;
   return new Promise((resolve, reject) => {
     saveOrFindKeyWord(keyword).then((data) => {
-      idWeb = data.dataValues.id;
+      idKeyword = data.dataValues.id;
       saveOrFindWebUrl(weburl).then((data) => {
-        idKeyword = data.dataValues.id;
+        idWeb = data.dataValues.id;
         Users.findOne({ where: { username } }).then((data) => {
           idUser = data.dataValues.id;
           return Review.create({
@@ -285,7 +285,7 @@ const findUserAndUpdateImage = (serial, image) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
-const findTopReviews = () => {
+const findTopReviews = (query) => {
   const sendArr = [];
   let userIds;
   const usernames = [];
@@ -293,7 +293,7 @@ const findTopReviews = () => {
   const webUrls = [];
   let keywords;
   // have sorting featue 1.find, sort by like, limit 5/10
-  return Review.findAll({ limit: 10 }).then((data) => {
+  return Review.findAll(query).then((data) => {
     sortedData = data.sort((a, b) => b.likes - a.likes);
     sendArr.push(data);
     userIds = data.map((review) => review.dataValues.id_user);
