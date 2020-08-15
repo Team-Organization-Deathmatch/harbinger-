@@ -1,7 +1,11 @@
 const { Router } = require('express');
 require('../db/database');
 const {
-  saveReview, getUser, findTopReviews, updateLikeInReview, updateDislikeInReview,
+  saveReview,
+  getUser,
+  findTopReviews,
+  updateLikeInReview,
+  updateDislikeInReview,
 } = require('../db/database');
 
 const reviewRoute = Router();
@@ -40,9 +44,9 @@ reviewRoute.post('/retrieve', (req, res) => {
 reviewRoute.post('/submit', (req, res) =>
   // if (req.user) {
   getUser(req.user).then((data) => {
-    console.log(typeof data.dataValues.username);
+    // console.log(typeof data.dataValues.username);
     const { text, title, weburl, keyword } = req.body;
-    console.log(text, weburl, keyword);
+    // console.log(text, weburl, keyword);
     return saveReview(
       data.dataValues.username,
       title,
@@ -63,19 +67,17 @@ reviewRoute.post('/submit', (req, res) =>
 // }
 reviewRoute.put('/update/:type', (req, res) => {
   if (req.params.type === 'type=like') {
-    updateLikeInReview(req.body.reviewId)
-      .then(() => {
-        console.log('review updated!');
-        res.status(204);
-        res.end();
-      });
+    updateLikeInReview(req.body.reviewId).then(() => {
+      console.log('review updated!');
+      res.status(204);
+      res.end();
+    });
   } else {
-    updateDislikeInReview(req.body.reviewId)
-      .then(() => {
-        console.log('review updated!');
-        res.status(204);
-        res.end();
-      });
+    updateDislikeInReview(req.body.reviewId).then(() => {
+      console.log('review updated!');
+      res.status(204);
+      res.end();
+    });
   }
 });
 
