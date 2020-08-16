@@ -8,7 +8,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
 
 function Profile() {
+  let username;
   const [user, setUser] = useState([]);
+  const [userReviews, setUserReviews] = useState([]);
   const { register, handleSubmit } = useForm();
 
   const MyButton = styled(Button)({
@@ -50,26 +52,51 @@ function Profile() {
   };
   const imageSubmit = (imageUrl) => {
     axios.post('/profile/image', { image: imageUrl }).then(({ data }) => {
-      //console.log(data);
+      // console.log(data);
       setUser(data);
     });
   };
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
-      //console.log(data);
+      // console.log(data, 'user');
       setUser(data);
+      username = data.username;
     });
+  }, []);
+
+  useEffect(() => {
+    axios.get('/good').then(({ data }) => {
+      // console.log(data, 'user');
+
+      console.log(data.username)
+      const config = {
+        method: 'get',
+        url: `http://localhost:8080/user/${username}`,
+        headers: {},
+        data: username,
+      };
+      axios(config)
+        .then((reviews) => {
+          setUserReviews(reviews.data);
+          console.log(reviews.data)
+        });
+
+    });
+
+    //console.log(user)
+    // axios(config).then((response) => {
+    //   console.log(JSON.stringify(response.data));
+    //   setUserReview(response.data);
+    // });
   }, []);
 
   const userLogout = () => {
     axios.get('/logout').then(() => {
-      console.log('logged out');
+      // console.log('logged out');
       window.location = '/';
     });
   };
-
-  
 
   return (
     <div>
@@ -82,9 +109,10 @@ function Profile() {
             marginRight: '600px',
           }}
         >
-          {user.username}: Profile
+          {user.username}
+          : Profile
         </h1>
-        <Link to='/'>
+        <Link to="/">
           <h1
             style={{
               display: 'inline-block',
@@ -130,6 +158,38 @@ function Profile() {
       <div>
         <div>
         </div>
+      </div>
+      User reviews Here
+      <div>
+        {userReviews.map((review) => {
+          console.log(review)
+          return (
+          <div>
+            <br />
+            <div>
+              Written By:
+            {review.User.username}
+            </div>
+            <div>
+              Url:
+            {review.User.webUrl}
+            </div>
+            <div>
+              Likes:
+            {review.User.likes}
+            </div>
+            <div>
+              {' '}
+            Dislikes:
+            {review.User.dislike}
+            </div>
+            <br />
+            <div>{review.User.title}</div>
+            <div>{review.User.text}</div>
+
+          </div>
+          )
+        })}
       </div>
     </div>
   );
