@@ -8,6 +8,7 @@ function Reviews(props) {
   const { register, handleSubmit } = useForm();
   const [reviews, setRev] = useState([]);
   let siteURL = window.location.href.split('site=');
+  // window.location = window.location.href.split('site=')[0] + `${Math.floor(Math.random() * 99999999)}`;
   siteURL = siteURL[1];
   useEffect (() => {
     Axios.post(`/review/url`, { weburl: siteURL })
