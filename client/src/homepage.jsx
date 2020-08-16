@@ -108,28 +108,6 @@ function HomePage() {
             verticalAlign: 'middle',
           }}
         />
-        <Link to='/me'>
-          <h2
-            style={{
-              display: 'inline-block',
-              color: 'white',
-              position: 'absolute',
-              marginLeft: '60px'
-            }}
-          >
-            Harbinger
-        </h2>
-          <img
-            src={user.image}
-            width='4%'
-            height='4%'
-            style={{
-              display: 'inline-block',
-              marginLeft: '800px',
-              borderRadius: '50%',
-              verticalAlign: 'middle',
-            }}
-          />
           <Link to='/me'>
             <h2
               style={{
