@@ -11,24 +11,46 @@ function UserProfile() {
   //console.log(username);
   let usernameReverse = username.split(' ').reverse().join(' ');
 
-  const [userReviews, setUser] = useState([]);
+  const [userReviews, setUserReviews] = useState([]);
+
   useEffect(() => {
-    let data = JSON.stringify({
-      name: { username },
-    });
-
-    var config = {
-      method: 'get',
-      url: `http://localhost:8080/user/${username}`,
-      headers: {},
-      data: data,
-    };
-
-    axios(config).then((response) => {
-      console.log(JSON.stringify(response.data));
-      setUser(response.data);
+    axios.get('/good').then(({ data }) => {
+      console.log(data.username, data, 'user');
+      let image = data.image
+      axios.post(`/user/${username}`, {
+        userId: data.id,
+      })
+        .then((reviews) => {
+          let userArray = [];
+          reviews.data[1].forEach((review, index) => {
+            review.username = reviews.data[0][index];
+            review.webUrl = reviews.data[2][index];
+            review.image = image;
+            userArray.push(review);
+            console.log(userArray);
+          });
+          setUserReviews(userArray);
+          console.log(userArray);
+        });
     });
   }, []);
+  // useEffect(() => {
+  //   let data = JSON.stringify({
+  //     name: { username },
+  //   });
+
+  //   var config = {
+  //     method: 'get',
+  //     url: `http://localhost:8080/user/${username}`,
+  //     headers: {},
+  //     data: data,
+  //   };
+
+  //   axios(config).then((response) => {
+  //     console.log(JSON.stringify(response.data));
+  //     setUser(response.data);
+  //   });
+  // }, []);
 
   // TRYING TO RENDER THE review.User.image to the top
   // it will render in the map function
