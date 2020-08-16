@@ -192,35 +192,6 @@ function Profile() {
       </div>
       {user.username}'s reviews
       <div>
-        {/* {userReviews.map((review) => {
-          console.log(review)
-          return (
-            <div>
-              <br />
-              <div>
-                Written By:
-            {review.username}
-              </div>
-              <div>
-                Url:
-            {review.webUrl}
-              </div>
-              <div>
-                Likes:
-            {review.likes}
-              </div>
-              <div>
-                {' '}
-            Dislikes:
-            {review.dislike}
-              </div>
-              <br />
-              <div>{review.title}</div>
-              <div>{review.text}</div>
-
-            </div>
-          )
-        })} */}
         {userReviews.map((review) => {
           let count = 0;
           return (
