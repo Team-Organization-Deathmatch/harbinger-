@@ -17,7 +17,7 @@ function UserProfile() {
 
     console.log(username);
     axios.post(`/user/${username}`, {
-      username: username ,
+      username: username,
     })
       .then((reviews) => {
         console.log(reviews.data);
@@ -28,7 +28,7 @@ function UserProfile() {
           review.image = reviews.data[3].image;
           userArray.push(review);
         });
-         setUserReviews(userArray);
+        setUserReviews(userArray);
       });
 
   }, []);
@@ -58,6 +58,17 @@ function UserProfile() {
   return (
     <div>
       <h1> {usernameReverse}'s Profile </h1>
+      <Link to="/">
+        <h1
+          style={{
+            display: 'inline-block',
+            color: 'black',
+            textAlign: 'right',
+          }}
+        >
+          Back to Homepage
+        </h1>
+      </Link>
 
       {/* <img src={userReviews[0].User.image} width='5%' height='5%' /> */}
       <div className='userReviewed sites'>
