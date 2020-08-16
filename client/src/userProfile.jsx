@@ -14,25 +14,23 @@ function UserProfile() {
   const [userReviews, setUserReviews] = useState([]);
 
   useEffect(() => {
-    axios.get('/good').then(({ data }) => {
-      console.log(data.username, data, 'user');
-      let image = data.image
-      axios.post(`/user/${username}`, {
-        userId: data.id,
-      })
-        .then((reviews) => {
-          let userArray = [];
-          reviews.data[1].forEach((review, index) => {
-            review.username = reviews.data[0][index];
-            review.webUrl = reviews.data[2][index];
-            review.image = image;
-            userArray.push(review);
-            console.log(userArray);
-          });
-          setUserReviews(userArray);
-          console.log(userArray);
+
+    console.log(username);
+    axios.post(`/user/${username}`, {
+      username: username ,
+    })
+      .then((reviews) => {
+        console.log(reviews.data);
+        let userArray = [];
+        reviews.data[1].forEach((review, index) => {
+          review.username = reviews.data[0][index];
+          review.webUrl = reviews.data[2][index];
+          review.image = reviews.data[3].image;
+          userArray.push(review);
         });
-    });
+         setUserReviews(userArray);
+      });
+
   }, []);
   // useEffect(() => {
   //   let data = JSON.stringify({
