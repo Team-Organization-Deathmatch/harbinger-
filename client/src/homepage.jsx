@@ -86,28 +86,28 @@ function HomePage() {
     <div>
       <div>
         <Background>
-          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' }}></img>
-          <h2
-            style={{
-              display: 'inline-block',
-              color: 'white',
-              position: 'absolute',
-              marginLeft: '60px'
-            }}
-          >
-            Harbinger
+          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' } }></img>
+        <h2
+          style={{
+            display: 'inline-block',
+            color: 'white',
+            position: 'absolute',
+            marginLeft: '60px'
+          }}
+        >
+          Harbinger
         </h2>
-          <img
-            src={user.image}
-            width='4%'
-            height='4%'
-            style={{
-              display: 'inline-block',
-              marginLeft: '800px',
-              borderRadius: '50%',
-              verticalAlign: 'middle',
-            }}
-          />
+        <img
+          src={user.image}
+          width='50px'
+          height='50px'
+          style={{
+            display: 'inline-block',
+            marginLeft: '800px',
+            borderRadius: '50%',
+            verticalAlign: 'middle',
+          }}
+        />
           <Link to='/me'>
             <h2
               style={{
