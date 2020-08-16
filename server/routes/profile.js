@@ -4,6 +4,7 @@ const {
   findUserAndUpdateBio,
   getUser,
   findUserAndUpdateImage,
+  findUserAndUpdateUsername,
 } = require('../db/database');
 
 const profileRoute = Router();
@@ -37,6 +38,21 @@ profileRoute.post('/bio', (req, res) => {
 profileRoute.post('/image', (req, res) => {
   if (req.user) {
     findUserAndUpdateImage(req.user, req.body.image.imageUrl).then((data) => {
+      getUser(req.user).then((user) => {
+        console.log(user, 'USER in POST');
+        res.status(201);
+        res.send(user);
+      });
+    });
+  } else {
+    res.status(401);
+    res.send('unauthorized');
+  }
+});
+
+profileRoute.post('/username', (req, res) => {
+  if (req.user) {
+    findUserAndUpdateUsername(req.user, req.body.username.username).then((data) => {
       getUser(req.user).then((user) => {
         console.log(user, 'USER in POST');
         res.status(201);
