@@ -56,6 +56,12 @@ function Profile() {
       setUser(data);
     });
   };
+  const usernameSubmit = (username) => {
+    axios.post('/profile/username', { username: username }).then(({ data }) => {
+      console.log(data);
+      setUser(data);
+    });
+  }
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
@@ -67,10 +73,10 @@ function Profile() {
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
-      console.log(data.username, data, 'user');
+      //console.log(data.username, data, 'user');
       let image = data.image
       axios.post(`/user/${username}`, {
-        userId: data.id,
+        username: username,
       })
         .then((reviews) => {
           let userArray = [];
@@ -79,7 +85,7 @@ function Profile() {
             review.webUrl = reviews.data[2][index];
             review.image = image;
             userArray.push(review);
-            console.log(userArray);
+            console.log(userArray, 'userArray');
           });
           setUserReviews(userArray);
         });
@@ -147,6 +153,13 @@ function Profile() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <textarea ref={register} name='message' />
             <button><MyButton>Submit Bio</MyButton></button>
+          </form>
+      </div>
+      <div style={{ display: 'inline-block', marginLeft: "400px" }}>
+      <h3>Edit Username</h3>
+          <form onSubmit={handleSubmit(usernameSubmit)}>
+            <textarea ref={register} name='username' />
+            <button><MyButton>Submit Username</MyButton></button>
           </form>
       </div>
       </ReviewBG>
