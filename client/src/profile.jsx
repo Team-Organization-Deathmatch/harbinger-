@@ -157,7 +157,7 @@ function Profile() {
             >
               Back to Homepage
             </h1>
-          </Link>
+        </Link>
           <form onSubmit={handleSubmit(userLogout)}>
             <button><MyButton>Logout</MyButton></button>
 
