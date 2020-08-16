@@ -27,6 +27,7 @@ function Profile() {
     background: 'linear-gradient(45deg, #FE6242 30%, #FF2445 90%)',
     border: 0,
     borderRadius: 3,
+    height: '10px',
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     color: 'red',
   });
@@ -39,9 +40,30 @@ function Profile() {
     color: 'black',
   });
 
+  const LikeBG = styled(Box)({
+    borderRadius: 3,
+    height: 200,
+    boxShadow: '0 3px 4px 2px gray',
+    backgroundColor: '#9ACD32',
+    color: 'black',
+  });
+
+  const DikeBG = styled(Box)({
+    borderRadius: 3,
+    height: 200,
+    boxShadow: '0 3px 4px 2px gray',
+    backgroundColor: '#F08080',
+  });
+
   const ImageBG = styled(Box)({
     borderRadius: 7,
     boxShadow: '0 1px 30px 0px gray',
+    color: 'black',
+  });
+
+  const TitleBox = styled(Box)({
+    background: 'linear-gradient(45deg, #FE6534 30%, #FCD98D 90%)',
+    borderRadius: 7,
     color: 'black',
   });
 
@@ -101,7 +123,7 @@ function Profile() {
           style={{
             display: 'inline-block',
             color: 'white',
-            marginRight: '600px',
+            marginRight: '400px',
           }}
         >
           {user.username}
@@ -113,6 +135,7 @@ function Profile() {
               display: 'inline-block',
               color: 'white',
               textAlign: 'right',
+              padding: '30px',
             }}
           >
             Back to Homepage
@@ -154,34 +177,42 @@ function Profile() {
         <div>
         </div>
       </div>
-      User reviews Here
+     <Background><h1 style={{ marginLeft: "500px", color: "white" }}>My Reviews</h1></Background>
       <div>
         {userReviews.map((review) => {
-          console.log(review)
+          console.log(review);
           return (
           <div>
-            <br />
-            <div>
-              Written By:
-            {review.username}
-            </div>
-            <div>
-              Url:
-            {review.webUrl}
-            </div>
-            <div>
+            <ImageBG width="200">
+            <div >
+            <img src={review.image} style={{ position: 'absolute', marginBottom: "20px", boxShadow: '0 3px 10px 2px gray', }} width='150px'
+          height='150px'/>
+            <TitleBox>
+            <h1 style={{ marginLeft: "200px", padding: "0px", color: "white"}}>{review.title}</h1>
+            </TitleBox>
+            <h4 style={{ marginLeft: "170px", padding: "0px"}}> Written By: {review.username}</h4>
+            <a href={review.webUrl} style={{ marginLeft: "170px", padding: "0px"}}>{review.webUrl}</a>
+            <div style={{ padding: "20px"}}>
+            <div style={{ display: 'inline-block', marginLeft: "20px" }}>
+            <LikeBG style={{ maxHeight: "20px", maxWidth: "400px", color: "white" }}>
+            <h4 style={{ }}>
               Likes:
             {review.likes}
-            </div>
-            <div>
+            </h4>
+            </LikeBG>
+            <DikeBG style={{ maxHeight: "20px", maxWidth: "400px", color: "white" }}>
+            <h4>
               {' '}
             Dislikes:
             {review.dislike}
+            </h4>
+            </DikeBG>
             </div>
-            <br />
-            <div>{review.title}</div>
-            <div>{review.text}</div>
-
+            <div style={{ maxWidth: "700px", marginLeft: "50px", marginBottom: "30px", positon: "absolute", padding: "12px", display: 'inline-block' }}>{review.text}</div>
+            </div>
+            <img height="10" style={{marginTop: "20px"}}></img>
+            </div>
+            </ImageBG>
           </div>
           )
         })}
