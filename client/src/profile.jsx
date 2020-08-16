@@ -33,28 +33,23 @@ function Profile() {
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
-      // console.log(data, 'user');
-
-      console.log(data.username)
-      const config = {
-        method: 'get',
-        url: `http://localhost:8080/user/${username}`,
-        headers: {},
-        data: username,
-      };
-      axios(config)
+      console.log(data.username, data, 'user');
+      let image = data.image
+      axios.post(`/user/${username}`, {
+        userId: data.id,
+      })
         .then((reviews) => {
-          setUserReviews(reviews.data);
-          console.log(reviews.data)
+          let userArray = [];
+          reviews.data[1].forEach((review, index) => {
+            review.username = reviews.data[0][index];
+            review.webUrl = reviews.data[2][index];
+            review.image = image;
+            userArray.push(review);
+            console.log(userArray);
+          });
+          setUserReviews(userArray);
         });
-
     });
-
-    //console.log(user)
-    // axios(config).then((response) => {
-    //   console.log(JSON.stringify(response.data));
-    //   setUserReview(response.data);
-    // });
   }, []);
 
   const userLogout = () => {
@@ -126,24 +121,24 @@ function Profile() {
             <br />
             <div>
               Written By:
-            {review.User.username}
+            {review.username}
             </div>
             <div>
               Url:
-            {review.User.webUrl}
+            {review.webUrl}
             </div>
             <div>
               Likes:
-            {review.User.likes}
+            {review.likes}
             </div>
             <div>
               {' '}
             Dislikes:
-            {review.User.dislike}
+            {review.dislike}
             </div>
             <br />
-            <div>{review.User.title}</div>
-            <div>{review.User.text}</div>
+            <div>{review.title}</div>
+            <div>{review.text}</div>
 
           </div>
           )
