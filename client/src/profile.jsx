@@ -61,7 +61,7 @@ function Profile() {
       console.log(data);
       setUser(data);
     });
-  }
+  };
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
@@ -103,65 +103,65 @@ function Profile() {
     <div>
       <div>
         <Background>
-        <h1
-          style={{
-            display: 'inline-block',
-            color: 'white',
-            marginRight: '600px',
-          }}
-        >
-          {user.username}
-          : Profile
-        </h1>
-        <Link to="/">
           <h1
             style={{
               display: 'inline-block',
               color: 'white',
-              textAlign: 'right',
+              marginRight: '600px',
             }}
           >
-            Back to Homepage
+            {user.username}
+          : Profile
+        </h1>
+          <Link to="/">
+            <h1
+              style={{
+                display: 'inline-block',
+                color: 'white',
+                textAlign: 'right',
+              }}
+            >
+              Back to Homepage
           </h1>
-        </Link>
-        <form onSubmit={handleSubmit(userLogout)}>
-        <button><MyButton>Logout</MyButton></button>
+          </Link>
+          <form onSubmit={handleSubmit(userLogout)}>
+            <button><MyButton>Logout</MyButton></button>
 
-        </form>
+          </form>
         </Background>
-       
+
       </div>
       <ImageBG width="200">
-      <div >
-      <img src={user.image} style={{ position: 'absolute', marginBottom: "20px", }} width='150px'
-          height='150px'/>
-      <h2 style={{ marginLeft: "300px", padding: "0px"}}>Bio for {user.username}</h2>
-      <div style={{ maxWidth: "700px", marginLeft: "300px", marginBottom: "10px", positon: "absolute", padding: "20px" }}>{user.bio}</div>
-      <img height="10" style={{marginTop: "20px"}}></img>
-      </div>
+        <div >
+          <img src={user.image} style={{ position: 'absolute', marginBottom: "20px", }} width='150px'
+            height='150px' />
+          <h2 style={{ marginLeft: "300px", padding: "0px" }}>Bio for {user.username}</h2>
+          <div style={{ maxWidth: "700px", marginLeft: "300px", marginBottom: "10px", positon: "absolute", padding: "20px" }}>{user.bio}</div>
+          <img height="10" style={{ marginTop: "20px" }}></img>
+        </div>
       </ImageBG>
       <ReviewBG style={{ marginTop: "20px" }}>
-      <div style={{ display: 'inline-block' }}>
-      <h3>Edit Image</h3>
-      <form onSubmit={handleSubmit(imageSubmit)}>
-        <textarea ref={register} name='imageUrl' />
-        <button><MyButton>Submit Image</MyButton></button>
-      </form>
-      </div>
-      <div style={{ display: 'inline-block', marginLeft: "200px" }}>
-      <h3>Edit Bio</h3>
+        <div style={{ display: 'inline-block' }}>
+          <h3>Edit Image</h3>
+          <form onSubmit={handleSubmit(imageSubmit)}>
+            <textarea ref={register} name='imageUrl' />
+            <button><MyButton>Submit Image</MyButton></button>
+          </form>
+        </div>
+        <div style={{ display: 'inline-block', marginLeft: "200px" }}>
+          <h3>Edit Bio</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <textarea ref={register} name='message' />
             <button><MyButton>Submit Bio</MyButton></button>
           </form>
-      </div>
-      <div style={{ display: 'inline-block', marginLeft: "400px" }}>
-      <h3>Edit Username</h3>
+        </div>
+        <div style={{ display: 'inline-block', marginLeft: "400px" }}>
+          <h3>Edit Username</h3>
           <form onSubmit={handleSubmit(usernameSubmit)}>
             <textarea ref={register} name='username' />
             <button><MyButton>Submit Username</MyButton></button>
           </form>
-      </div>
+        </div>
       </ReviewBG>
       <div>
         <div>
@@ -172,30 +172,30 @@ function Profile() {
         {userReviews.map((review) => {
           console.log(review)
           return (
-          <div>
-            <br />
             <div>
-              Written By:
+              <br />
+              <div>
+                Written By:
             {review.username}
-            </div>
-            <div>
-              Url:
+              </div>
+              <div>
+                Url:
             {review.webUrl}
-            </div>
-            <div>
-              Likes:
+              </div>
+              <div>
+                Likes:
             {review.likes}
-            </div>
-            <div>
-              {' '}
+              </div>
+              <div>
+                {' '}
             Dislikes:
             {review.dislike}
-            </div>
-            <br />
-            <div>{review.title}</div>
-            <div>{review.text}</div>
+              </div>
+              <br />
+              <div>{review.title}</div>
+              <div>{review.text}</div>
 
-          </div>
+            </div>
           )
         })}
       </div>

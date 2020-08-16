@@ -13,9 +13,9 @@ import Box from '@material-ui/core/Box';
 
 function HomePage() {
   const [user, setUser] = useState([]);
-// | Material UI style methods go here:
-//  \ be welcome to expand on the palethra of styles and add them to methods.
-//    \ use method as a tag to render the custom style.
+  // | Material UI style methods go here:
+  //  \ be welcome to expand on the palethra of styles and add them to methods.
+  //    \ use method as a tag to render the custom style.
   const MyButton = styled(Button)({
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     border: 0,
@@ -86,39 +86,39 @@ function HomePage() {
     <div>
       <div>
         <Background>
-          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' } }></img>
-        <h2
-          style={{
-            display: 'inline-block',
-            color: 'white',
-            position: 'absolute',
-            marginLeft: '60px'
-          }}
-        >
-          Harbinger
-        </h2>
-        <img
-          src={user.image}
-          width='4%'
-          height='4%'
-          style={{
-            display: 'inline-block',
-            marginLeft: '800px',
-            borderRadius: '50%',
-            verticalAlign: 'middle',
-          }}
-        />
-        <Link to='/me'>
+          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' }}></img>
           <h2
             style={{
               display: 'inline-block',
               color: 'white',
-              textAlign: 'right',
+              position: 'absolute',
+              marginLeft: '60px'
             }}
           >
-            {user.username}
-          </h2>
-        </Link>
+            Harbinger
+        </h2>
+          <img
+            src={user.image}
+            width='4%'
+            height='4%'
+            style={{
+              display: 'inline-block',
+              marginLeft: '800px',
+              borderRadius: '50%',
+              verticalAlign: 'middle',
+            }}
+          />
+          <Link to='/me'>
+            <h2
+              style={{
+                display: 'inline-block',
+                color: 'white',
+                textAlign: 'right',
+              }}
+            >
+              {user.username}
+            </h2>
+          </Link>
         </Background>
       </div>
       <Search />
@@ -134,6 +134,16 @@ function HomePage() {
               Written By:
             {review.username}
             </div>
+            <Link
+              to={{
+                pathname: `/userProfile/name=${review.username}`,
+              }}
+            >
+              <button>
+                {review.username || 'Jim'}
+                  's Profile
+              </button>
+            </Link>
             <div>
               Url:
             {review.webUrl}
@@ -174,7 +184,7 @@ function HomePage() {
             >
               dislike
           </MyButton>
-            
+
           </ReviewBG>
         )
       })}
