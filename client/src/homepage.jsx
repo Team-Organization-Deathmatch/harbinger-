@@ -99,8 +99,8 @@ function HomePage() {
         </h2>
         <img
           src={user.image}
-          width='4%'
-          height='4%'
+          width='50px'
+          height='50px'
           style={{
             display: 'inline-block',
             marginLeft: '800px',
