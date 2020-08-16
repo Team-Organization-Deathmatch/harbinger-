@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Switch, Route, Link, Redirect,
+} from 'react-router-dom';
 import { styled, Backdrop } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -56,6 +58,12 @@ function Profile() {
       setUser(data);
     });
   };
+  const usernameSubmit = (username) => {
+    axios.post('/profile/username', { username }).then(({ data }) => {
+      console.log(data);
+      setUser(data);
+    });
+  };
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
@@ -67,19 +75,19 @@ function Profile() {
 
   useEffect(() => {
     axios.get('/good').then(({ data }) => {
-      console.log(data.username, data, 'user');
-      let image = data.image
+      // console.log(data.username, data, 'user');
+      const { image } = data;
       axios.post(`/user/${username}`, {
-        userId: data.id,
+        username,
       })
         .then((reviews) => {
-          let userArray = [];
+          const userArray = [];
           reviews.data[1].forEach((review, index) => {
             review.username = reviews.data[0][index];
             review.webUrl = reviews.data[2][index];
             review.image = image;
             userArray.push(review);
-            console.log(userArray);
+            console.log(userArray, 'userArray');
           });
           setUserReviews(userArray);
         });
@@ -93,97 +101,147 @@ function Profile() {
     });
   };
 
+  const updateLike = (reviewId, type) => {
+    // console.log(reviewId, type);
+
+    axios.put(`/review/update/type=${type}`, {
+      reviewId,
+    }).then(() => {
+      console.log('posted');
+    });
+  };
+
   return (
     <div>
       <div>
         <Background>
-        <h1
-          style={{
-            display: 'inline-block',
-            color: 'white',
-            marginRight: '600px',
-          }}
-        >
-          {user.username}
-          : Profile
-        </h1>
-        <Link to="/">
           <h1
             style={{
               display: 'inline-block',
               color: 'white',
-              textAlign: 'right',
+              marginRight: '600px',
             }}
           >
-            Back to Homepage
+            {user.username}
+            : Profile
           </h1>
-        </Link>
-        <form onSubmit={handleSubmit(userLogout)}>
-        <button><MyButton>Logout</MyButton></button>
+          <Link to="/">
+            <h1
+              style={{
+                display: 'inline-block',
+                color: 'white',
+                textAlign: 'right',
+              }}
+            >
+              Back to Homepage
+            </h1>
+          </Link>
+          <form onSubmit={handleSubmit(userLogout)}>
+            <button><MyButton>Logout</MyButton></button>
 
-        </form>
+          </form>
         </Background>
-       
+
       </div>
       <ImageBG width="200">
-      <div >
-      <img src={user.image} style={{ position: 'absolute', marginBottom: "20px", }} width='150px'
-          height='150px'/>
-      <h2 style={{ marginLeft: "300px", padding: "0px"}}>Bio for {user.username}</h2>
-      <div style={{ maxWidth: "700px", marginLeft: "300px", marginBottom: "10px", positon: "absolute", padding: "20px" }}>{user.bio}</div>
-      <img height="10" style={{marginTop: "20px"}}></img>
-      </div>
+        <div>
+          <img
+            src={user.image}
+            style={{ position: 'absolute', marginBottom: '20px' }}
+            width="150px"
+            height="150px"
+          />
+          <h2 style={{ marginLeft: '300px', padding: '0px' }}>
+            Bio for
+            {user.username}
+          </h2>
+          <div style={{
+            maxWidth: '700px', marginLeft: '300px', marginBottom: '10px', positon: 'absolute', padding: '20px',
+          }}
+          >
+            {user.bio}
+          </div>
+          <img height="10" style={{ marginTop: '20px' }} />
+        </div>
       </ImageBG>
-      <ReviewBG style={{ marginTop: "20px" }}>
-      <div style={{ display: 'inline-block' }}>
-      <h3>Edit Image</h3>
-      <form onSubmit={handleSubmit(imageSubmit)}>
-        <textarea ref={register} name='imageUrl' />
-        <button><MyButton>Submit Image</MyButton></button>
-      </form>
-      </div>
-      <div style={{ display: 'inline-block', marginLeft: "200px" }}>
-      <h3>Edit Bio</h3>
+      <ReviewBG style={{ marginTop: '20px' }}>
+        <div style={{ display: 'inline-block' }}>
+          <h3>Edit Image</h3>
+          <form onSubmit={handleSubmit(imageSubmit)}>
+            <textarea ref={register} name="imageUrl" />
+            <button><MyButton>Submit Image</MyButton></button>
+          </form>
+        </div>
+        <div style={{ display: 'inline-block', marginLeft: '200px' }}>
+          <h3>Edit Bio</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <textarea ref={register} name='message' />
+            <textarea ref={register} name="message" />
             <button><MyButton>Submit Bio</MyButton></button>
           </form>
-      </div>
+        </div>
+        <div style={{ display: 'inline-block', marginLeft: '400px' }}>
+          <h3>Edit Username</h3>
+          <form onSubmit={handleSubmit(usernameSubmit)}>
+            <textarea ref={register} name="username" />
+            <button><MyButton>Submit Username</MyButton></button>
+          </form>
+        </div>
       </ReviewBG>
       <div>
-        <div>
-        </div>
+        <div />
       </div>
-      User reviews Here
+      {user.username}'s reviews
       <div>
         {userReviews.map((review) => {
-          console.log(review)
+          let count = 0;
           return (
-          <div>
-            <br />
-            <div>
-              Written By:
-            {review.username}
-            </div>
-            <div>
-              Url:
-            {review.webUrl}
-            </div>
-            <div>
-              Likes:
-            {review.likes}
-            </div>
-            <div>
-              {' '}
-            Dislikes:
-            {review.dislike}
-            </div>
-            <br />
-            <div>{review.title}</div>
-            <div>{review.text}</div>
+            <ReviewBG key={review.id}>
+              <br />
+              <div>
+                Written By:
+                {review.username}
+              </div>
+              <div>
+                Url:
+                {review.webUrl}
+              </div>
+              <div>
+                Likes:
+                {review.likes}
+              </div>
+              <div>
+                {' '}
+                Dislikes:
+                {review.dislike}
+              </div>
+              <br />
+              <div>{review.title}</div>
+              <div>{review.text}</div>
+              <MyButton
+                type="submit"
+                onClick={() => {
+                  if (count === 0) {
+                    updateLike(review.id, 'like');
+                    count = +1;
+                  }
+                }}
+              >
+                like
+              </MyButton>
+              <MyButton
+                type="submit"
+                onClick={() => {
+                  if (count === 0) {
+                    updateLike(review.id, 'dislike');
+                    count = +1;
+                  }
+                }}
+              >
+                dislike
+              </MyButton>
 
-          </div>
-          )
+            </ReviewBG>
+          );
         })}
       </div>
     </div>

@@ -339,6 +339,12 @@ const updateDislikeInReview = (reviewId) => new Promise((resolve, reject) => {
     });
 });
 
+const findUserAndUpdateUsername = (serial, username) => Users.findOne({ where: { serial } }).then((user) => user
+  .update({ username })
+  .then((data) => data)
+  .catch((err) => console.log(err)));
+
+
 module.exports = {
   db,
   getUser,
@@ -353,4 +359,5 @@ module.exports = {
   updateLikeInReview,
   updateDislikeInReview,
   getUserReviews,
+  findUserAndUpdateUsername,
 };
