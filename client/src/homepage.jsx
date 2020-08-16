@@ -122,7 +122,7 @@ function HomePage() {
         </Background>
       </div>
       <Search />
-      <h3 style={{ display: 'inline-block', verticalAlign: '-20px' }}>
+      <h3 style={{ display: 'inline-block' }}>
         Top Best Reviews
       </h3>
       {topReviews.map((review) => {
