@@ -274,6 +274,7 @@ const findTopReviews = (query) => {
   const usernames = [];
   let webIds;
   const webUrls = [];
+  const images = [];
 
   return Review.findAll(query).then((data) => {
     sortedData = data.sort((a, b) => b.likes - a.likes);
@@ -289,6 +290,7 @@ const findTopReviews = (query) => {
         data.forEach((userObj) => {
           if (userObj.dataValues.id === userId) {
             usernames.push(userObj.dataValues.username);
+            images.push(userObj.dataValues.image);
           }
         });
       });
@@ -305,7 +307,7 @@ const findTopReviews = (query) => {
           });
         });
         console.log(webUrls);
-        return [usernames, ...sendArr, webUrls];
+        return [usernames, ...sendArr, webUrls, images];
       });
     });
   });
