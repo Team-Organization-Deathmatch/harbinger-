@@ -44,3 +44,34 @@ Database Functions-
 
 10. updateDisikeInReview
   This returns a promise. It accepts a reviewId as a parameter, finds that review in the DB with review.findOne and updates its 'dislikes' field. It is called in the 'PUT' request in /server/routes/review.js under the route '/update/:type'. It is called from various files in the front end wherever a like or dislike is created.
+
+Server Folders
+
+1. app.js
+
+2. azure.js
+  In this file we require the module that allows us to use the cognitiveServices WebSearchAPIClient. We also define credentials and webSearchAPIClient which allow us to use a local instance of the web search client.
+
+3. index.js
+  In this file we require the server, 'app' and set it to listen on the PORT as defined in our process.env
+
+4. passport-setup.js
+
+Server Routes
+
+1. home.js
+  The instance of the express server route is named 'homeRoute'. Not sure what we are using these routes for if anything. need to investigate
+
+2. login.js
+  also not sure if we are using this
+
+3. profile.js
+  Here we have two POST request handlers which are used to update the user Bio and user Image. The code in '/bio' calls the DB function findUserAndUpdateBio, and updates the user bio in the DB. The code in '/image' calls the DB function findUserAndUpdateImage, and updates the user image in the DB.They are called on lines 15 and 20 of the profile.jsx folder respectively
+
+4. review.js --> for Sebastian
+
+5. search.js --> for Sebastian
+
+6. userProfile
+  This has one GET request handler which will find the elements of a user's profile, NOT the user who is logged in. This is basically to handle the user story of clicking on somebody else's username and wanting to see their profile. It is called from the userProfile.jsx folder. It essentially only calls the DB  function getUserReviews so they can be rendered on the 'profile' page.
+
