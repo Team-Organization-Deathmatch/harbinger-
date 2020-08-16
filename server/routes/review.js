@@ -27,20 +27,9 @@ reviewRoute.post('/url', (req, res) => {
 reviewRoute.get('/retrieve/:id', (req, res) => {
   if (req.params.id === 'id=top') {
     findTopReviews({ limit: 10 }).then((data) => {
-      // console.log(Array.isArray(data));
-      // find the top reviews
-      // find out the corresponding urls
-      // find out the corresponding users
-      // send all of this data
-      // console.log(data);
-      // res.write(JSON.stringify(['more data']));
       res.status(200);
       res.send(data);
     });
-  } else if (req.params.id === 'id=bottom') {
-    console.log('id bottom');
-    res.status(200);
-    res.send('Bottom Reviews');
   }
 });
 
