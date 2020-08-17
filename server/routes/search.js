@@ -2,7 +2,7 @@
 const { Router } = require('express');
 const path = require('path');
 require('../db/database');
-const { saveOrFindKeyWord, findArticleByKeyWord } = require('../db/database');
+const { saveOrFindKeyWord, findArticleByKeyWord, getWebUrls } = require('../db/database');
 
 // const azure = require('server/azure.js');
 const searchRoute = Router();
@@ -28,14 +28,31 @@ searchRoute.post('/search', (req, res) => {
       .catch((err) => {
         throw err;
       })
-      .then(() =>
-        findArticleByKeyWord(req.body.clientSearch)
-          .then((data) => {
-            dbSearch = data;
+      .then(() => findArticleByKeyWord(req.body.clientSearch)
+        .then((data) => {
+          if (data !== undefined) {
+            const webUrls = [];
+            // console.log(data[0].dataValues);
+            const webIds = data.map((review) => review.dataValues.id_web);
+            //console.log(webIds, 'this is a review!');
+            getWebUrls(webIds)
+              .then((websites) => {
+                webIds.forEach((webId) => {
+                  websites.forEach((webObj) => {
+                    if (webObj.dataValues.id === webId) {
+                      webUrls.push(webObj.dataValues.url);
+                    }
+                  });
+                });
+                console.log(webUrls);
+                dbSearch = data;
+                res.send([bingSearch, dbSearch, webUrls]);
+              });
+          } else {
             res.send([bingSearch, dbSearch]);
-          })
-          .catch((err) => console.log(err, 'YOURE NOT GOOD AT PROMISES'))
-      );
+          }
+        })
+        .catch((err) => console.log(err, 'YOURE NOT GOOD AT PROMISES')));
   } else {
     res.status(401);
     res.send('unauthorized');
