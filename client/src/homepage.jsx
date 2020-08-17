@@ -87,7 +87,7 @@ function HomePage() {
       reviews.data[1].forEach((review, index) => {
         review.username = reviews.data[0][index];
         review.webUrl = reviews.data[2][index];
-        review.image = review.data[3][index];
+        review.image = reviews.data[3][index];
         topArray.push(review);
       });
       setTop(topArray);
