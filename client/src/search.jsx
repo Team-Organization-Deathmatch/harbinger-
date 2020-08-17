@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  BrowserRouter as Router, Switch, Route, Link, Redirect,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
 } from 'react-router-dom';
 import axios from 'axios';
 import { styled, Backdrop } from '@material-ui/core';
@@ -33,7 +37,7 @@ function Search() {
     // webSitesUpdate(testArray);
     return axios(config)
       .then((response) => {
-      // console.log(JSON.stringify(response));
+        // console.log(JSON.stringify(response));
         // console.log(JSON.stringify(response.data[1]), 'THIS IS DATA');
         // console.log(JSON.stringify(response.data));
         // console.log(JSON.stringifyresponse.data.webPages.value));
@@ -44,7 +48,7 @@ function Search() {
           response.data[1].forEach((review, index) => {
             review.webUrl = response.data[2][index];
             fullReviews.push(review);
-          })
+          });
           reviewedSitesUpdate(fullReviews);
         } else {
           reviewedSitesUpdate([]);
@@ -114,73 +118,77 @@ function Search() {
 
   return (
     <div>
-      <div  style={{ textAlign: 'center', verticalAlign: '-20px' }}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Search:</label>
-        <input ref={register} name="clientSearch" />
-        {/* <Link
+      <div style={{ textAlign: 'center', verticalAlign: '-20px' }}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Search:</label>
+          <input ref={register} name='clientSearch' />
+          {/* <Link
           to={{
             pathname: `/search`,
           }}
         >
           <button>Search websites</button>
         </Link> */}
-        <button><MyButton>Search websites</MyButton></button>
+          <button>
+            <MyButton>Search websites</MyButton>
+          </button>
         </form>
-        </div>
-        <div className="reviewedSites list">
-          {reviewedSites.map((review) => (
-            <div key={review.id}>
-              <br />
-              <div>
-                Written By:
-                {review.User.username || 'Jim'}
-                URL:
-                {review.webUrl}
-              </div>
-              <Link
-                to={{
-                  pathname: `/userProfile/name=${review.User.username}`,
-                }}
-              >
-                <button>
-                  {review.User.username || 'Jim'}
-                  's Profile
-                </button>
-              </Link>
-              <img src={review.User.image} width="5%" height="5%" />
-              <div>
-                Likes:
-                {review.likes}
-              </div>
-              <div>
-                {' '}
-                Dislikes:
-                {review.dislike}
-              </div>
-              <br />
-              <div>{review.text}</div>
-              <button>See Review</button>
+      </div>
+      <div className='reviewedSites list'>
+        {reviewedSites.map((review) => (
+          <div key={review.id}>
+            <br />
+            <div>
+              Written By:
+              {review.User.username || 'Jim'}
+              <br></br>
+              URL:
+              {review.webUrl}
             </div>
-          ))}
-        </div>
-        <div className="webSitesList">
-          {webSites.map((site) => (
-            <WebBG key={site.id}>
-              <br />
-              <a href={site.url}>{site.url}</a>
-              <br />
-              <div>{site.snippet}</div>
-              <Link
-                to={{
-                  pathname: `/review/site="${site.url}"`,
-                }}
-              >
-                <button>Review Website!</button>
-              </Link>
-            </WebBG>
-          ))}
-        </div>
+            <img src={review.User.image} width='5%' height='5%' />
+            <br></br>
+            <Link
+              to={{
+                pathname: `/userProfile/name=${review.User.username}`,
+              }}
+            >
+              <button>
+                {review.User.username || 'Jim'}
+                's Profile
+              </button>
+            </Link>
+            <div>
+              Likes:
+              {review.likes}
+            </div>
+            <div>
+              {' '}
+              Dislikes:
+              {review.dislike}
+            </div>
+            <br />
+            <div>{review.text}</div>
+            <button>See Review</button>
+          </div>
+        ))}
+      </div>
+      <div className='webSitesList'>
+        {webSites.map((site) => (
+          <WebBG key={site.id}>
+            <br />
+            <a href={site.url}>{site.url}</a>
+            <br />
+            <div>{site.snippet}</div>
+            <Link
+              to={{
+                pathname: `/review/site="${site.url}"`,
+              }}
+            >
+              <button>Review Website!</button>
+            </Link>
+          </WebBG>
+        ))}
+      </div>
     </div>
   );
 }

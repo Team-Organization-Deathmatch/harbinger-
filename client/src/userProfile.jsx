@@ -19,11 +19,11 @@ function UserProfile() {
   const [userReviews, setUserReviews] = useState([]);
 
   useEffect(() => {
-
     console.log(username);
-    axios.post(`/user/${username}`, {
-      username: username,
-    })
+    axios
+      .post(`/user/${username}`, {
+        username: username,
+      })
       .then((reviews) => {
         console.log(reviews.data);
         let userArray = [];
@@ -35,17 +35,18 @@ function UserProfile() {
         });
         setUserReviews(userArray);
       });
-
   }, []);
 
   const updateLike = (reviewId, type) => {
     // console.log(reviewId, type);
 
-    axios.put(`/review/update/type=${type}`, {
-      reviewId,
-    }).then(() => {
-      console.log('posted');
-    });
+    axios
+      .put(`/review/update/type=${type}`, {
+        reviewId,
+      })
+      .then(() => {
+        console.log('posted');
+      });
   };
 
   const MyButton = styled(Button)({
@@ -105,8 +106,8 @@ function UserProfile() {
 
   return (
     <div>
-      <h1> {usernameReverse}'s Profile </h1>
-      <Link to="/">
+      <h1> {username}'s Profile </h1>
+      <Link to='/'>
         <h1
           style={{
             display: 'inline-block',
@@ -118,8 +119,9 @@ function UserProfile() {
         </h1>
       </Link>
       <form onSubmit={handleSubmit(userLogout)}>
-        <button><MyButton>Logout</MyButton></button>
-
+        <button>
+          <MyButton>Logout</MyButton>
+        </button>
       </form>
 
       {/* <img src={userReviews[0].User.image} width='5%' height='5%' /> */}
@@ -159,7 +161,7 @@ function UserProfile() {
               <div>{review.title}</div>
               <div>{review.text}</div>
               <MyButton
-                type="submit"
+                type='submit'
                 onClick={() => {
                   if (count === 0) {
                     updateLike(review.id, 'like');
@@ -170,7 +172,7 @@ function UserProfile() {
                 like
               </MyButton>
               <MyButton
-                type="submit"
+                type='submit'
                 onClick={() => {
                   if (count === 0) {
                     updateLike(review.id, 'dislike');
@@ -180,7 +182,6 @@ function UserProfile() {
               >
                 dislike
               </MyButton>
-
             </ReviewBG>
           );
         })}

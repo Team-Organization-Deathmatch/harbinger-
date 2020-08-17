@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const db_name = process.env.DB || 'harbinger';
 const db_user = process.env.DB_User || 'root';
-const db_pass = process.env.DB_Pass || '';
+const db_pass = process.env.DB_Pass || 'fossil15';
 const db_host = process.env.HOST || 'localhost';
 
 const db = new Sequelize(db_name, db_user, db_pass, {
@@ -164,13 +164,68 @@ Keyword.sync();
 // TESTING TO SEE IF I CAN FIX DB LINKS
 Review.belongsTo(Users, { foreignKey: 'id_user' });
 
-const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }).then((data) => {
-  if (data === null) {
-    console.log('no keyword found');
-  } else {
-    return Review.findAll({
+const findArticleByKeyWord = (keyword) =>
+  Keyword.findOne({ where: { keyword } }).then((data) => {
+    if (data === null) {
+      console.log('no keyword found');
+    } else {
+      return Review.findAll({
+        where: {
+          id_keyword: data.id,
+        },
+        include: [
+          {
+            model: Users,
+            required: true,
+          },
+        ],
+      })
+        .then((data) => data)
+        .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
+    }
+  });
+
+const saveOrFindKeyWord = (keyword) =>
+  Keyword.findOne({ where: { keyword } })
+    .then((data) => {
+      if (data === null) {
+        console.log('keyword created!!!');
+        return Keyword.create({ keyword });
+      }
+      return data;
+    })
+    .catch((err) => console.log(err));
+
+const saveOrFindWebUrl = (url) =>
+  WebUrls.findOne({ where: { url } })
+    .then((data) => {
+      if (data === null) {
+        console.log('webURL created!');
+        return WebUrls.create({ url });
+      }
+      return data;
+    })
+    .catch((err) => console.log(err));
+
+const saveUsers = (username, serial, bio, image) =>
+  Users.findOne({ where: { serial } }).then((data) => {
+    if (data === null) {
+      return Users.create({
+        username,
+        serial,
+        bio,
+        image,
+      });
+    }
+  });
+
+const getUser = (id) => Users.findOne({ where: { serial: id } });
+
+const getUserReviews = (name) =>
+  Users.findOne({ where: { username: name } }).then((data) =>
+    Review.findAll({
       where: {
-        id_keyword: data.id,
+        id_user: data.id,
       },
       include: [
         {
@@ -179,58 +234,9 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
         },
       ],
     })
-      .then((data) =>
-        data)
-      .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
-  }
-});
-
-const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
-  .then((data) => {
-    if (data === null) {
-      console.log('keyword created!!!');
-      return Keyword.create({ keyword });
-    }
-    return data;
-  })
-  .catch((err) => console.log(err));
-
-const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
-  .then((data) => {
-    if (data === null) {
-      console.log('webURL created!');
-      return WebUrls.create({ url });
-    }
-    return data;
-  })
-  .catch((err) => console.log(err));
-
-const saveUsers = (username, serial, bio, image) => Users.findOne({ where: { serial } }).then((data) => {
-  if (data === null) {
-    return Users.create({
-      username,
-      serial,
-      bio,
-      image,
-    });
-  }
-});
-
-const getUser = (id) => Users.findOne({ where: { serial: id } });
-
-const getUserReviews = (name) => Users.findOne({ where: { username: name } }).then((data) => Review.findAll({
-  where: {
-    id_user: data.id,
-  },
-  include: [
-    {
-      model: Users,
-      required: true,
-    },
-  ],
-})
-  .then((data) => data)
-  .catch((err) => console.log(err, 'SOMETHING WENT WRONG')));
+      .then((data) => data)
+      .catch((err) => console.log(err, 'SOMETHING WENT WRONG'))
+  );
 
 const saveReview = (username, title, text, weburl, keyword) => {
   let idUser;
@@ -259,14 +265,18 @@ const saveReview = (username, title, text, weburl, keyword) => {
   });
 };
 
-const findUserAndUpdateBio = (serial, bio) => Users.findOne({ where: { serial } }).then((user) => user
-  .update({ bio })
-  .then((data) => data)
-  .catch((err) => console.log(err)));
-const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { serial } })
-  .then((user) => user.update({ image }))
-  .then((data) => data)
-  .catch((err) => console.log(err));
+const findUserAndUpdateBio = (serial, bio) =>
+  Users.findOne({ where: { serial } }).then((user) =>
+    user
+      .update({ bio })
+      .then((data) => data)
+      .catch((err) => console.log(err))
+  );
+const findUserAndUpdateImage = (serial, image) =>
+  Users.findOne({ where: { serial } })
+    .then((user) => user.update({ image }))
+    .then((data) => data)
+    .catch((err) => console.log(err));
 
 const findTopReviews = (query) => {
   const sendArr = [];
@@ -313,43 +323,48 @@ const findTopReviews = (query) => {
   });
 };
 
-const updateLikeInReview = (reviewId) => new Promise((resolve, reject) => {
-  Review.findOne({ where: { id: reviewId } })
-    .then((review) => {
-      const { likes } = review;
-      review.update({ likes: likes + 1 }).then(() => {
-        resolve();
+const updateLikeInReview = (reviewId) =>
+  new Promise((resolve, reject) => {
+    Review.findOne({ where: { id: reviewId } })
+      .then((review) => {
+        const { likes } = review;
+        review.update({ likes: likes + 1 }).then(() => {
+          resolve();
+        });
+      })
+      .catch(() => {
+        reject();
       });
-    })
-    .catch(() => {
-      reject();
-    });
-});
+  });
 
-const updateDislikeInReview = (reviewId) => new Promise((resolve, reject) => {
-  Review.findOne({ where: { id: reviewId } })
-    .then((review) => {
-      const { dislike } = review;
-      review.update({ dislike: dislike + 1 }).then(() => {
-        resolve();
+const updateDislikeInReview = (reviewId) =>
+  new Promise((resolve, reject) => {
+    Review.findOne({ where: { id: reviewId } })
+      .then((review) => {
+        const { dislike } = review;
+        review.update({ dislike: dislike + 1 }).then(() => {
+          resolve();
+        });
+      })
+      .catch(() => {
+        reject();
       });
-    })
-    .catch(() => {
-      reject();
-    });
-});
+  });
 
-const findUserAndUpdateUsername = (serial, username) => Users.findOne({ where: { serial } }).then((user) => user
-  .update({ username })
-  .then((data) => data)
-  .catch((err) => console.log(err)));
+const findUserAndUpdateUsername = (serial, username) =>
+  Users.findOne({ where: { serial } }).then((user) =>
+    user
+      .update({ username })
+      .then((data) => data)
+      .catch((err) => console.log(err))
+  );
 
-const getWebUrls = (webIds) => WebUrls.findAll({
-  where: {
-    id: webIds,
-  },
-});
-
+const getWebUrls = (webIds) =>
+  WebUrls.findAll({
+    where: {
+      id: webIds,
+    },
+  });
 
 module.exports = {
   db,
