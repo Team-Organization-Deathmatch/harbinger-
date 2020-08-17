@@ -34,12 +34,18 @@ function Search() {
     return axios(config)
       .then((response) => {
       // console.log(JSON.stringify(response));
-        console.log(JSON.stringify(response.data[1]), 'THIS IS DATA');
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data[1]), 'THIS IS DATA');
+        // console.log(JSON.stringify(response.data));
         // console.log(JSON.stringifyresponse.data.webPages.value));
+        console.log(response.data);
         webSitesUpdate(response.data[0].webPages.value);
         if (response.data[1] !== null) {
-          reviewedSitesUpdate(response.data[1]);
+          let fullReviews = [];
+          response.data[1].forEach((review, index) => {
+            review.webUrl = response.data[2][index];
+            fullReviews.push(review);
+          })
+          reviewedSitesUpdate(fullReviews);
         } else {
           reviewedSitesUpdate([]);
         }
@@ -129,6 +135,8 @@ function Search() {
               <div>
                 Written By:
                 {review.User.username || 'Jim'}
+                URL:
+                {review.webUrl}
               </div>
               <Link
                 to={{
