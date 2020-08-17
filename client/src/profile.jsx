@@ -174,8 +174,7 @@ function Profile() {
             height="150px"
           />
           <h2 style={{ marginLeft: '300px', padding: '0px' }}>
-            Bio for
-            {user.username}
+            {user.username}'s Bio:
           </h2>
           <div style={{
             maxWidth: '700px', marginLeft: '300px', marginBottom: '10px', positon: 'absolute', padding: '20px',
@@ -194,14 +193,14 @@ function Profile() {
             <button><MyButton>Submit Image</MyButton></button>
           </form>
         </div>
-        <div style={{ display: 'inline-block', marginLeft: '200px' }}>
+        <div style={{ display: 'inline-block', marginLeft: '100px' }}>
           <h3>Edit Bio</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <textarea ref={register} name="message" />
             <button><MyButton>Submit Bio</MyButton></button>
           </form>
         </div>
-        <div style={{ display: 'inline-block', marginLeft: '400px' }}>
+        <div style={{ display: 'inline-block', marginLeft: '100px' }}>
           <h3>Edit Username</h3>
           <form onSubmit={handleSubmit(usernameSubmit)}>
             <textarea ref={register} name="username" />
