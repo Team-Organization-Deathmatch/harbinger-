@@ -2,6 +2,11 @@
 
 Upvote and comment on your favorite websites!
 
+.env
+contains PORT (server number)
+KEY (bing API key)
+CLIENTID & CLIENTSECRET variables for Google Auth API
+
 Server-
 
 - required express, body-parser, path, cors
@@ -102,9 +107,9 @@ JSX ROUTES / REACT
 Handles all routes and paths, self explanitory.
 
 2.) homepage.jsx
-   The homepage component is responsible for rendering the list of Top Reviews which is the automatic redirect after the user logs in. The axios get request to the endpoint '/review/retrieve/id=top' retrieves the top reviews and sets the 'use state' for topReviews to topArray.
-   updateLike is a function which sends a PUT request to the endpoint '/review/update/type=' in order to update either a like or a dislike on a given review.
-   userLogout is a function that logs the user out and is called down below in the jsx html in a button. After the user session is destroyed, we are redirected to the homepage, which then redirects us back to the google oAuth login.
+The homepage component is responsible for rendering the list of Top Reviews which is the automatic redirect after the user logs in. The axios get request to the endpoint '/review/retrieve/id=top' retrieves the top reviews and sets the 'use state' for topReviews to topArray.
+updateLike is a function which sends a PUT request to the endpoint '/review/update/type=' in order to update either a like or a dislike on a given review.
+userLogout is a function that logs the user out and is called down below in the jsx html in a button. After the user session is destroyed, we are redirected to the homepage, which then redirects us back to the google oAuth login.
 
 3.) index.jsx
 standard index.jsx page, calls to render the App.jsx component
@@ -115,7 +120,7 @@ testing page component, nothing here of importance
 5.) profile.jsx
 onSubmit is a function which makes an axios post request to '/profile/bio' in order to update the user bio
 imageSubmit and usernameSubmit are also functions which update the user's image and username respectively.
-The axios GET request in line 98 useEffect to '/good' grabs the user profile information. the axios POST request sends user information and receives their reviews back, setting the setUserReviews array to 'userArray'. 
+The axios GET request in line 98 useEffect to '/good' grabs the user profile information. the axios POST request sends user information and receives their reviews back, setting the setUserReviews array to 'userArray'.
 userLogout logs the user out, as above.
 
 6.) reviews.jsx
