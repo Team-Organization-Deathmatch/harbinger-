@@ -9,10 +9,12 @@ import { styled, Backdrop } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
+import { useForm } from 'react-hook-form';
 
 
 function HomePage() {
   const [user, setUser] = useState([]);
+  const { handleSubmit } = useForm();
   // | Material UI style methods go here:
   //  \ be welcome to expand on the palethra of styles and add them to methods.
   //    \ use method as a tag to render the custom style.
@@ -111,6 +113,13 @@ function HomePage() {
     });
   };
 
+  const userLogout = () => {
+    axios.get('/logout').then(() => {
+      // console.log('logged out');
+      window.location = '/';
+    });
+  };
+
   return (
     <div>
       <div>
@@ -148,6 +157,10 @@ function HomePage() {
               {user.username}
             </h2>
           </Link>
+          <form onSubmit={handleSubmit(userLogout)}>
+            <button><MyButton>Logout</MyButton></button>
+
+          </form>
         </Background>
       </div>
       <Search />

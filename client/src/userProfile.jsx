@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 //import { response } from 'express';
 
 function UserProfile() {
+  const { handleSubmit } = useForm();
   let username = window.location.href.split('name=');
   username = username[1].split('%20').join(' ');
   //console.log(username);
@@ -72,6 +73,13 @@ function UserProfile() {
     backgroundColor: '#FAEBD7',
     color: 'black',
   });
+
+  const userLogout = () => {
+    axios.get('/logout').then(() => {
+      // console.log('logged out');
+      window.location = '/';
+    });
+  };
   // useEffect(() => {
   //   let data = JSON.stringify({
   //     name: { username },
@@ -109,6 +117,10 @@ function UserProfile() {
           Back to Homepage
         </h1>
       </Link>
+      <form onSubmit={handleSubmit(userLogout)}>
+        <button><MyButton>Logout</MyButton></button>
+
+      </form>
 
       {/* <img src={userReviews[0].User.image} width='5%' height='5%' /> */}
       <div className='userReviewed sites'>

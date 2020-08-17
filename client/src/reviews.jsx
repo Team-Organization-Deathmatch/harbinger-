@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Axios from 'axios';
+import axios from 'axios';
 import { styled, Backdrop } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -67,34 +67,33 @@ function Reviews(props) {
   let siteURL = window.location.href.split('site=');
   // window.location = window.location.href.split('site=')[0] + `${Math.floor(Math.random() * 99999999)}`;
   siteURL = siteURL[1];
-  useEffect (() => {
-    Axios.post(`/review/url`, { weburl: siteURL })
-    .then(() => {
-      return Axios.get('/review/url')
-      .then(({ data }) => {
-        const revArray = [];
-        data[1].forEach((review, index) => {
-          review.username = data[0][index];
-          review.webUrl = data[2][index];
-          revArray.push(review);
-        });
-        setRev(revArray);
-      });
-    })
-    .catch(err => console.error(err));
-}, []);
-const updateLike = (reviewId, type) => {
-  //console.log(reviewId, type);
+  useEffect(() => {
+    axios.post('/review/url', { weburl: siteURL })
+      .then(() => axios.get('/review/url')
+        .then(({ data }) => {
+          const revArray = [];
+          data[1].forEach((review, index) => {
+            review.username = data[0][index];
+            review.webUrl = data[2][index];
+            review.image = data[3][index];
+            revArray.push(review);
+          });
+          setRev(revArray);
+        }))
+      .catch((err) => console.error(err));
+  }, []);
+  const updateLike = (reviewId, type) => {
+    // console.log(reviewId, type);
 
-  Axios.put(`/review/update/type=${type}`, {
-    reviewId,
-  }).then(() => {
-    console.log('posted');
-  });
-};
+    axios.put(`/review/update/type=${type}`, {
+      reviewId,
+    }).then(() => {
+      console.log('posted');
+    });
+  };
   const onSubmit = (data) => {
     console.log(data);
-    Axios.post('/review/submit', {
+    axios.post('/review/submit', {
       text: data,
       weburl: siteURL,
       title: document.getElementById('title').value,
@@ -104,9 +103,16 @@ const updateLike = (reviewId, type) => {
       window.location = '/me';
     });
   };
-  //const [passedSite, passedSiteUpdate] = useState('hello');
-  
-  //let keywordTextBox = document.getElementById('keyword').value;
+
+  const userLogout = () => {
+    axios.get('/logout').then(() => {
+      // console.log('logged out');
+      window.location = '/';
+    });
+  };
+  // const [passedSite, passedSiteUpdate] = useState('hello');
+
+  // let keywordTextBox = document.getElementById('keyword').value;
   return (
     <div>
       <Background>
@@ -153,8 +159,7 @@ const updateLike = (reviewId, type) => {
                 if (count === 0) {
                   updateLike(review.id, 'like');
                   count = +1;
-                };
-
+                }
               }}
             >
               <MyButton>
@@ -167,8 +172,7 @@ const updateLike = (reviewId, type) => {
                 if (count === 0) {
                   updateLike(review.id, 'dislike');
                   count = +1;
-                };
-
+                }
               }}
             ><MyButton>
               dislike
@@ -178,10 +182,10 @@ const updateLike = (reviewId, type) => {
           )
       })}
       <h1>Reviews Component</h1>
-      <input id='title' type='text' placeholder='leave a title'></input>
-      <br></br>
+      <input id="title" type="text" placeholder="leave a title" />
+      <br />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Review.</label>
+        <label>Review:</label>
         <br></br>
         <textarea ref={register} name='message' />
         <br></br>
@@ -191,7 +195,7 @@ const updateLike = (reviewId, type) => {
         </div>
         <input id='keyword' type='text' placeholder='leave a keyword'></input>
         <br></br>
-        <button><MyButton>Submit Review</MyButton></button>
+        <button style={{ marginBottom: "50px" }}><MyButton>Submit Review</MyButton></button>
       </form>
     </div>
   );

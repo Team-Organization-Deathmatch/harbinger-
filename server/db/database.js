@@ -344,6 +344,12 @@ const findUserAndUpdateUsername = (serial, username) => Users.findOne({ where: {
   .then((data) => data)
   .catch((err) => console.log(err)));
 
+const getWebUrls = (webIds) => WebUrls.findAll({
+  where: {
+    id: webIds,
+  },
+});
+
 
 module.exports = {
   db,
@@ -360,4 +366,5 @@ module.exports = {
   updateDislikeInReview,
   getUserReviews,
   findUserAndUpdateUsername,
+  getWebUrls,
 };
