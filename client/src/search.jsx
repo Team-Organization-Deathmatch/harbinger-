@@ -38,8 +38,8 @@ function Search() {
     return axios(config)
       .then((response) => {
         // console.log(JSON.stringify(response));
-        console.log(JSON.stringify(response.data[1]), 'THIS IS DATA');
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data[1]), 'THIS IS DATA');
+        // console.log(JSON.stringify(response.data));
         // console.log(JSON.stringifyresponse.data.webPages.value));
         webSitesUpdate(response.data[0].webPages.value);
         if (response.data[1] !== null) {
