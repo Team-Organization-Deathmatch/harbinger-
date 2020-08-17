@@ -80,12 +80,18 @@ Server Routes
    There is also a reviewRoute.put which is for updating likes & dislikes
 
 5. search.js
-   searchRoute.post/search is a post request that first checks
-   if you're logged in
-   If you are it calls out to the bing api and retrieves the search results of your query.
-   It also searches the database for the word you searched,
-   if an article containing the keyword was found, it will send both the bingSearch and the results of the dbSearch
-   the client side will handle the rendering of this data.
+   searchRoute.post/search
+   post request: checks if you're logged in
+   via if (req.user) cookie present.
+   if yes -> webSearchApiClient.web called
+   this is bing's search API, will retrieve an array
+   of results pertaining to query.
+   set results of query equal to bingSearch variable
+   then() --> call findArticleByKeyWord:
+   calls database function that retrieves any review
+   written that pertains to this keyword.
+   Stores the information in dbSearch variable
+   when done, server will res.send both dbSearch + bingSearch
 
 6. userProfile
    This has one GET request handler which will find the elements of a user's profile, NOT the user who is logged in. This is basically to handle the user story of clicking on somebody else's username and wanting to see their profile. It is called from the userProfile.jsx folder. It essentially only calls the DB function getUserReviews so they can be rendered on the 'profile' page.
@@ -110,11 +116,10 @@ testing page component, nothing here of importance
 ???????
 
 7.) search.jsx
-First thing you'll see is a function called Search,
-this is the rendering part for the route
+Function = Search : rendering part for the route
 It's going to contain a function called searchBing
 searchBing is the axios request that calls to the database. it's only parameter is the query the user submits.
-There are two states of webSites & reviewedSites
+Two states: webSites & reviewedSites
 Each handle their respective data handling
 WebSites coming from the bing search
 Reviewed sites coming from the database
@@ -127,8 +132,19 @@ There is also a button for each user that will lead you to their profile.
 Dummy file for test Data
 
 9.) userProfile.jsx
-under the UserProfile function
-Firstly you'll noticed the username variable
-This is captured from the window.location and then split and reversed so the name doesn't display backwards.
-useEffect will kick in, it will make an axios request and pull from the database all user reviews under that name
-once retrieved it will change the state of setUserReviews which will be mapped out with within the HTML
+
+variable username = retrieves username from route
+variable usernameReverse = username reversed to display properly on webpage (i.e. Sebastian Hove, not Hove Sebastian)
+
+function UserProfile: Rendering component
+
+state = userReviews
+
+useEffect -> calls axios post for user info
+Upon retrieval call setUserReviews to update state
+
+function update like -> put request -> updates likes
+
+HTML return calls mapping function which maps over the state of userReviews
+
+2 buttons - updateLikes & dislikes
