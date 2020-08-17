@@ -173,7 +173,7 @@ function Search() {
               <div>{site.snippet}</div>
               <Link
                 to={{
-                  pathname: `/review/site="${site.url}"`,
+                  pathname: `/review/site=${site.url}`,
                 }}
               >
                 <button>Review Website!</button>
