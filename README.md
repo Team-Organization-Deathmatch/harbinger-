@@ -95,7 +95,7 @@ Server Routes
 
 6. userProfile
    This has one GET request handler which will find the elements of a user's profile, NOT the user who is logged in. This is basically to handle the user story of clicking on somebody else's username and wanting to see their profile. It is called from the userProfile.jsx folder. It essentially only calls the DB function getUserReviews so they can be rendered on the 'profile' page.
-
+-----------------------------------------------------------------------------
 JSX ROUTES / REACT
 
 1.) app.jsx
@@ -154,3 +154,21 @@ function update like -> put request -> updates likes
 HTML return calls mapping function which maps over the state of userReviews
 
 2 buttons - updateLikes & dislikes
+---------------------------------------------------------------------------------------
+
+DATABASE SCHEMAS-
+1. Users-
+   serial- this is the unique identifier found each the google profile, accessable through authentication
+
+2. Review
+   id_user- This corresponds to the id key of the user who wrote the review
+   id_web- the id of the webUrl stored in webUrls
+   id_keyword- the id of the keyword stored in 'keywords'
+
+3. WebUrls
+   stores webUrls
+
+4. Keyword
+   stores keywords
+
+
