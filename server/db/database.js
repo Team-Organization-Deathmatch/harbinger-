@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const db_name = process.env.DB || 'harbinger';
 const db_user = process.env.DB_User || 'root';
-const db_pass = process.env.DB_Pass || 'fossil15';
+const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
 const db = new Sequelize(db_name, db_user, db_pass, {
