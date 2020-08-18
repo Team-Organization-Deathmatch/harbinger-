@@ -124,7 +124,7 @@ function HomePage() {
     <div>
       <div>
         <Background>
-          <img src="https://www.skytopia.com/project/fractal/new/mandrt3.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' } }></img>
+          <img src="https://i.redd.it/t2a08le9jzd11.png" width="10%" height="10%" style={{ filter: 'hue-rotate(300deg)', opacity: '50%' } }></img>
         <h2
           style={{
             display: 'inline-block',

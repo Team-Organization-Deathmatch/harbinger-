@@ -9,8 +9,11 @@ const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
 const db = new Sequelize(db_name, db_user, db_pass, {
-  host: db_host,
+  host: `/cloudsql/${process.env.HOST}`,
   dialect: 'mysql',
+  dialectOptions: {
+    socketPath: `/cloudsql/${process.env.HOST}`,
+  },
 });
 
 db.authenticate()
@@ -179,8 +182,7 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
         },
       ],
     })
-      .then((data) =>
-        data)
+      .then((data) => data)
       .catch((err) => console.log(err, 'SOMETHING WENT WRONG'));
   }
 });
@@ -349,7 +351,6 @@ const getWebUrls = (webIds) => WebUrls.findAll({
     id: webIds,
   },
 });
-
 
 module.exports = {
   db,
