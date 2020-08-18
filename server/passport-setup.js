@@ -29,14 +29,14 @@ passport.use(
     {
       clientID: process.env.CLIENTID,
       clientSecret: process.env.CLIENTSECRET,
-      callbackURL: 'http://localhost:8080/google/callback',
+      callbackURL: process.env.PRODENV === 'gcloud' ? 'https://legacy-harbinger.uc.r.appspot.com/google/callback' : 'http://localhost:8080/google/callback',
     },
     ((accessToken, refreshToken, profile, done) => {
       // this needs to access our DB and either create or pull it?
       // THIS FUNCTION NEEDS TO BE MODDED TO FIND OR CREATE A USER IN OUR DB
       //   User.findOrCreate({ googleId: profile.id }, function (err, user) {
       //     return done(err, user);
-      console.log(profile, "this is the profile");
+      console.log(profile, 'this is the profile');
       const email = profile.emails[0].value;
       const image = profile.photos[0].value;
       const { id } = profile;

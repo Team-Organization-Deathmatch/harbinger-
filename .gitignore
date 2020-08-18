@@ -2,6 +2,6 @@
 node_modules
 bower_components
 bundle.js
-app.yaml
-.gcloudignore
 
+.gcloudignore
+app.yaml
