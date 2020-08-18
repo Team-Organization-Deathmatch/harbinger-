@@ -8,13 +8,17 @@ const db_user = process.env.DB_User || 'root';
 const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
-const db = new Sequelize(db_name, db_user, db_pass, {
+const db = process.env.PRODENV === 'gcloud' ? new Sequelize(db_name, db_user, db_pass, {
   host: `/cloudsql/${process.env.HOST}`,
   dialect: 'mysql',
   dialectOptions: {
     socketPath: `/cloudsql/${process.env.HOST}`,
   },
-});
+})
+  : new Sequelize(db_name, db_user, db_pass, {
+    host: db_host,
+    dialect: 'mysql',
+  });
 
 db.authenticate()
   .then(() => {
