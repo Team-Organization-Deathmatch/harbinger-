@@ -6,8 +6,8 @@ import { styled } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import { useForm } from 'react-hook-form';
-import Search from './search';
-import ReviewList from './ReviewList';
+import Search from './search.jsx';
+import ReviewList from './ReviewList.jsx';
 
 function HomePage() {
   const [user, setUser] = useState([]);
