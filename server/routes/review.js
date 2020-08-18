@@ -35,7 +35,8 @@ reviewRoute.post('/url', (req, res) => {
 
 // Tag is the tag to search by, nothing returns all reviews sorted by likes
 reviewRoute.get('/retrieve/:tag', (req, res) => {
-  findTopReviews().then((data) => {
+  const { tag } = req.params;
+  findTopReviews(tag).then((data) => {
     res.status(200).send(data);
   })
     .catch((err) => {
