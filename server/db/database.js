@@ -9,8 +9,11 @@ const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
 const db = new Sequelize(db_name, db_user, db_pass, {
-  host: db_host,
+  host: `/cloudsql/${process.env.HOST}`,
   dialect: 'mysql',
+  dialectOptions: {
+    socketPath: `/cloudsql/${process.env.HOST}`,
+  },
 });
 
 db.authenticate()
