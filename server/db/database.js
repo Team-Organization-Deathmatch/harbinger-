@@ -175,6 +175,7 @@ Review.belongsTo(WebUrls, { as: 'WebUrl', constraints: false });
 db.sync();
 
 const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }).then((data) => {
+
   if (data === null) {
     console.log('no keyword found');
   } else {
