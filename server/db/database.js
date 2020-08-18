@@ -8,6 +8,7 @@ const db_user = process.env.DB_User || 'root';
 const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
+// Alternate between production db or local db
 const db = process.env.PRODENV === 'gcloud' ? new Sequelize(db_name, db_user, db_pass, {
   host: `/cloudsql/${process.env.HOST}`,
   dialect: 'mysql',
