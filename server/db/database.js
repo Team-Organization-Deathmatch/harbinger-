@@ -8,6 +8,7 @@ const db_user = process.env.DB_User || 'root';
 const db_pass = process.env.DB_Pass || '';
 const db_host = process.env.HOST || 'localhost';
 
+// Alternate between production db or local db
 const db = process.env.PRODENV === 'gcloud' ? new Sequelize(db_name, db_user, db_pass, {
   host: `/cloudsql/${process.env.HOST}`,
   dialect: 'mysql',
@@ -121,14 +122,14 @@ const Review = db.define('Review', {
   dislike: {
     type: Sequelize.INTEGER,
   },
-  id_user: {
-    type: Sequelize.INTEGER,
-    foreignKey: true,
-  },
   text: {
     type: Sequelize.STRING(2020),
   },
-  id_web: {
+  UserId: {
+    type: Sequelize.INTEGER,
+    foreignKey: true,
+  },
+  WebUrlId: {
     type: Sequelize.INTEGER,
     foreignKey: true,
   },
@@ -169,7 +170,9 @@ const Keyword = db.define('Keyword', {
 Keyword.sync();
 
 // TESTING TO SEE IF I CAN FIX DB LINKS
-Review.belongsTo(Users, { foreignKey: 'id_user' });
+Review.belongsTo(Users, { as: 'User', constraints: false });
+Review.belongsTo(WebUrls, { as: 'WebUrl', constraints: false });
+db.sync();
 
 const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }).then((data) => {
   if (data === null) {
@@ -256,10 +259,10 @@ const saveReview = (username, title, text, weburl, keyword) => {
           return Review.create({
             likes: 0,
             dislike: 0,
-            id_user: idUser,
+            UserId: idUser,
             title,
             text,
-            id_web: idWeb,
+            WebUrlId: idWeb,
             date: new Date(),
           }).then((data) => resolve(data));
         });
@@ -277,50 +280,20 @@ const findUserAndUpdateImage = (serial, image) => Users.findOne({ where: { seria
   .then((data) => data)
   .catch((err) => console.log(err));
 
-const findTopReviews = (query) => {
-  const sendArr = [];
-  let userIds;
-  const usernames = [];
-  let webIds;
-  const webUrls = [];
-  const images = [];
 
-  return Review.findAll(query).then((data) => {
-    sortedData = data.sort((a, b) => b.likes - a.likes);
-    sendArr.push(data);
-    userIds = data.map((review) => review.dataValues.id_user);
-    webIds = data.map((review) => review.dataValues.id_web);
-    return Users.findAll({
-      where: {
-        id: userIds,
-      },
-    }).then((data) => {
-      userIds.forEach((userId) => {
-        data.forEach((userObj) => {
-          if (userObj.dataValues.id === userId) {
-            usernames.push(userObj.dataValues.username);
-            images.push(userObj.dataValues.image);
-          }
-        });
-      });
-      return WebUrls.findAll({
-        where: {
-          id: webIds,
-        },
-      }).then((data) => {
-        webIds.forEach((webId) => {
-          data.forEach((webObj) => {
-            if (webObj.dataValues.id === webId) {
-              webUrls.push(webObj.dataValues.url);
-            }
-          });
-        });
-        console.log(webUrls);
-        return [usernames, ...sendArr, webUrls, images];
-      });
+/**
+ * Database helper to find the reviews joins with User and WebUrl
+ * @param {String} tag tag to search by, not currently used
+ */
+const findTopReviews = (tag) => new Promise((resolve, reject) => {
+  Review.findAll({ include: [{ model: Users, as: 'User' }, { model: WebUrls, as: 'WebUrl' }] })
+    .then((data) => {
+      resolve(data);
+    })
+    .catch((err) => {
+      reject(err);
     });
-  });
-};
+});
 
 const updateLikeInReview = (reviewId) => new Promise((resolve, reject) => {
   Review.findOne({ where: { id: reviewId } })
