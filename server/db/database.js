@@ -128,10 +128,6 @@ const Review = db.define('Review', {
     type: Sequelize.INTEGER,
     foreignKey: true,
   },
-  id_keyword: {
-    type: Sequelize.INTEGER,
-    foreignKey: true,
-  },
   date: {
     type: Sequelize.DATE,
   },
@@ -161,6 +157,10 @@ const Keyword = db.define('Keyword', {
   keyword: {
     type: Sequelize.STRING(100),
   },
+  id_review: {
+    type: Sequelize.INTEGER,
+    foreignKey: true,
+  },
 });
 Keyword.sync();
 
@@ -173,7 +173,7 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
   } else {
     return Review.findAll({
       where: {
-        id_keyword: data.id,
+        id: data.id_review,
       },
       include: [
         {
@@ -187,14 +187,18 @@ const findArticleByKeyWord = (keyword) => Keyword.findOne({ where: { keyword } }
   }
 });
 
-const saveOrFindKeyWord = (keyword) => Keyword.findOne({ where: { keyword } })
-  .then((data) => {
-    if (data === null) {
-      console.log('keyword created!!!');
-      return Keyword.create({ keyword });
-    }
-    return data;
-  })
+// const saveOrFindKeyWord = (keyword, id_review) => Keyword.findOne({ where: { keyword } })
+//   .then((data) => {
+//     if (data === null) {
+//       console.log('keyword created!!!');
+//       return Keyword.create({ keyword, id_review });
+//     }
+//     return data;
+//   })
+//   .catch((err) => console.log(err));
+
+const saveOrFindKeyWord = (keyword, idReview) => Keyword.create({ keyword, idReview })
+  .then((data) => data)
   .catch((err) => console.log(err));
 
 const saveOrFindWebUrl = (url) => WebUrls.findOne({ where: { url } })
@@ -252,7 +256,6 @@ const saveReview = (username, title, text, weburl, keyword) => {
             title,
             text,
             id_web: idWeb,
-            id_keyword: idKeyword,
             date: new Date(),
           }).then((data) => resolve(data));
         });
@@ -351,6 +354,7 @@ const getWebUrls = (webIds) => WebUrls.findAll({
     id: webIds,
   },
 });
+
 
 module.exports = {
   db,

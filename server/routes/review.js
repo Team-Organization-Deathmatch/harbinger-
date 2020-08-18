@@ -7,6 +7,7 @@ const {
   updateLikeInReview,
   updateDislikeInReview,
   saveOrFindWebUrl,
+  saveOrFindKeyWord,
 } = require('../db/database');
 
 const reviewRoute = Router();
@@ -62,11 +63,17 @@ reviewRoute.post('/submit', (req, res) => {
         title,
         text.message,
         weburl,
-        keyword
-      ).then(() => {
-        res.status(201);
-        res.send('review POST');
-      });
+        // keyword
+      ).then((data) => {
+        saveOrFindKeyWord(
+          keyword,
+          data.id, // no idea if this is correct yet
+        );
+      })
+        .then(() => {
+          res.status(201);
+          res.send('review POST');
+        });
     });
   } else {
     res.status(401);
